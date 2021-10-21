@@ -1,13 +1,11 @@
 /* eslint-disable func-style */
-/* eslint-disable import/unambiguous */
-/* eslint-disable import/no-commonjs */
 
 /**
  * @file Rule to require object keys to be sorted
  * @author Toru Nagashima
  */
 
-const naturalCompare = require('natural-compare');
+import naturalCompare from 'natural-compare';
 
 /**
   * Gets the property name of a given node.
@@ -135,11 +133,7 @@ const isValidOrders = {
   },
 };
 
-// ------------------------------------------------------------------------------
-// Rule Definition
-// ------------------------------------------------------------------------------
-
-module.exports = {
+export default {
   create (context) {
     // Parse options.
     const order = context.options[0] || 'asc';

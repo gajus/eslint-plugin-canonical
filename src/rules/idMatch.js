@@ -1,7 +1,5 @@
 /* eslint-disable complexity */
 /* eslint-disable func-style */
-/* eslint-disable import/no-commonjs */
-/* eslint-disable import/unambiguous */
 
 /**
  * @file Rule to flag non-matching identifiers
@@ -243,7 +241,7 @@ const create = (context) => {
   };
 };
 
-module.exports = {
+export default {
   create,
   meta: {
     docs: {

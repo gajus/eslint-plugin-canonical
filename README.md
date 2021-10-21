@@ -13,6 +13,7 @@ ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-cano
         * [Shareable configurations](#eslint-plugin-canonical-configuration-shareable-configurations)
     * [Rules](#eslint-plugin-canonical-rules)
         * [`id-match`](#eslint-plugin-canonical-rules-id-match)
+        * [`no-restricted-strings`](#eslint-plugin-canonical-rules-no-restricted-strings)
         * [`sort-keys`](#eslint-plugin-canonical-rules-sort-keys)
 
 
@@ -380,6 +381,35 @@ import { no_camelcased } from "external-module";
 
 
 
+<a name="eslint-plugin-canonical-rules-no-restricted-strings"></a>
+### <code>no-restricted-strings</code>
+
+Disallow specified strings.
+
+The following patterns are considered problems:
+
+```js
+// Options: [["bar"]]
+var foo = "bar"
+// Message: Disallowed string: 'bar'.
+
+// Options: [["bar"]]
+const foo = `bar ${baz}`;
+// Message: Disallowed string in template: 'bar'.
+```
+
+The following patterns are not considered problems:
+
+```js
+const foo = "bar";
+```
+
+
+<a name="eslint-plugin-canonical-rules-no-restricted-strings-options-1"></a>
+#### Options
+
+The 1st option is an array of strings that cannot be contained in the codebase.
+
 <a name="eslint-plugin-canonical-rules-sort-keys"></a>
 ### <code>sort-keys</code>
 
@@ -389,7 +419,7 @@ Note: This rule is equivalent to [`sort-keys`](https://eslint.org/docs/rules/sor
 
 This rule requires identifiers in assignments and `function` definitions to match a specified regular expression.
 
-<a name="eslint-plugin-canonical-rules-sort-keys-options-1"></a>
+<a name="eslint-plugin-canonical-rules-sort-keys-options-2"></a>
 #### Options
 
 The 1st option is "asc" or "desc".

@@ -10,6 +10,7 @@
     "@babel/core": "^7.15.5",
     "@babel/eslint-parser": "^7.15.8",
     "@babel/node": "^7.15.4",
+    "@babel/plugin-transform-react-jsx": "^7.14.9",
     "@babel/preset-env": "^7.15.6",
     "ajv": "^8.6.3",
     "babel-plugin-add-module-exports": "^1.0.4",

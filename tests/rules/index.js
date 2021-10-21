@@ -8,14 +8,22 @@ import {
 } from 'lodash';
 import plugin from '../../src';
 
-const ruleTester = new RuleTester();
+const ruleTester = new RuleTester({
+  parserOptions: {
+    babelOptions: {
+      plugins: ['@babel/plugin-transform-react-jsx'],
+    },
+  },
+});
 
 const reportingRules = [
   'id-match',
+  'no-restricted-strings',
   'sort-keys',
 ];
 
 const parser = require.resolve('@babel/eslint-parser');
+
 const ajv = new Ajv({
   verbose: true,
 });
@@ -64,5 +72,9 @@ for (const ruleName of reportingRules) {
     return assertion;
   });
 
-  ruleTester.run(ruleName, plugin.rules[ruleName], assertions);
+  ruleTester.run(
+    ruleName,
+    plugin.rules[ruleName],
+    assertions,
+  );
 }

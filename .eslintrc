@@ -2,5 +2,5 @@
   "extends": "canonical",
   "rules": {
     "unicorn/prevent-abbreviations": 0
-  }
+  },
 }
