@@ -65,3 +65,4 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 <!-- Rules are sorted alphabetically. -->
 
 {"gitdown": "include", "file": "./rules/id-match.md"}
+{"gitdown": "include", "file": "./rules/sort-keys.md"}

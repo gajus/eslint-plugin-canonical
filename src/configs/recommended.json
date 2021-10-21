@@ -4,6 +4,14 @@
     "canonical"
   ],
   "rules": {
-    "id-match": 0
+    "id-match": 0,
+    "sort-keys": [
+      2,
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ]
   }
 }

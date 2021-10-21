@@ -12,6 +12,7 @@ const ruleTester = new RuleTester();
 
 const reportingRules = [
   'id-match',
+  'sort-keys',
 ];
 
 const parser = require.resolve('@babel/eslint-parser');

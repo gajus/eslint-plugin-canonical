@@ -53,5 +53,8 @@
     "lint": "eslint ./src ./tests",
     "test": "mocha --require @babel/register ./tests/rules/index.js"
   },
-  "version": "0.0.0-development"
+  "version": "0.0.0-development",
+  "dependencies": {
+    "natural-compare": "^1.4.0"
+  }
 }
