@@ -13,6 +13,7 @@
     "@babel/preset-env": "^7.15.6",
     "ajv": "^8.6.3",
     "babel-plugin-add-module-exports": "^1.0.4",
+    "eclint": "^2.8.1",
     "eslint": "^7.32.0",
     "eslint-config-canonical": "^27.0.1",
     "gitdown": "^3.1.4",

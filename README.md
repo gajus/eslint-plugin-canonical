@@ -5,7 +5,7 @@
 [![Travis build status](http://img.shields.io/travis/gajus/eslint-plugin-canonical/master.svg?style=flat-square)](https://travis-ci.com/github/gajus/eslint-plugin-canonical)
 [![js-canonical-style](https://img.shields.io/badge/code%20style-canonical-blue.svg?style=flat-square)](https://github.com/gajus/canonical)
 
-ESLint rules for Canonical ruleset.
+ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-canonical).
 
 * [eslint-plugin-canonical](#eslint-plugin-canonical)
     * [Installation](#eslint-plugin-canonical-installation)
@@ -356,7 +356,7 @@ obj.no_under17 = 2;
 
 // Options: ["^[^_]+$",{"properties":false}]
 var obj = {
- no_under18: 1
+ no_under18: 1 
 };
  obj.no_under19 = 2;
 
