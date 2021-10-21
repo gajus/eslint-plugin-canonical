@@ -99,5 +99,283 @@ This rule requires identifiers in assignments and `function` definitions to matc
 * `"ignoreNamedImports": false` (default) enforces `id-match` for named imports
 * `"ignoreNamedImports": true` does not check named imports
 
+The following patterns are considered problems:
+
+```js
+// Options: ["^[a-z]+$",{"onlyDeclarations":true}]
+var __foo = "Matthieu"
+// Message: undefined
+
+// Options: ["^[a-z]+$"]
+first_name = "Matthieu"
+// Message: undefined
+
+// Options: ["^z"]
+first_name = "Matthieu"
+// Message: undefined
+
+// Options: ["^[a-z]+(_[A-Z][a-z])*$"]
+Last_Name = "Larcher"
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+var obj = {key: no_under}
+// Message: Identifier 'no_under' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$"]
+function no_under21(){}
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+obj.no_under22 = function(){};
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+no_under23.foo = function(){};
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+[no_under24.baz]
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+if (foo.bar_baz === boom.bam_pow) { [no_under25.baz] }
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+foo.no_under26 = boom.bam_pow
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+var foo = { no_under27: boom.bam_pow }
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+foo.qux.no_under28 = { bar: boom.bam_pow }
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+var o = {no_under29: 1}
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+obj.no_under30 = 2;
+// Message: undefined
+
+// Options: ["^[^_]+$",{"properties":true}]
+var { category_id: category_alias } = query;
+// Message: Identifier 'category_alias' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"ignoreDestructuring":true,"properties":true}]
+var { category_id: category_alias } = query;
+// Message: Identifier 'category_alias' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"ignoreDestructuring":true,"properties":true}]
+var { category_id: categoryId, ...other_props } = query;
+// Message: Identifier 'other_props' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+var { category_id } = query;
+// Message: Identifier 'category_id' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+var { category_id = 1 } = query;
+// Message: Identifier 'category_id' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import no_camelcased from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import * as no_camelcased from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$"]
+export * as no_camelcased from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import { no_camelcased as no_camel_cased } from "external module";
+// Message: Identifier 'no_camel_cased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import { camelCased as no_camel_cased } from "external module";
+// Message: Identifier 'no_camel_cased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import { camelCased, no_camelcased } from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import { no_camelcased as camelCased, another_no_camelcased } from "external-module";
+// Message: Identifier 'another_no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import camelCased, { no_camelcased } from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+import no_camelcased, { another_no_camelcased as camelCased } from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+function foo({ no_camelcased }) {};
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+function foo({ no_camelcased = 'default value' }) {};
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+const no_camelcased = 0; function foo({ camelcased_value = no_camelcased }) {}
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+// Message: Identifier 'camelcased_value' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+const { bar: no_camelcased } = foo;
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+function foo({ value_1: my_default }) {}
+// Message: Identifier 'my_default' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+function foo({ isCamelcased: no_camelcased }) {};
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+var { foo: bar_baz = 1 } = quz;
+// Message: Identifier 'bar_baz' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"properties":true}]
+const { no_camelcased = false } = bar;
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$"]
+class x { _foo() {} }
+// Message: Identifier '_foo' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"classFields":true}]
+class x { _foo = 1; }
+// Message: Identifier '_foo' does not match the pattern '^[^_]+$'.
+
+// Options: ["^[^_]+$",{"ignoreNamedImports":false}]
+import { no_camelcased } from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+```
+
+The following patterns are not considered problems:
+
+```js
+// Options: ["^[a-z]+$",{"onlyDeclarations":true}]
+__foo = "Matthieu"
+
+// Options: ["^[a-z]+$"]
+firstname = "Matthieu"
+
+// Options: ["[a-z]+"]
+first_name = "Matthieu"
+
+// Options: ["^f"]
+firstname = "Matthieu"
+
+// Options: ["^[a-z]+(_[A-Z][a-z]+)*$"]
+last_Name = "Larcher"
+
+// Options: ["^[a-z]+(_[A-Z][a-z])*$"]
+param = "none"
+
+// Options: ["^[^_]+$"]
+function noUnder(){}
+
+// Options: ["^[^_]+$"]
+no_under()
+
+// Options: ["^[^_]+$"]
+foo.no_under2()
+
+// Options: ["^[^_]+$"]
+var foo = bar.no_under3;
+
+// Options: ["^[^_]+$"]
+var foo = bar.no_under4.something;
+
+// Options: ["^[^_]+$"]
+foo.no_under5.qux = bar.no_under6.something;
+
+// Options: ["^[^_]+$"]
+if (bar.no_under7) {}
+
+// Options: ["^[^_]+$"]
+var obj = { key: foo.no_under8 };
+
+// Options: ["^[^_]+$"]
+var arr = [foo.no_under9];
+
+// Options: ["^[^_]+$"]
+[foo.no_under10]
+
+// Options: ["^[^_]+$"]
+var arr = [foo.no_under11.qux];
+
+// Options: ["^[^_]+$"]
+[foo.no_under12.nesting]
+
+// Options: ["^[^_]+$"]
+if (foo.no_under13 === boom.no_under14) { [foo.no_under15] }
+
+// Options: ["^[a-z$]+([A-Z][a-z]+)*$"]
+var myArray = new Array(); var myDate = new Date();
+
+// Options: ["^[^_]+$"]
+var x = obj._foo;
+
+// Options: ["^[^_]+$",{"onlyDeclarations":true,"properties":true}]
+var obj = {key: no_under}
+
+// Options: ["^[^_]+$",{"properties":true}]
+var {key_no_under: key} = {}
+
+// Options: ["^[^_]+$",{"ignoreDestructuring":true,"properties":true}]
+var { category_id } = query;
+
+// Options: ["^[^_]+$",{"ignoreDestructuring":true,"properties":true}]
+var { category_id: category_id } = query;
+
+// Options: ["^[^_]+$",{"ignoreDestructuring":true,"properties":true}]
+var { category_id = 1 } = query;
+
+// Options: ["^[^_]+$",{"properties":true}]
+var o = {key: 1}
+
+// Options: ["^[^_]+$",{"properties":false}]
+var o = {no_under16: 1}
+
+// Options: ["^[^_]+$",{"properties":false}]
+obj.no_under17 = 2;
+
+// Options: ["^[^_]+$",{"properties":false}]
+var obj = {
+ no_under18: 1
+};
+ obj.no_under19 = 2;
+
+// Options: ["^[^_]+$",{"properties":false}]
+obj.no_under20 = function(){};
+
+// Options: ["^[^_]+$",{"properties":false}]
+var x = obj._foo2;
+
+// Options: ["^[^_]+$"]
+class x { foo() {} }
+
+// Options: ["^[^_]+$"]
+class x { #foo() {} }
+
+// Options: ["^[^_]+$",{"ignoreNamedImports":true}]
+import { no_camelcased } from "external-module";
+// Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+```
+
 
 

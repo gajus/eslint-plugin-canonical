@@ -6,7 +6,10 @@
  * Related discussion about not adding this option to ESLint https://github.com/eslint/eslint/issues/14005
  */
 
-const error = {messageId: 'notMatch', type: 'Identifier'};
+const error = {
+  messageId: 'notMatch',
+  type: 'Identifier',
+};
 
 export default {
   invalid: [

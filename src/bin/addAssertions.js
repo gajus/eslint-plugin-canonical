@@ -44,7 +44,7 @@ const getAssertions = () => {
 
   const assertionCodes = _.map(assertionFiles, (filePath) => {
     // eslint-disable-next-line import/no-dynamic-require
-    const codes = require(filePath);
+    const codes = require(filePath).default;
 
     return {
       invalid: _.map(codes.invalid, formatCodeSnippet),
@@ -84,6 +84,8 @@ const updateDocuments = (assertions) => {
 
     return exampleBody;
   });
+
+  // console.log(documentBody);
 
   fs.writeFileSync(readmeDocumentPath, documentBody);
 };
