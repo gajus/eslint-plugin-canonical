@@ -1,0 +1,9 @@
+{
+  "parser": "@babel/eslint-parser",
+  "plugins": [
+    "canonical"
+  ],
+  "rules": {
+    "id-match": 0
+  }
+}

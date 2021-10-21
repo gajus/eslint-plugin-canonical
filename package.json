@@ -1,0 +1,62 @@
+{
+  "author": {
+    "email": "gajus@gajus.com",
+    "name": "Gajus Kuizinas",
+    "url": "http://gajus.com"
+  },
+  "dependencies": {
+    "@babel/eslint-parser": "^7.15.8",
+    "lodash": "^4.17.21"
+  },
+  "description": "Canonical linting rules for ESLint.",
+  "devDependencies": {
+    "@babel/cli": "^7.15.4",
+    "@babel/core": "^7.15.5",
+    "@babel/node": "^7.15.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.15.6",
+    "@babel/preset-env": "^7.15.6",
+    "@babel/register": "^7.15.3",
+    "ajv": "^8.6.3",
+    "babel-eslint": "^10.1.0",
+    "babel-plugin-add-module-exports": "^1.0.4",
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "eslint-config-canonical": "^27.0.1",
+    "gitdown": "^3.1.4",
+    "glob": "^7.1.7",
+    "husky": "^7.0.2",
+    "jsonlint": "^1.6.3",
+    "mocha": "^9.1.1",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^17.4.7"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "keywords": [
+    "eslint",
+    "plugin",
+    "canonical"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "./dist/index.js",
+  "name": "eslint-plugin-canonical",
+  "peerDependencies": {
+    "eslint": "^7.32.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gajus/eslint-plugin-canonical"
+  },
+  "scripts": {
+    "build": "rimraf ./dist && babel ./src --out-dir ./dist --copy-files",
+    "check-docs": "babel-node ./src/bin/checkDocs",
+    "check-tests": "babel-node ./src/bin/checkTests",
+    "create-readme": "gitdown ./.README/README.md --output-file ./README.md && npm run documentation-add-assertions",
+    "documentation-add-assertions": "babel-node ./src/bin/addAssertions",
+    "format-json": "jsonlint --sort-keys --in-place --indent \"  \" ./src/configs/recommended.json",
+    "lint": "eslint ./src ./tests",
+    "test": "mocha --require @babel/register ./tests/rules/index.js"
+  },
+  "version": "0.0.0-development"
+}
