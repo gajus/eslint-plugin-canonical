@@ -44,7 +44,7 @@ const getAssertions = () => {
 
   const assertionCodes = _.map(assertionFiles, (filePath) => {
     // eslint-disable-next-line import/no-dynamic-require
-    const codes = require(filePath).default;
+    const codes = require(filePath);
 
     return {
       invalid: _.map(codes.invalid, formatCodeSnippet),
