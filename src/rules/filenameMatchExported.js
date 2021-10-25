@@ -58,8 +58,8 @@ const getTransformsFromOptions = (option) => {
 };
 
 const transform = (exportedName, transforms) => {
-  return transforms.map((t) => {
-    return t ? t(exportedName) : exportedName;
+  return transforms.map((format) => {
+    return format ? format(exportedName) : exportedName;
   });
 };
 

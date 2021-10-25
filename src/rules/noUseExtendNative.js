@@ -9,7 +9,7 @@ import isProtoProp from 'is-proto-prop';
 /**
  * Return type of value of left or right
  *
- * @param {object} o - left or right of node.object
+ * @param {object} subject - left or right of node.object
  * @returns {string} - type of o
  */
 const getType = (subject) => {
@@ -25,7 +25,7 @@ const getType = (subject) => {
 /**
  * Returns type of binary expression result
  *
- * @param {object} o - node's object with a BinaryExpression type
+ * @param {object} subject - node's object with a BinaryExpression type
  * @returns {string} - type of value produced
  */
 const binaryExpressionProduces = (subject) => {
