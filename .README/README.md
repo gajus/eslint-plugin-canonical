@@ -33,7 +33,12 @@ npm install eslint-plugin-canonical --save-dev
     "canonical"
   ],
   "rules": {
-    "canonical/id-match": 0
+    "canonical/filename-match-exported": 0,
+    "canonical/filename-match-regex": 0,
+    "canonical/filename-no-index": 0,
+    "canonical/id-match": 0,
+    "canonical/no-restricted-strings": 0,
+    "canonical/sort-keys": 0
   }
 }
 ```
@@ -59,11 +64,13 @@ To enable this configuration use the extends property in your `.eslintrc` config
 
 See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files) for more information about extending configuration files.
 
-
 ## Rules
 
 <!-- Rules are sorted alphabetically. -->
 
+{"gitdown": "include", "file": "./rules/filename-match-exported.md"}
+{"gitdown": "include", "file": "./rules/filename-match-regex.md"}
+{"gitdown": "include", "file": "./rules/filename-no-index.md"}
 {"gitdown": "include", "file": "./rules/id-match.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-strings.md"}
 {"gitdown": "include", "file": "./rules/sort-keys.md"}

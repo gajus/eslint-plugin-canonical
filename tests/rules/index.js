@@ -13,10 +13,14 @@ const ruleTester = new RuleTester({
     babelOptions: {
       plugins: ['@babel/plugin-transform-react-jsx'],
     },
+    requireConfigFile: false,
   },
 });
 
 const reportingRules = [
+  'filename-match-exported',
+  'filename-match-regex',
+  'filename-no-index',
   'id-match',
   'no-restricted-strings',
   'sort-keys',
@@ -49,6 +53,7 @@ for (const ruleName of reportingRules) {
             });
 
             validateSchema(misconfiguration.options);
+
             if (!validateSchema.errors) {
               throw new Error('Schema was valid.');
             }

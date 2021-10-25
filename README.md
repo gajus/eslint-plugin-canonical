@@ -12,6 +12,9 @@ ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-cano
     * [Configuration](#eslint-plugin-canonical-configuration)
         * [Shareable configurations](#eslint-plugin-canonical-configuration-shareable-configurations)
     * [Rules](#eslint-plugin-canonical-rules)
+        * [`filename-match-exported`](#eslint-plugin-canonical-rules-filename-match-exported)
+        * [`filename-match-regex`](#eslint-plugin-canonical-rules-filename-match-regex)
+        * [`filename-no-index`](#eslint-plugin-canonical-rules-filename-no-index)
         * [`id-match`](#eslint-plugin-canonical-rules-id-match)
         * [`no-restricted-strings`](#eslint-plugin-canonical-rules-no-restricted-strings)
         * [`sort-keys`](#eslint-plugin-canonical-rules-sort-keys)
@@ -44,7 +47,12 @@ npm install eslint-plugin-canonical --save-dev
     "canonical"
   ],
   "rules": {
-    "canonical/id-match": 0
+    "canonical/filename-match-exported": 0,
+    "canonical/filename-match-regex": 0,
+    "canonical/filename-no-index": 0,
+    "canonical/id-match": 0,
+    "canonical/no-restricted-strings": 0,
+    "canonical/sort-keys": 0
   }
 }
 ```
@@ -72,11 +80,327 @@ To enable this configuration use the extends property in your `.eslintrc` config
 
 See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/configuration-files#extending-configuration-files) for more information about extending configuration files.
 
-
 <a name="eslint-plugin-canonical-rules"></a>
 ## Rules
 
 <!-- Rules are sorted alphabetically. -->
+
+<a name="eslint-plugin-canonical-rules-filename-match-exported"></a>
+### <code>filename-match-exported</code>
+
+Match the file name against the default exported value in the module. Files that dont have a default export will
+be ignored. The exports of `index.js` are matched against their parent directory.
+
+```js
+// Considered problem only if the file isn't named foo.js or foo/index.js
+export default function foo() {}
+
+// Considered problem only if the file isn't named Foo.js or Foo/index.js
+module.exports = class Foo() {}
+
+// Considered problem only if the file isn't named someVariable.js or someVariable/index.js
+module.exports = someVariable;
+
+// Never considered a problem
+export default { foo: "bar" };
+```
+
+If your filename policy doesn't quite match with your variable naming policy, you can add one or multiple transforms:
+
+```json
+"canonical/filename-match-exported": [ 2, "kebab" ]
+```
+
+Now, in your code:
+
+```js
+// Considered problem only if file isn't named variable-name.js or variable-name/index.js
+export default function variableName;
+```
+
+Available transforms:
+'[snake](https://www.npmjs.com/package/lodash.snakecase)',
+'[kebab](https://www.npmjs.com/package/lodash.kebabcase)',
+'[camel](https://www.npmjs.com/package/lodash.camelcase)', and
+'pascal' (camel-cased with first letter in upper case).
+
+For multiple transforms simply specify an array like this (null in this case stands for no transform):
+
+```json
+"canonical/filename-match-exported": [2, [ null, "kebab", "snake" ] ]
+```
+
+If you prefer to use suffixes for your files (e.g. `Foo.react.js` for a React component file),
+you can use a second configuration parameter. It allows you to remove parts of a filename matching a regex pattern
+before transforming and matching against the export.
+
+```json
+"canonical/filename-match-exported": [ 2, null, "\\.react$" ]
+```
+
+Now, in your code:
+
+```js
+// Considered problem only if file isn't named variableName.react.js, variableName.js or variableName/index.js
+export default function variableName;
+```
+
+If you also want to match exported function calls you can use the third option (a boolean flag).
+
+```json
+"canonical/filename-match-exported": [ 2, null, null, true ]
+```
+
+Now, in your code:
+
+```js
+// Considered problem only if file isn't named functionName.js or functionName/index.js
+export default functionName();
+```
+
+The following patterns are considered problems:
+
+```js
+module.exports = exported;
+// Message: Filename 'fooBar' must match the exported name 'exported'.
+
+module.exports = class Foo {};
+// Message: Filename 'foo' must match the exported name 'Foo'.
+
+module.exports = class Foo { render() { return <span>Test Class</span>; } };
+// Message: Filename 'foo' must match the exported name 'Foo'.
+
+module.exports = function foo() {};
+// Message: Filename 'bar' must match the exported name 'foo'.
+
+module.exports = function foo() { return <span>Test Fn</span> };
+// Message: Filename 'bar' must match the exported name 'foo'.
+
+export default exported;
+// Message: Filename 'fooBar' must match the exported name 'exported'.
+
+export default class Foo {};
+// Message: Filename 'bar' must match the exported name 'Foo'.
+
+export default class Foo { render() { return <span>Test Class</span>; } };
+// Message: Filename 'bar' must match the exported name 'Foo'.
+
+export default function foo() {};
+// Message: The directory 'fooBar' must be named 'foo', after the exported value of its index file.
+
+export default function foo() { return <span>Test Fn</span> };
+// Message: The directory 'fooBar' must be named 'foo', after the exported value of its index file.
+
+module.exports = exported;
+// Message: The directory 'eslint-plugin-canonical' must be named 'exported', after the exported value of its index file.
+
+module.exports = class Foo { render() { return <span>Test Class</span>; } };
+// Message: Filename 'Foo.react' must match the exported name 'Foo'.
+
+// Options: ["snake"]
+module.exports = variableName;
+// Message: Filename 'variableName' must match the exported and transformed name 'variable_name'.
+
+// Options: ["kebab"]
+export default variableName;
+// Message: Filename 'variableName' must match the exported and transformed name 'variable-name'.
+
+// Options: ["pascal"]
+export default variableName;
+// Message: Filename 'variableName' must match the exported and transformed name 'VariableName'.
+
+// Options: [[null]]
+export default variableName;
+// Message: Filename 'VariableName' must match the exported name 'variableName'.
+
+// Options: [["pascal","snake"]]
+export default variableName;
+// Message: Filename 'variableName' must match any of the exported and transformed names 'VariableName', 'variable_name'.
+
+// Options: [null,"\\.react$"]
+export default class Foo { render() { return <span>Test Class</span>; } };
+// Message: Filename 'Foo.bar' must match the exported name 'Foo'.
+
+// Options: [null,"\\.react$"]
+export default class Foo { render() { return <span>Test Class</span>; } };
+// Message: The directory 'Foo.react' must be named 'Foo', after the exported value of its index file.
+
+// Options: [null,null,true]
+module.exports = foo();
+// Message: Filename 'bar' must match the exported name 'foo'.
+```
+
+The following patterns are not considered problems:
+
+```js
+module.exports = function() {};
+
+var foo = 'bar';
+
+export default foo();
+
+module.exports = exported;
+
+module.exports = class Foo {};
+
+module.exports = class Foo { render() { return <span>Test Class</span>; } };
+
+module.exports = function foo() {};
+
+module.exports = foo();
+
+module.exports = function foo() { return <span>Test Fn</span> };
+
+export default exported;
+
+export default class Foo {};
+
+export default class Foo { render() { return <span>Test Class</span>; } };
+
+export default function foo() {};
+
+export default function foo() { return <span>Test Fn</span> };
+
+export default function foo() {};
+
+export default function foo() { return <span>Test Fn</span> };
+
+export default function index() {};
+
+// Options: ["snake"]
+module.exports = variableName;
+
+// Options: ["snake"]
+module.exports = variableName;
+
+// Options: ["kebab"]
+module.exports = variableName;
+
+// Options: ["camel"]
+module.exports = variable_name;
+
+// Options: ["snake"]
+export default variableName;
+
+// Options: ["kebab"]
+export default variableName;
+
+// Options: ["camel"]
+export default variable_name;
+
+// Options: ["pascal"]
+export default variable_name;
+
+// Options: [["pascal","camel"]]
+export default variable_name;
+
+// Options: [["pascal","camel"]]
+export default variable_name;
+
+// Options: [null,"\\.react$"]
+module.exports = class Foo { render() { return <span>Test Class</span>; } };
+
+// Options: [null,"\\.react$"]
+export default class Foo { render() { return <span>Test Class</span>; } };
+
+// Options: [null,null,true]
+module.exports = foo();
+```
+
+
+
+<a name="eslint-plugin-canonical-rules-filename-match-regex"></a>
+### <code>filename-match-regex</code>
+
+A rule to enforce a certain file naming convention using a regular expression.
+
+The convention can be configured using a regular expression (the default is `camelCase.js`). Additionally
+exporting files can be ignored with a second configuration parameter.
+
+```json
+"canonical/filename-match-regex": [2, "^[a-z_]+$", true]
+```
+
+With these configuration options, `camelCase.js` will be reported as an error while `snake_case.js` will pass.
+Additionally the files that have a named default export (according to the logic in the `match-exported` rule) will be
+ignored.  They could be linted with the `match-exported` rule. Please note that exported function calls are not
+respected in this case.
+
+The following patterns are considered problems:
+
+```js
+var foo = 'bar';
+// Message: Filename 'foo_bar.js' does not match the naming convention.
+
+var foo = 'bar';
+// Message: Filename 'fooBAR.js' does not match the naming convention.
+
+var foo = 'bar';
+// Message: Filename 'fooBar$.js' does not match the naming convention.
+
+// Options: ["^[a-z_]$"]
+var foo = 'bar';
+// Message: Filename 'fooBar.js' does not match the naming convention.
+```
+
+The following patterns are not considered problems:
+
+```js
+var foo = 'bar';
+
+var foo = 'bar';
+
+var foo = 'bar';
+
+// Options: ["^[a-z_]+$"]
+var foo = 'bar';
+
+// Options: ["^[a-z_]+$"]
+var foo = 'bar';
+
+var foo = 'bar';
+
+// Options: [null,true]
+module.exports = foo
+
+// Options: ["^[a-z_]$",true]
+module.exports = foo
+
+// Options: ["^[a-z_]+$",true]
+module.exports = foo()
+```
+
+
+
+<a name="eslint-plugin-canonical-rules-filename-no-index"></a>
+### <code>filename-no-index</code>
+
+Having a bunch of `index.js` files can have negative influence on developer experience, e.g. when
+opening files by name. When enabling this rule. `index.js` files will always be considered a problem.
+
+The following patterns are considered problems:
+
+```js
+var foo = 'bar';
+// Message: 'index.js' files are not allowed.
+
+var foo = 'bar';
+// Message: 'index.js' files are not allowed.
+```
+
+The following patterns are not considered problems:
+
+```js
+var foo = 'bar';
+
+var foo = 'bar';
+
+var foo = 'bar';
+
+var foo = 'bar';
+```
+
+
 
 <a name="eslint-plugin-canonical-rules-id-match"></a>
 ### <code>id-match</code>

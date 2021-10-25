@@ -1,0 +1,139 @@
+/**
+ * @file Rule to ensure that filenames match the exports of the file
+ * @author Stefan Lau
+ * @see https://github.com/selaux/eslint-plugin-filenames/blob/32fc70dd7572211d1e5b97e06ec7a005c77fe8d4/lib/rules/match-exported.js
+ */
+
+import path from 'path';
+import {
+  camelCase,
+  kebabCase,
+  upperFirst,
+  snakeCase,
+} from 'lodash';
+import {
+  getExportedName,
+} from '../utilities/getExportedName';
+import {
+  isIgnoredFilename,
+} from '../utilities/isIgnoredFilename';
+import {
+  isIndexFile,
+} from '../utilities/isIndexFile';
+import {
+  parseFilename,
+} from '../utilities/parseFilename';
+
+const transformMap = {
+  camel: camelCase,
+  kebab: kebabCase,
+  pascal (name) {
+    return upperFirst(camelCase(name));
+  },
+  snake: snakeCase,
+};
+
+const transformNames = Object.keys(transformMap);
+const transformSchema = {
+  enum: transformNames.concat([null]),
+};
+
+const getStringToCheckAgainstExport = (parsed, replacePattern) => {
+  const dirArray = parsed.dir.split(path.sep);
+  const lastDirectory = dirArray[dirArray.length - 1];
+
+  if (isIndexFile(parsed)) {
+    return lastDirectory;
+  } else {
+    return replacePattern ? parsed.name.replace(replacePattern, '') : parsed.name;
+  }
+};
+
+const getTransformsFromOptions = (option) => {
+  const usedTransforms = option && option.push ? option : [option];
+
+  return usedTransforms.map((name) => {
+    return transformMap[name];
+  });
+};
+
+const transform = (exportedName, transforms) => {
+  return transforms.map((t) => {
+    return t ? t(exportedName) : exportedName;
+  });
+};
+
+const anyMatch = (expectedExport, transformedNames) => {
+  return transformedNames.includes(expectedExport);
+};
+
+const getWhatToMatchMessage = (transforms) => {
+  if (transforms.length === 1 && !transforms[0]) {
+    return 'the exported name';
+  }
+  if (transforms.length > 1) {
+    return 'any of the exported and transformed names';
+  }
+
+  return 'the exported and transformed name';
+};
+
+const create = (context) => {
+  return {
+    Program (node) {
+      const transforms = getTransformsFromOptions(context.options[0]);
+      const replacePattern = context.options[1] ? new RegExp(context.options[1]) : null;
+      const filename = context.getFilename();
+      const absoluteFilename = path.resolve(filename);
+      const parsed = parseFilename(absoluteFilename);
+      const shouldIgnore = isIgnoredFilename(filename);
+      const exportedName = getExportedName(node, context.options);
+      const isExporting = Boolean(exportedName);
+      const expectedExport = getStringToCheckAgainstExport(parsed, replacePattern);
+      const transformedNames = transform(exportedName, transforms);
+      const everythingIsIndex = exportedName === 'index' && parsed.name === 'index';
+      const matchesExported = anyMatch(expectedExport, transformedNames) || everythingIsIndex;
+      const reportIf = function (condition, messageForNormalFile, messageForIndexFile) {
+        const message = !messageForIndexFile || !isIndexFile(parsed) ? messageForNormalFile : messageForIndexFile;
+
+        if (condition) {
+          context.report(node, message, {
+            expectedExport,
+            exportName: transformedNames.join('\', \''),
+            extension: parsed.ext,
+            name: parsed.base,
+            whatToMatch: getWhatToMatchMessage(transforms),
+          });
+        }
+      };
+
+      if (shouldIgnore) {
+        return;
+      }
+
+      reportIf(
+        isExporting && !matchesExported,
+        'Filename \'{{expectedExport}}\' must match {{whatToMatch}} \'{{exportName}}\'.',
+        'The directory \'{{expectedExport}}\' must be named \'{{exportName}}\', after the exported value of its index file.',
+      );
+    },
+  };
+};
+
+export default {
+  create,
+  schema: [
+    {
+      oneOf: [
+        transformSchema,
+        {items: transformSchema, minItems: 1, type: 'array'},
+      ],
+    },
+    {
+      type: ['string', 'null'],
+    },
+    {
+      type: ['boolean', 'null'],
+    },
+  ],
+};
