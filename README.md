@@ -17,6 +17,7 @@ ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-cano
         * [`filename-no-index`](#eslint-plugin-canonical-rules-filename-no-index)
         * [`id-match`](#eslint-plugin-canonical-rules-id-match)
         * [`no-restricted-strings`](#eslint-plugin-canonical-rules-no-restricted-strings)
+        * [`no-use-extend-native`](#eslint-plugin-canonical-rules-no-use-extend-native)
         * [`sort-keys`](#eslint-plugin-canonical-rules-sort-keys)
 
 
@@ -50,9 +51,24 @@ npm install eslint-plugin-canonical --save-dev
     "canonical/filename-match-exported": 0,
     "canonical/filename-match-regex": 0,
     "canonical/filename-no-index": 0,
-    "canonical/id-match": 0,
+    "canonical/id-match": [
+      2,
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ],
     "canonical/no-restricted-strings": 0,
-    "canonical/sort-keys": 0
+    "canonical/no-use-extend-native": 2,
+    "canonical/sort-keys": [
+      2,
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ]
   }
 }
 ```
@@ -733,6 +749,303 @@ const foo = "bar";
 #### Options
 
 The 1st option is an array of strings that cannot be contained in the codebase.
+
+<a name="eslint-plugin-canonical-rules-no-use-extend-native"></a>
+### <code>no-use-extend-native</code>
+
+The following patterns are considered problems:
+
+```js
+Array.prototype.custom
+// Message: Avoid using extended native objects
+
+Array.to
+// Message: Avoid using extended native objects
+
+Array.to()
+// Message: Avoid using extended native objects
+
+[].length()
+// Message: Avoid using extended native objects
+
+'unicorn'.green
+// Message: Avoid using extended native objects
+
+[].custom()
+// Message: Avoid using extended native objects
+
+({}).custom()
+// Message: Avoid using extended native objects
+
+/match_this/.custom()
+// Message: Avoid using extended native objects
+
+'string'.custom()
+// Message: Avoid using extended native objects
+
+console.log('foo'.custom)
+// Message: Avoid using extended native objects
+
+console.log('foo'.custom())
+// Message: Avoid using extended native objects
+
+('str' + 'ing').custom()
+// Message: Avoid using extended native objects
+
+('str' + 'i' + 'ng').custom()
+// Message: Avoid using extended native objects
+
+(1 + 'ing').custom()
+// Message: Avoid using extended native objects
+
+(/regex/ + 'ing').custom()
+// Message: Avoid using extended native objects
+
+(1 + 1).toLowerCase()
+// Message: Avoid using extended native objects
+
+(1 + 1 + 1).toLowerCase()
+// Message: Avoid using extended native objects
+
+(function testFunction() {}).custom()
+// Message: Avoid using extended native objects
+
+new Array().custom()
+// Message: Avoid using extended native objects
+
+new ArrayBuffer().custom()
+// Message: Avoid using extended native objects
+
+new Boolean().custom()
+// Message: Avoid using extended native objects
+
+new DataView().custom()
+// Message: Avoid using extended native objects
+
+new Date().custom()
+// Message: Avoid using extended native objects
+
+new Error().custom()
+// Message: Avoid using extended native objects
+
+new Float32Array().custom()
+// Message: Avoid using extended native objects
+
+new Float64Array().custom()
+// Message: Avoid using extended native objects
+
+new Function().custom()
+// Message: Avoid using extended native objects
+
+new Int16Array().custom()
+// Message: Avoid using extended native objects
+
+new Int32Array().custom()
+// Message: Avoid using extended native objects
+
+new Int8Array().custom()
+// Message: Avoid using extended native objects
+
+new Map().custom()
+// Message: Avoid using extended native objects
+
+new Number().custom()
+// Message: Avoid using extended native objects
+
+new Object().custom()
+// Message: Avoid using extended native objects
+
+new Promise().custom()
+// Message: Avoid using extended native objects
+
+new RegExp().custom()
+// Message: Avoid using extended native objects
+
+new Set().custom()
+// Message: Avoid using extended native objects
+
+new String().custom()
+// Message: Avoid using extended native objects
+
+new Symbol().custom()
+// Message: Avoid using extended native objects
+
+new Uint16Array().custom()
+// Message: Avoid using extended native objects
+
+new Uint32Array().custom()
+// Message: Avoid using extended native objects
+
+new Uint8Array().custom()
+// Message: Avoid using extended native objects
+
+new Uint8ClampedArray().custom()
+// Message: Avoid using extended native objects
+
+new WeakMap().custom()
+// Message: Avoid using extended native objects
+
+new WeakSet().custom()
+// Message: Avoid using extended native objects
+
+new Array()['custom']
+// Message: Avoid using extended native objects
+
+new Array()['custom']()
+// Message: Avoid using extended native objects
+```
+
+The following patterns are not considered problems:
+
+```js
+error.plugin
+
+error.plugn()
+
+array.custom
+
+Object.assign()
+
+Object.keys
+
+Object.keys()
+
+gulp.task()
+
+Custom.prototype.custom
+
+Array.prototype.map
+
+Array.prototype.map.call([1,2,3], function (x) { console.log(x) })
+
+Array.apply
+
+Array.call(null, 1, 2, 3)
+
+[].push(1)
+
+[][0]
+
+{}[i]
+
+{}[3]
+
+{}[j][k]
+
+({foo: {bar: 1, baz: 2}}[i][j])
+
+({}).toString()
+
+/match_this/.test()
+
+'foo'.length
+
+'hi'.padEnd
+
+'hi'.padEnd()
+
+console.log('foo'.length)
+
+console.log('foo'.toString)
+
+console.log('foo'.toString())
+
+console.log(gulp.task)
+
+console.log(gulp.task())
+
+'string'.toString()
+
+(1).toFixed()
+
+1..toFixed()
+
+1.0.toFixed()
+
+('str' + 'ing').toString()
+
+('str' + 'i' + 'ng').toString()
+
+(1 + 1).valueOf()
+
+(1 + 1 + (1 + 1)).valueOf()
+
+(1 + 1 + 1).valueOf()
+
+(1 + 'string').toString()
+
+(/regex/ + /regex/).toString()
+
+(/regex/ + 1).toString()
+
+([1] + [2]).toString()
+
+(function testFunction() {}).toString()
+
+Test.prototype
+
+new Array().toString()
+
+new ArrayBuffer().constructor()
+
+new Boolean().toString()
+
+new DataView().buffer()
+
+new Date().getDate()
+
+new Error().message()
+
+new Error().stack
+
+new Error().stack.slice(1)
+
+new Float32Array().values()
+
+new Float64Array().values()
+
+new Function().toString()
+
+new Int16Array().values()
+
+new Int32Array().values()
+
+new Int8Array().values()
+
+new Map().clear()
+
+new Number().toString()
+
+new Object().toString()
+
+new Object().toString
+
+new Promise().then()
+
+new RegExp().test()
+
+new Set().values()
+
+new String().toString()
+
+new Symbol().toString()
+
+new Uint16Array().values()
+
+new Uint32Array().values()
+
+new Uint8ClampedArray().values()
+
+new WeakMap().get()
+
+new WeakSet().has()
+
+new Array()['length']
+
+new Array()['toString']()
+```
+
+
 
 <a name="eslint-plugin-canonical-rules-sort-keys"></a>
 ### <code>sort-keys</code>

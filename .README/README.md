@@ -36,9 +36,24 @@ npm install eslint-plugin-canonical --save-dev
     "canonical/filename-match-exported": 0,
     "canonical/filename-match-regex": 0,
     "canonical/filename-no-index": 0,
-    "canonical/id-match": 0,
+    "canonical/id-match": [
+      2,
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ],
     "canonical/no-restricted-strings": 0,
-    "canonical/sort-keys": 0
+    "canonical/no-use-extend-native": 2,
+    "canonical/sort-keys": [
+      2,
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ]
   }
 }
 ```
