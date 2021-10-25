@@ -73,4 +73,5 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 {"gitdown": "include", "file": "./rules/filename-no-index.md"}
 {"gitdown": "include", "file": "./rules/id-match.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-strings.md"}
+{"gitdown": "include", "file": "./rules/no-use-extend-native.md"}
 {"gitdown": "include", "file": "./rules/sort-keys.md"}

@@ -23,6 +23,7 @@ const reportingRules = [
   'filename-no-index',
   'id-match',
   'no-restricted-strings',
+  'no-use-extend-native',
   'sort-keys',
 ];
 

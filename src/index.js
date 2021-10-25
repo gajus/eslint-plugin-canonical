@@ -4,6 +4,7 @@ import filenameMatchRegex from './rules/filenameMatchRegex';
 import filenameNoIndex from './rules/filenameNoIndex';
 import idMatch from './rules/idMatch';
 import noRestrictedStrings from './rules/noRestrictedStrings';
+import noUseExtendNative from './rules/noUseExtendNative';
 import sortKeys from './rules/sortKeys';
 
 export default {
@@ -16,6 +17,7 @@ export default {
     'filename-no-index': filenameNoIndex,
     'id-match': idMatch,
     'no-restricted-strings': noRestrictedStrings,
+    'no-use-extend-native': noUseExtendNative,
     'sort-keys': sortKeys,
   },
   rulesConfig: {
@@ -24,6 +26,7 @@ export default {
     'filename-no-index': 0,
     'id-match': 0,
     'no-restricted-strings': 0,
+    'no-use-extend-native': 0,
     'sort-keys': 0,
   },
 };
