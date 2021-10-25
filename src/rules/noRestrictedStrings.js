@@ -12,7 +12,7 @@ export default {
         ) {
           for (const disallowedString of disallowedStrings) {
             if (node.value.includes(disallowedString)) {
-              context.report(node, `Disallowed string: '${disallowedString}'.`);
+              context.report({message: `Disallowed string: '${disallowedString}'.`, node});
             }
           }
         }
@@ -22,10 +22,7 @@ export default {
         if (node.value.raw !== '') {
           for (const disallowedString of disallowedStrings) {
             if (node.value.raw.includes(disallowedString)) {
-              context.report(
-                node,
-                `Disallowed string in template: '${disallowedString}'.`,
-              );
+              context.report({message: `Disallowed string in template: '${disallowedString}'.`, node});
             }
           }
         }
@@ -48,5 +45,6 @@ export default {
       },
       type: 'array',
     },
+    type: 'problem',
   },
 };

@@ -247,7 +247,6 @@ export default {
         type: 'object',
       },
     ],
-
     type: 'suggestion',
   },
 };

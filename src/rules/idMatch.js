@@ -9,6 +9,27 @@
  * Related discussion about not adding this option to ESLint https://github.com/eslint/eslint/issues/14005
  */
 
+/**
+ * Checks if a parent of a node is an ObjectPattern.
+ *
+ * @param {ASTNode} node The node to check.
+ * @returns {boolean} if the node is inside an ObjectPattern
+ * @private
+ */
+const isInsideObjectPattern = (node) => {
+  let {parent} = node;
+
+  while (parent) {
+    if (parent.type === 'ObjectPattern') {
+      return true;
+    }
+
+    parent = parent.parent;
+  }
+
+  return false;
+};
+
 const create = (context) => {
   const pattern = context.options[0] || '^.+$';
   const regexp = new RegExp(pattern, 'u');
@@ -42,27 +63,6 @@ const create = (context) => {
     */
   function isInvalid (name) {
     return !regexp.test(name);
-  }
-
-  /**
-    * Checks if a parent of a node is an ObjectPattern.
-    *
-    * @param {ASTNode} node The node to check.
-    * @returns {boolean} if the node is inside an ObjectPattern
-    * @private
-    */
-  function isInsideObjectPattern (node) {
-    let {parent} = node;
-
-    while (parent) {
-      if (parent.type === 'ObjectPattern') {
-        return true;
-      }
-
-      parent = parent.parent;
-    }
-
-    return false;
   }
 
   /**
