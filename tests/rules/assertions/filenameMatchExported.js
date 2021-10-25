@@ -1,4 +1,4 @@
-/* eslint-disable id-match */
+/* eslint-disable canonical/id-match */
 
 const testCode = 'var foo = \'bar\';';
 const testCallCode = 'export default foo();';
