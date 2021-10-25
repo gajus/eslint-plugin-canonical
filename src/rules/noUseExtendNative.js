@@ -12,10 +12,10 @@ import isProtoProp from 'is-proto-prop';
  * @param {object} o - left or right of node.object
  * @returns {string} - type of o
  */
-const getType = (o) => {
-  const type = typeof o.value;
+const getType = (subject) => {
+  const type = typeof subject.value;
 
-  if (o.regex) {
+  if (subject.regex) {
     return 'RegExp';
   }
 
@@ -28,9 +28,9 @@ const getType = (o) => {
  * @param {object} o - node's object with a BinaryExpression type
  * @returns {string} - type of value produced
  */
-const binaryExpressionProduces = (o) => {
-  const leftType = o.left.type === 'BinaryExpression' ? binaryExpressionProduces(o.left) : getType(o.left);
-  const rightType = o.right.type === 'BinaryExpression' ? binaryExpressionProduces(o.right) : getType(o.right);
+const binaryExpressionProduces = (subject) => {
+  const leftType = subject.left.type === 'BinaryExpression' ? binaryExpressionProduces(subject.left) : getType(subject.left);
+  const rightType = subject.right.type === 'BinaryExpression' ? binaryExpressionProduces(subject.right) : getType(subject.right);
 
   const isRegExp = leftType === rightType && leftType === 'RegExp';
   if (leftType === 'String' || rightType === 'String' || isRegExp) {
@@ -119,10 +119,10 @@ export default {
         /* eslint complexity: [2, 9] */
         if (node.computed && node.property.type === 'Identifier') {
           /**
-           * handles cases like {}[i][j]
-           * not enough information to identify type of variable in computed properties
-           * so ignore false positives by not performing any checks
-           */
+          * handles cases like {}[i][j]
+          * not enough information to identify type of variable in computed properties
+          * so ignore false positives by not performing any checks
+          */
 
           return;
         }
