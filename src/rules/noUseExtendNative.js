@@ -71,6 +71,7 @@ const getJsTypeAndPropertyName = (node) => {
     } else {
       jsType = node.object.name;
     }
+
     break;
   default:
     jsType = node.object.type.replace('Expression', '');

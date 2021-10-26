@@ -8,7 +8,7 @@ export default {
       Literal: (node) => {
         if (
           node.value !== '' &&
-          /\S/.test(node.value)
+          /\S/u.test(node.value)
         ) {
           for (const disallowedString of disallowedStrings) {
             if (node.value.includes(disallowedString)) {

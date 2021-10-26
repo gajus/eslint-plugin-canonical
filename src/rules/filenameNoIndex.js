@@ -26,8 +26,9 @@ const create = (context) => {
       if (shouldIgnore) {
         return;
       }
+
       if (isIndex) {
-        context.report(node, '\'index.js\' files are not allowed.');
+        context.report({message: '\'index.js\' files are not allowed.', node});
       }
     },
   };
@@ -35,4 +36,8 @@ const create = (context) => {
 
 export default {
   create,
+  meta: {
+    schema: [],
+    type: 'suggestion',
+  },
 };

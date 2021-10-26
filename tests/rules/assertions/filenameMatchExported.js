@@ -146,15 +146,6 @@ export default {
     {
       code: camelCaseEs6,
       errors: [
-        {column: 1, line: 1, message: 'Filename \'VariableName\' must match the exported name \'variableName\'.'},
-      ],
-      filename: 'VariableName.js',
-      options: [[null]],
-      parserOptions: {ecmaVersion: 6, sourceType: 'module'},
-    },
-    {
-      code: camelCaseEs6,
-      errors: [
         {column: 1, line: 1, message: 'Filename \'variableName\' must match any of the exported and transformed names \'VariableName\', \'variable_name\'.'},
       ],
       filename: 'variableName.js',

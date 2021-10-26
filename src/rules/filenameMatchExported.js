@@ -33,20 +33,15 @@ const transformMap = {
   snake: snakeCase,
 };
 
-const transformNames = Object.keys(transformMap);
-const transformSchema = {
-  enum: transformNames.concat([null]),
-};
-
 const getStringToCheckAgainstExport = (parsed, replacePattern) => {
   const dirArray = parsed.dir.split(path.sep);
   const lastDirectory = dirArray[dirArray.length - 1];
 
   if (isIndexFile(parsed)) {
     return lastDirectory;
-  } else {
-    return replacePattern ? parsed.name.replace(replacePattern, '') : parsed.name;
   }
+
+  return replacePattern ? parsed.name.replace(replacePattern, '') : parsed.name;
 };
 
 const getTransformsFromOptions = (option) => {
@@ -71,6 +66,7 @@ const getWhatToMatchMessage = (transforms) => {
   if (transforms.length === 1 && !transforms[0]) {
     return 'the exported name';
   }
+
   if (transforms.length > 1) {
     return 'any of the exported and transformed names';
   }
@@ -82,7 +78,7 @@ const create = (context) => {
   return {
     Program (node) {
       const transforms = getTransformsFromOptions(context.options[0]);
-      const replacePattern = context.options[1] ? new RegExp(context.options[1]) : null;
+      const replacePattern = context.options[1] ? new RegExp(context.options[1], 'u') : null;
       const filename = context.getFilename();
       const absoluteFilename = path.resolve(filename);
       const parsed = parseFilename(absoluteFilename);
@@ -97,12 +93,16 @@ const create = (context) => {
         const message = !messageForIndexFile || !isIndexFile(parsed) ? messageForNormalFile : messageForIndexFile;
 
         if (condition) {
-          context.report(node, message, {
-            expectedExport,
-            exportName: transformedNames.join('\', \''),
-            extension: parsed.ext,
-            name: parsed.base,
-            whatToMatch: getWhatToMatchMessage(transforms),
+          context.report({
+            data: {
+              expectedExport,
+              exportName: transformedNames.join('\', \''),
+              extension: parsed.ext,
+              name: parsed.base,
+              whatToMatch: getWhatToMatchMessage(transforms),
+            },
+            message,
+            node,
           });
         }
       };
@@ -122,18 +122,41 @@ const create = (context) => {
 
 export default {
   create,
-  schema: [
-    {
-      oneOf: [
-        transformSchema,
-        {items: transformSchema, minItems: 1, type: 'array'},
-      ],
-    },
-    {
-      type: ['string', 'null'],
-    },
-    {
-      type: ['boolean', 'null'],
-    },
-  ],
+  meta: {
+    schema: [
+      {
+        anyOf: [
+          {
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+          {
+            type: 'string',
+          },
+          {
+            type: 'null',
+          },
+        ],
+        default: null,
+      },
+      {
+        default: null,
+        oneOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'null',
+          },
+        ],
+      },
+      {
+        default: false,
+        type: 'boolean',
+      },
+    ],
+    type: 'suggestion',
+  },
 };

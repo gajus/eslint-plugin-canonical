@@ -23,9 +23,9 @@ const formatCodeSnippet = (setup) => {
   paragraphs.push(setup.code);
 
   if (setup.errors) {
-    setup.errors.forEach((message) => {
+    for (const message of setup.errors) {
       paragraphs.push('// Message: ' + message.message);
-    });
+    }
   }
 
   if (setup.rules) {
@@ -61,10 +61,10 @@ const updateDocuments = (assertions) => {
 
   documentBody = fs.readFileSync(readmeDocumentPath, 'utf8');
 
-  documentBody = documentBody.replace(/<!-- assertions ([a-z]+?) -->/gi, (assertionsBlock) => {
+  documentBody = documentBody.replace(/<!-- assertions ([a-z]+?) -->/ugi, (assertionsBlock) => {
     let exampleBody;
 
-    const ruleName = assertionsBlock.match(/assertions ([a-z]+)/i)[1];
+    const ruleName = assertionsBlock.match(/assertions ([a-z]+)/ui)[1];
 
     const ruleAssertions = assertions[ruleName];
 

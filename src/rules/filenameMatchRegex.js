@@ -16,8 +16,8 @@ import {
 } from '../utilities/parseFilename';
 
 const create = (context) => {
-  const defaultRegexp = /^([\da-z]+)([A-Z][\da-z]+)*$/g;
-  const conventionRegexp = context.options[0] ? new RegExp(context.options[0]) : defaultRegexp;
+  const defaultRegexp = /^([\da-z]+)([A-Z][\da-z]+)*$/ug;
+  const conventionRegexp = context.options[0] ? new RegExp(context.options[0], 'u') : defaultRegexp;
   const ignoreExporting = context.options[1] ? context.options[1] : false;
 
   return {
@@ -32,12 +32,18 @@ const create = (context) => {
       if (shouldIgnore) {
         return;
       }
+
       if (ignoreExporting && isExporting) {
         return;
       }
+
       if (!matchesRegex) {
-        context.report(node, 'Filename \'{{name}}\' does not match the naming convention.', {
-          name: parsed.base,
+        context.report({
+          data: {
+            name: parsed.base,
+          },
+          message: 'Filename \'{{name}}\' does not match the naming convention.',
+          node,
         });
       }
     },
@@ -46,4 +52,24 @@ const create = (context) => {
 
 export default {
   create,
+  meta: {
+    schema: [
+      {
+        default: null,
+        oneOf: [
+          {
+            type: 'string',
+          },
+          {
+            type: 'null',
+          },
+        ],
+      },
+      {
+        default: false,
+        type: 'boolean',
+      },
+    ],
+    type: 'suggestion',
+  },
 };

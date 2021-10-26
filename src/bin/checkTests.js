@@ -10,12 +10,13 @@ import {
 const getTestIndexRules = () => {
   const content = fs.readFileSync(path.resolve(__dirname, '../../tests/rules/index.js'), 'utf-8');
 
+  // eslint-disable-next-line unicorn/no-array-reduce
   const result = content.split('\n').reduce((acc, line) => {
     if (acc.inRulesArray) {
       if (line === '];') {
         acc.inRulesArray = false;
       } else {
-        acc.rules.push(line.replace(/^\s*'([^']+)',?$/, '$1'));
+        acc.rules.push(line.replace(/^\s*'([^']+)',?$/u, '$1'));
       }
     } else if (line === 'const reportingRules = [') {
       acc.inRulesArray = true;
@@ -27,7 +28,7 @@ const getTestIndexRules = () => {
     rules: [],
   });
 
-  const rules = result.rules;
+  const {rules} = result;
 
   if (rules.length === 0) {
     throw new Error('Tests checker is broken - it could not extract rules from test index file.');

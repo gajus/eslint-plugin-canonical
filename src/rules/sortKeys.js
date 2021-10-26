@@ -62,12 +62,14 @@ const getStaticPropertyName = (node) => {
     if (prop.expressions.length === 0 && prop.quasis.length === 1) {
       return prop.quasis[0].value.cooked;
     }
+
     break;
 
   case 'Identifier':
     if (!node.computed) {
       return prop.name;
     }
+
     break;
 
     // no default
@@ -171,8 +173,8 @@ export default {
           return;
         }
 
-        const prevName = stack.prevName;
-        const prevNode = stack.prevNode;
+        const {prevName} = stack;
+        const {prevNode} = stack;
         const thisName = getPropertyName(node);
 
         if (thisName !== null) {
@@ -203,8 +205,10 @@ export default {
                   fixes.push(fixer.insertTextBefore(toNode, sourceCode.getText(thisComment) + '\n'));
                   fixes.push(fixer.remove(thisComment));
                 }
+
                 fixes.push(fixer.replaceText(toNode, prevText));
               };
+
               moveProperty(node, prevNode);
               moveProperty(prevNode, node);
 
