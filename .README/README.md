@@ -83,10 +83,12 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 
 <!-- Rules are sorted alphabetically. -->
 
+{"gitdown": "include", "file": "./rules/export-specifier-newline.md"}
 {"gitdown": "include", "file": "./rules/filename-match-exported.md"}
 {"gitdown": "include", "file": "./rules/filename-match-regex.md"}
 {"gitdown": "include", "file": "./rules/filename-no-index.md"}
 {"gitdown": "include", "file": "./rules/id-match.md"}
+{"gitdown": "include", "file": "./rules/import-specifier-newline.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-strings.md"}
 {"gitdown": "include", "file": "./rules/no-use-extend-native.md"}
 {"gitdown": "include", "file": "./rules/sort-keys.md"}

@@ -12,10 +12,12 @@ ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-cano
     * [Configuration](#eslint-plugin-canonical-configuration)
         * [Shareable configurations](#eslint-plugin-canonical-configuration-shareable-configurations)
     * [Rules](#eslint-plugin-canonical-rules)
+        * [`export-specifier-newline`](#eslint-plugin-canonical-rules-export-specifier-newline)
         * [`filename-match-exported`](#eslint-plugin-canonical-rules-filename-match-exported)
         * [`filename-match-regex`](#eslint-plugin-canonical-rules-filename-match-regex)
         * [`filename-no-index`](#eslint-plugin-canonical-rules-filename-no-index)
         * [`id-match`](#eslint-plugin-canonical-rules-id-match)
+        * [`import-specifier-newline`](#eslint-plugin-canonical-rules-import-specifier-newline)
         * [`no-restricted-strings`](#eslint-plugin-canonical-rules-no-restricted-strings)
         * [`no-use-extend-native`](#eslint-plugin-canonical-rules-no-use-extend-native)
         * [`sort-keys`](#eslint-plugin-canonical-rules-sort-keys)
@@ -101,11 +103,50 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 
 <!-- Rules are sorted alphabetically. -->
 
+<a name="eslint-plugin-canonical-rules-export-specifier-newline"></a>
+### <code>export-specifier-newline</code>
+
+Forces every export specifier to be on a new line.
+
+The following patterns are considered problems:
+
+```js
+const a = 1; const b = 2; const c = 3; export { a, b, c };
+// Message: undefined
+// Message: undefined
+
+const a = 1; const b = 2; const c = 3; export { a, b, c, };
+// Message: undefined
+// Message: undefined
+
+const a = 1; const b = 2; export { a as default, b }
+// Message: undefined
+```
+
+The following patterns are not considered problems:
+
+```js
+export { 
+ a,
+b,
+c
+ } from 'foo'
+
+const a = 1; const b = 2; const c = 3; export { 
+ a,
+b,
+c
+ };
+
+export * from 'foo'
+```
+
+
+
 <a name="eslint-plugin-canonical-rules-filename-match-exported"></a>
 ### <code>filename-match-exported</code>
 
-Match the file name against the default exported value in the module. Files that dont have a default export will
-be ignored. The exports of `index.js` are matched against their parent directory.
+Match the file name against the default exported value in the module. Files that don't have a default export will be ignored. The exports of `index.js` are matched against their parent directory.
 
 ```js
 // Considered problem only if the file isn't named foo.js or foo/index.js
@@ -135,10 +176,11 @@ export default function variableName;
 ```
 
 Available transforms:
-'[snake](https://www.npmjs.com/package/lodash.snakecase)',
-'[kebab](https://www.npmjs.com/package/lodash.kebabcase)',
-'[camel](https://www.npmjs.com/package/lodash.camelcase)', and
-'pascal' (camel-cased with first letter in upper case).
+
+* snake
+* kebab
+* camel
+* pascal
 
 For multiple transforms simply specify an array like this (null in this case stands for no transform):
 
@@ -146,9 +188,7 @@ For multiple transforms simply specify an array like this (null in this case sta
 "canonical/filename-match-exported": [2, [ null, "kebab", "snake" ] ]
 ```
 
-If you prefer to use suffixes for your files (e.g. `Foo.react.js` for a React component file),
-you can use a second configuration parameter. It allows you to remove parts of a filename matching a regex pattern
-before transforming and matching against the export.
+If you prefer to use suffixes for your files (e.g. `Foo.react.js` for a React component file), you can use a second configuration parameter. It allows you to remove parts of a filename matching a regex pattern before transforming and matching against the export.
 
 ```json
 "canonical/filename-match-exported": [ 2, null, "\\.react$" ]
@@ -224,10 +264,6 @@ export default variableName;
 // Options: ["pascal"]
 export default variableName;
 // Message: Filename 'variableName' must match the exported and transformed name 'VariableName'.
-
-// Options: [[null]]
-export default variableName;
-// Message: Filename 'VariableName' must match the exported name 'variableName'.
 
 // Options: [["pascal","snake"]]
 export default variableName;
@@ -717,6 +753,33 @@ class x { #foo() {} }
 // Options: ["^[^_]+$",{"ignoreNamedImports":true}]
 import { no_camelcased } from "external-module";
 // Message: Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.
+```
+
+
+
+<a name="eslint-plugin-canonical-rules-import-specifier-newline"></a>
+### <code>import-specifier-newline</code>
+
+Forces every import specifier to be on a new line.
+
+The following patterns are considered problems:
+
+```js
+import {a, b} from 'foo';
+// Message: undefined
+
+import a, {b, c} from 'foo';
+// Message: undefined
+```
+
+The following patterns are not considered problems:
+
+```js
+import {a,
+b} from 'foo'
+
+import a, {b,
+c} from 'foo'
 ```
 
 

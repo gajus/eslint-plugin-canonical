@@ -9,6 +9,7 @@
     "canonical"
   ],
   "rules": {
+    "canonical/export-specifier-newline": 1,
     "canonical/filename-match-exported": 0,
     "canonical/filename-match-regex": 0,
     "canonical/filename-no-index": 0,
@@ -20,6 +21,7 @@
         "natural": true
       }
     ],
+    "canonical/import-specifier-newline": 1,
     "canonical/no-restricted-strings": 0,
     "canonical/no-use-extend-native": 2,
     "canonical/sort-keys": [

@@ -11,17 +11,21 @@ import plugin from '../../src';
 const ruleTester = new RuleTester({
   parserOptions: {
     babelOptions: {
-      plugins: ['@babel/plugin-transform-react-jsx'],
+      plugins: [
+        '@babel/plugin-transform-react-jsx',
+      ],
     },
     requireConfigFile: false,
   },
 });
 
 const reportingRules = [
+  'export-specifier-newline',
   'filename-match-exported',
   'filename-match-regex',
   'filename-no-index',
   'id-match',
+  'import-specifier-newline',
   'no-restricted-strings',
   'no-use-extend-native',
   'sort-keys',
