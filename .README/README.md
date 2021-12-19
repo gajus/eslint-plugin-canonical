@@ -38,10 +38,12 @@ npm install eslint-plugin-canonical --save-dev
     "canonical/filename-no-index": 0,
     "canonical/id-match": [
       2,
-      "asc",
+      "(^[A-Za-z]+(?:[A-Z][a-z]*)*\\d*$)|(^[A-Z]+(_[A-Z]+)*(_\\d$)*$)|(^(_|\\$)$)",
       {
-        "caseSensitive": false,
-        "natural": true
+        "ignoreDestructuring": true,
+        "ignoreNamedImports": true,
+        "onlyDeclarations": true,
+        "properties": true
       }
     ],
     "canonical/no-restricted-strings": 0,
