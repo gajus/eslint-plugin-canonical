@@ -2,7 +2,7 @@
 
 Forces every export specifier to be on a new line.
 
-Combine this rule with `object-curly-newline` to have every specifier on its own line.
+Tip: Combine this rule with `object-curly-newline` to have every specifier on its own line.
 
 ```json
 "object-curly-newline": [
@@ -11,6 +11,16 @@ Combine this rule with `object-curly-newline` to have every specifier on its own
     "ExportDeclaration": "always"
   }
 ],
+```
+
+Working together, both rules will produces exports such as:
+
+```ts
+export { 
+  a,
+  b,
+  c
+};
 ```
 
 <!-- assertions exportSpecifierNewline -->
