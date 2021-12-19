@@ -108,6 +108,17 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 
 Forces every export specifier to be on a new line.
 
+Combine this rule with `object-curly-newline` to have every specifier on its own line.
+
+```json
+"object-curly-newline": [
+  2,
+  {
+    "ExportDeclaration": "always"
+  }
+],
+```
+
 The following patterns are considered problems:
 
 ```js
@@ -761,6 +772,17 @@ import { no_camelcased } from "external-module";
 ### <code>import-specifier-newline</code>
 
 Forces every import specifier to be on a new line.
+
+Combine this rule with `object-curly-newline` to have every specifier on its own line.
+
+```json
+"object-curly-newline": [
+  2,
+  {
+    "ImportDeclaration": "always"
+  }
+],
+```
 
 The following patterns are considered problems:
 
