@@ -20,6 +20,10 @@ export default {
         }
 
         for (let index = 1; index < node.elements.length; index++) {
+          if (node.elements[index] === null || node.elements[index - 1] === null) {
+            continue;
+          }
+
           const lastTokenOfPreviousProperty = sourceCode.getLastToken(node.elements[index - 1]);
           const firstTokenOfCurrentProperty = sourceCode.getFirstToken(node.elements[index]);
 

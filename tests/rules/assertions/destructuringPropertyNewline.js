@@ -58,5 +58,10 @@ export default {
     {
       code: '({a,\nb}) => {};',
     },
+    // This is a bug, but I don't see how to fix it given that element is `null` and we cannot
+    // use `sourceCode.getLastToken`.
+    {
+      code: 'const [a,,b] = obj;',
+    },
   ],
 };
