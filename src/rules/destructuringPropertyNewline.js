@@ -8,7 +8,42 @@ export default {
     const sourceCode = context.getSourceCode();
 
     return {
-      ObjectPattern (node) {
+      ArrayPattern: (node) => {
+        if (allowSameLine && node.elements.length > 1) {
+          const firstTokenOfFirstProperty = sourceCode.getFirstToken(node.elements[0]);
+          const lastTokenOfLastProperty = sourceCode.getLastToken(node.elements[node.properties.length - 1]);
+
+          if (firstTokenOfFirstProperty.loc.end.line === lastTokenOfLastProperty.loc.start.line) {
+            // All keys and values are on the same line
+            return;
+          }
+        }
+
+        for (let index = 1; index < node.elements.length; index++) {
+          const lastTokenOfPreviousProperty = sourceCode.getLastToken(node.elements[index - 1]);
+          const firstTokenOfCurrentProperty = sourceCode.getFirstToken(node.elements[index]);
+
+          if (lastTokenOfPreviousProperty.loc.end.line === firstTokenOfCurrentProperty.loc.start.line) {
+            context.report({
+              fix (fixer) {
+                const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
+                const rangeAfterComma = [comma.range[1], firstTokenOfCurrentProperty.range[0]];
+
+                // Don't perform a fix if there are any comments between the comma and the next property.
+                if (sourceCode.text.slice(rangeAfterComma[0], rangeAfterComma[1]).trim()) {
+                  return null;
+                }
+
+                return fixer.replaceTextRange(rangeAfterComma, '\n');
+              },
+              loc: firstTokenOfCurrentProperty.loc,
+              messageId,
+              node,
+            });
+          }
+        }
+      },
+      ObjectPattern: (node) => {
         if (allowSameLine && node.properties.length > 1) {
           const firstTokenOfFirstProperty = sourceCode.getFirstToken(node.properties[0]);
           const lastTokenOfLastProperty = sourceCode.getLastToken(node.properties[node.properties.length - 1]);

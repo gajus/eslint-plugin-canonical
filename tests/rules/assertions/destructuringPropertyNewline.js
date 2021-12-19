@@ -8,6 +8,13 @@ export default {
       output: 'const {a,\nb} = obj;',
     },
     {
+      code: 'const [a,b] = obj;',
+      errors: [{
+        messageId: 'propertiesOnNewline',
+      }],
+      output: 'const [a,\nb] = obj;',
+    },
+    {
       code: 'const {a,b,c} = obj;',
       errors: [
         {
