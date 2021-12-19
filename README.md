@@ -12,6 +12,7 @@ ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-cano
     * [Configuration](#eslint-plugin-canonical-configuration)
         * [Shareable configurations](#eslint-plugin-canonical-configuration-shareable-configurations)
     * [Rules](#eslint-plugin-canonical-rules)
+        * [`destructuring-property-newline`](#eslint-plugin-canonical-rules-destructuring-property-newline)
         * [`export-specifier-newline`](#eslint-plugin-canonical-rules-export-specifier-newline)
         * [`filename-match-exported`](#eslint-plugin-canonical-rules-filename-match-exported)
         * [`filename-match-regex`](#eslint-plugin-canonical-rules-filename-match-regex)
@@ -102,6 +103,47 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 ## Rules
 
 <!-- Rules are sorted alphabetically. -->
+
+<a name="eslint-plugin-canonical-rules-destructuring-property-newline"></a>
+### <code>destructuring-property-newline</code>
+
+Like [`object-property-newline`](https://eslint.org/docs/rules/object-property-newline), but for destructuring.
+
+The following patterns are considered problems:
+
+```js
+const {a,b} = obj;
+// Message: undefined
+
+const {a,b,c} = obj;
+// Message: undefined
+// Message: undefined
+
+const {
+a,b} = obj;
+// Message: undefined
+
+({a,b}) => {};
+// Message: undefined
+```
+
+The following patterns are not considered problems:
+
+```js
+const {a,
+b} = obj;
+
+const {a} = obj;
+
+const {
+a
+} = obj;
+
+({a,
+b}) => {};
+```
+
+
 
 <a name="eslint-plugin-canonical-rules-export-specifier-newline"></a>
 ### <code>export-specifier-newline</code>

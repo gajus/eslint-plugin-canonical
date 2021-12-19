@@ -20,6 +20,7 @@ const ruleTester = new RuleTester({
 });
 
 const reportingRules = [
+  'destructuring-property-newline',
   'export-specifier-newline',
   'filename-match-exported',
   'filename-match-regex',

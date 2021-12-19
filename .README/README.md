@@ -83,6 +83,7 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 
 <!-- Rules are sorted alphabetically. -->
 
+{"gitdown": "include", "file": "./rules/destructuring-property-newline.md"}
 {"gitdown": "include", "file": "./rules/export-specifier-newline.md"}
 {"gitdown": "include", "file": "./rules/filename-match-exported.md"}
 {"gitdown": "include", "file": "./rules/filename-match-regex.md"}

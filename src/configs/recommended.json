@@ -9,6 +9,12 @@
     "canonical"
   ],
   "rules": {
+    "canonical/destructuring-property-newline": [
+      2,
+      {
+        "allowAllPropertiesOnSameLine": false
+      }
+    ],
     "canonical/export-specifier-newline": 1,
     "canonical/filename-match-exported": 0,
     "canonical/filename-match-regex": 0,

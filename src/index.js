@@ -1,4 +1,5 @@
 import recommended from './configs/recommended.json';
+import destructuringPropertyNewline from './rules/destructuringPropertyNewline';
 import exportSpecifierNewline from './rules/exportSpecifierNewline';
 import filenameMatchExported from './rules/filenameMatchExported';
 import filenameMatchRegex from './rules/filenameMatchRegex';
@@ -14,6 +15,7 @@ export default {
     recommended,
   },
   rules: {
+    'destructuring-property-newline': destructuringPropertyNewline,
     'export-specifier-newline': exportSpecifierNewline,
     'filename-match-exported': filenameMatchExported,
     'filename-match-regex': filenameMatchRegex,
@@ -25,6 +27,7 @@ export default {
     'sort-keys': sortKeys,
   },
   rulesConfig: {
+    'destructuring-property-newline': 0,
     'export-specifier-newline': 0,
     'filename-match-exported': 0,
     'filename-match-regex': 0,
