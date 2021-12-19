@@ -9,4 +9,12 @@
   "rules": {
     "unicorn/prevent-abbreviations": 0
   },
+  "overrides": [
+    {
+      "extends": [
+        "canonical/json"
+      ],
+      "files": "*.json"
+    }
+  ]
 }
