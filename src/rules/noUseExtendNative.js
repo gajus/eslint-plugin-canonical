@@ -120,10 +120,10 @@ export default {
         /* eslint complexity: [2, 9] */
         if (node.computed && node.property.type === 'Identifier') {
           /**
-          * handles cases like {}[i][j]
-          * not enough information to identify type of variable in computed properties
-          * so ignore false positives by not performing any checks
-          */
+           * handles cases like {}[i][j]
+           * not enough information to identify type of variable in computed properties
+           * so ignore false positives by not performing any checks
+           */
 
           return;
         }

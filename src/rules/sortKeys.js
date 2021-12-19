@@ -8,36 +8,36 @@
 import naturalCompare from 'natural-compare';
 
 /**
-  * Gets the property name of a given node.
-  * The node can be a MemberExpression, a Property, or a MethodDefinition.
-  *
-  * If the name is dynamic, this returns `null`.
-  *
-  * For examples:
-  *
-  *     a.b           // => "b"
-  *     a["b"]        // => "b"
-  *     a['b']        // => "b"
-  *     a[`b`]        // => "b"
-  *     a[100]        // => "100"
-  *     a[b]          // => null
-  *     a["a" + "b"]  // => null
-  *     a[tag`b`]     // => null
-  *     a[`${b}`]     // => null
-  *
-  *     let a = {b: 1}            // => "b"
-  *     let a = {["b"]: 1}        // => "b"
-  *     let a = {['b']: 1}        // => "b"
-  *     let a = {[`b`]: 1}        // => "b"
-  *     let a = {[100]: 1}        // => "100"
-  *     let a = {[b]: 1}          // => null
-  *     let a = {["a" + "b"]: 1}  // => null
-  *     let a = {[tag`b`]: 1}     // => null
-  *     let a = {[`${b}`]: 1}     // => null
-  *
-  * @param {ASTNode} node - The node to get.
-  * @returns {string|null} The property name if static. Otherwise, null.
-  */
+ * Gets the property name of a given node.
+ * The node can be a MemberExpression, a Property, or a MethodDefinition.
+ *
+ * If the name is dynamic, this returns `null`.
+ *
+ * For examples:
+ *
+ *     a.b           // => "b"
+ *     a["b"]        // => "b"
+ *     a['b']        // => "b"
+ *     a[`b`]        // => "b"
+ *     a[100]        // => "100"
+ *     a[b]          // => null
+ *     a["a" + "b"]  // => null
+ *     a[tag`b`]     // => null
+ *     a[`${b}`]     // => null
+ *
+ *     let a = {b: 1}            // => "b"
+ *     let a = {["b"]: 1}        // => "b"
+ *     let a = {['b']: 1}        // => "b"
+ *     let a = {[`b`]: 1}        // => "b"
+ *     let a = {[100]: 1}        // => "100"
+ *     let a = {[b]: 1}          // => null
+ *     let a = {["a" + "b"]: 1}  // => null
+ *     let a = {[tag`b`]: 1}     // => null
+ *     let a = {[`${b}`]: 1}     // => null
+ *
+ * @param {ASTNode} node - The node to get.
+ * @returns {string|null} The property name if static. Otherwise, null.
+ */
 const getStaticPropertyName = (node) => {
   let prop;
 
@@ -79,17 +79,17 @@ const getStaticPropertyName = (node) => {
 };
 
 /**
-  * Gets the property name of the given `Property` node.
-  *
-  * - If the property's key is an `Identifier` node, this returns the key's name
-  *   whether it's a computed property or not.
-  * - If the property has a static name, this returns the static name.
-  * - Otherwise, this returns null.
-  *
-  * @param {ASTNode} node - The `Property` node to get.
-  * @returns {string|null} The property name or null.
-  * @private
-  */
+ * Gets the property name of the given `Property` node.
+ *
+ * - If the property's key is an `Identifier` node, this returns the key's name
+ *   whether it's a computed property or not.
+ * - If the property has a static name, this returns the static name.
+ * - Otherwise, this returns null.
+ *
+ * @param {ASTNode} node - The `Property` node to get.
+ * @returns {string|null} The property name or null.
+ * @private
+ */
 function getPropertyName (node) {
   const staticName = getStaticPropertyName(node);
 
@@ -101,13 +101,13 @@ function getPropertyName (node) {
 }
 
 /**
-  * Functions which check that the given 2 names are in specific order.
-  *
-  * Postfix `I` is meant insensitive.
-  * Postfix `N` is meant natual.
-  *
-  * @private
-  */
+ * Functions which check that the given 2 names are in specific order.
+ *
+ * Postfix `I` is meant insensitive.
+ * Postfix `N` is meant natual.
+ *
+ * @private
+ */
 const isValidOrders = {
   asc (a, b) {
     return a <= b;

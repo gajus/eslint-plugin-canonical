@@ -16,6 +16,7 @@ import {
 } from '../utilities/parseFilename';
 
 const create = (context) => {
+  // eslint-disable-next-line unicorn/no-unsafe-regex
   const defaultRegexp = /^([\da-z]+)([A-Z][\da-z]+)*$/ug;
   const conventionRegexp = context.options[0] ? new RegExp(context.options[0], 'u') : defaultRegexp;
   const ignoreExporting = context.options[1] ? context.options[1] : false;

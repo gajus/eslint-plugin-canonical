@@ -28,7 +28,9 @@ const create = (context) => {
       }
 
       if (isIndex) {
-        context.report({message: '\'index.js\' files are not allowed.', node});
+        context.report({
+          message: '\'index.js\' files are not allowed.', node,
+        });
       }
     },
   };

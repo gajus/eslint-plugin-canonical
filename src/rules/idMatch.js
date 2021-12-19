@@ -55,24 +55,24 @@ const create = (context) => {
   ]);
 
   /**
-    * Checks if a string matches the provided pattern
-    *
-    * @param {string} name The string to check.
-    * @returns {boolean} if the string is a match
-    * @private
-    */
+   * Checks if a string matches the provided pattern
+   *
+   * @param {string} name The string to check.
+   * @returns {boolean} if the string is a match
+   * @private
+   */
   function isInvalid (name) {
     return !regexp.test(name);
   }
 
   /**
-    * Verifies if we should report an error or not based on the effective
-    * parent node and the identifier name.
-    *
-    * @param {ASTNode} effectiveParent The effective parent node of the node to be reported
-    * @param {string} name The identifier name of the identifier node
-    * @returns {boolean} whether an error should be reported or not
-    */
+   * Verifies if we should report an error or not based on the effective
+   * parent node and the identifier name.
+   *
+   * @param {ASTNode} effectiveParent The effective parent node of the node to be reported
+   * @param {string} name The identifier name of the identifier node
+   * @returns {boolean} whether an error should be reported or not
+   */
   function shouldReport (effectiveParent, name) {
     return (
       (!onlyDeclarations || DECLARATION_TYPES.has(effectiveParent.type)) &&
@@ -82,12 +82,12 @@ const create = (context) => {
   }
 
   /**
-  * Reports an AST node as a rule violation.
-    *
-  * @param {ASTNode} node The node to report.
-  * @returns {void}
-  * @private
-  */
+   * Reports an AST node as a rule violation.
+   *
+   * @param {ASTNode} node The node to report.
+   * @returns {void}
+   * @private
+   */
   function report (node) {
     /*
     * We used the range instead of the node because it's possible
