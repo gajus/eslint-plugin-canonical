@@ -48,6 +48,7 @@ npm install eslint-plugin-canonical --save-dev
     ],
     "canonical/no-restricted-strings": 0,
     "canonical/no-use-extend-native": 2,
+    "canonical/prefer-inline-type-import": 2,
     "canonical/sort-keys": [
       2,
       "asc",
