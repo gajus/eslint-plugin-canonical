@@ -17,7 +17,9 @@
  * @private
  */
 const isInsideObjectPattern = (node) => {
-  let {parent} = node;
+  let {
+    parent,
+  } = node;
 
   while (parent) {
     if (parent.type === 'ObjectPattern') {
@@ -43,7 +45,10 @@ const create = (context) => {
 
   // Contains reported nodes to avoid reporting twice on destructuring with shorthand notation
   const reportedNodes = new Set();
-  const ALLOWED_PARENT_TYPES = new Set(['CallExpression', 'NewExpression']);
+  const ALLOWED_PARENT_TYPES = new Set([
+    'CallExpression',
+    'NewExpression',
+  ]);
   const DECLARATION_TYPES = new Set([
     'FunctionDeclaration',
     'VariableDeclarator',
@@ -116,8 +121,12 @@ const create = (context) => {
 
   return {
     Identifier (node) {
-      const {name} = node;
-      const {parent} = node;
+      const {
+        name,
+      } = node;
+      const {
+        parent,
+      } = node;
       const effectiveParent =
         parent.type === 'MemberExpression' ? parent.parent : parent;
 

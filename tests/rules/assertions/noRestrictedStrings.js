@@ -8,7 +8,11 @@ export default {
           type: 'Literal',
         },
       ],
-      options: [['bar']],
+      options: [
+        [
+          'bar',
+        ],
+      ],
     },
     {
       // eslint-disable-next-line no-template-curly-in-string
@@ -19,7 +23,11 @@ export default {
           type: 'TemplateElement',
         },
       ],
-      options: [['bar']],
+      options: [
+        [
+          'bar',
+        ],
+      ],
     },
   ],
   valid: [

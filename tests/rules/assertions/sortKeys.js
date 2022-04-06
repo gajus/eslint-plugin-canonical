@@ -11,60 +11,82 @@ export default {
     // move inline comments on the line above property together with property
     {
       code: 'var obj = {\n// comment\n// comment 2\na:1,\n_:2,\nb:3\n}',
-      errors: ['Expected object keys to be in ascending order. \'_\' should be before \'a\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'_\' should be before \'a\'.',
+      ],
       output: 'var obj = {\n\n\n_:2,\n// comment\n// comment 2\na:1,\nb:3\n}',
     },
 
     // move multiline comments on the line above property together with property
     {
       code: 'var obj = {\n/* comment\n comment 2 */\na:1,\n_:2,\nb:3\n}',
-      errors: ['Expected object keys to be in ascending order. \'_\' should be before \'a\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'_\' should be before \'a\'.',
+      ],
       output: 'var obj = {\n\n_:2,\n/* comment\n comment 2 */\na:1,\nb:3\n}',
     },
 
     // default (asc)
     {
       code: 'var obj = {a:1, _:2, b:3} // default',
-      errors: ['Expected object keys to be in ascending order. \'_\' should be before \'a\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'_\' should be before \'a\'.',
+      ],
       output: 'var obj = {_:2, a:1, b:3} // default',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in ascending order. \'b\' should be before \'c\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'b\' should be before \'c\'.',
+      ],
       output: 'var obj = {a:1, b:3, c:2}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in ascending order. \'a\' should be before \'b_\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'a\' should be before \'b_\'.',
+      ],
       output: 'var obj = {a:2, b_:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
-      errors: ['Expected object keys to be in ascending order. \'C\' should be before \'c\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'C\' should be before \'c\'.',
+      ],
       output: 'var obj = {b_:1, C:3, c:2}',
     },
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
-      errors: ['Expected object keys to be in ascending order. \'A\' should be before \'_\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'A\' should be before \'_\'.',
+      ],
       output: 'var obj = {$:1, A:3, _:2, a:4}',
     },
     {
       code: 'var obj = {1:1, 2:4, A:3, \'11\':2}',
-      errors: ['Expected object keys to be in ascending order. \'11\' should be before \'A\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'11\' should be before \'A\'.',
+      ],
       output: 'var obj = {1:1, 2:4, \'11\':2, A:3}',
     },
     {
       code: 'var obj = {\'#\':1, À:3, \'Z\':2, è:4}',
-      errors: ['Expected object keys to be in ascending order. \'Z\' should be before \'À\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'Z\' should be before \'À\'.',
+      ],
       output: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
     },
 
     // not ignore properties not separated by spread properties
     {
       code: 'var obj = {...z, c:1, b:1}',
-      errors: ['Expected object keys to be in ascending order. \'b\' should be before \'c\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'b\' should be before \'c\'.',
+      ],
       output: 'var obj = {...z, b:1, c:1}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
     {
       code: 'var obj = {...z, ...c, d:4, b:1, ...y, ...f, e:2, a:1}',
@@ -73,76 +95,128 @@ export default {
         'Expected object keys to be in ascending order. \'a\' should be before \'e\'.',
       ],
       output: 'var obj = {...z, ...c, b:1, d:4, ...y, ...f, a:1, e:2}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
     {
       code: 'var obj = {c:1, b:1, ...a}',
-      errors: ['Expected object keys to be in ascending order. \'b\' should be before \'c\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'b\' should be before \'c\'.',
+      ],
       output: 'var obj = {b:1, c:1, ...a}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
     {
       code: 'var obj = {...z, ...a, c:1, b:1}',
-      errors: ['Expected object keys to be in ascending order. \'b\' should be before \'c\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'b\' should be before \'c\'.',
+      ],
       output: 'var obj = {...z, ...a, b:1, c:1}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
     {
       code: 'var obj = {...z, b:1, a:1, ...d, ...c}',
-      errors: ['Expected object keys to be in ascending order. \'a\' should be before \'b\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'a\' should be before \'b\'.',
+      ],
       output: 'var obj = {...z, a:1, b:1, ...d, ...c}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
     {
       code: 'var obj = {...z, a:2, b:0, ...x, ...c}',
-      errors: ['Expected object keys to be in descending order. \'b\' should be before \'a\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'b\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {...z, b:0, a:2, ...x, ...c}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
     {
       code: 'var obj = {...z, a:2, b:0, ...x}',
-      errors: ['Expected object keys to be in descending order. \'b\' should be before \'a\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'b\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {...z, b:0, a:2, ...x}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
     {
       code: 'var obj = {...z, \'\':1, a:2}',
-      errors: ['Expected object keys to be in descending order. \'a\' should be before \'\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'a\' should be before \'\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {...z, a:2, \'\':1}',
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
 
     // ignore non-simple computed properties, but their position shouldn't affect other comparisons.
     {
       code: 'var obj = {a:1, [b+c]:2, \'\':3}',
-      errors: ['Expected object keys to be in ascending order. \'\' should be before \'a\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'\' should be before \'a\'.',
+      ],
       output: 'var obj = {\'\':3, [b+c]:2, a:1}',
-      parserOptions: {ecmaVersion: 6},
+      parserOptions: {
+        ecmaVersion: 6,
+      },
     },
     {
       code: 'var obj = {\'\':1, [b+c]:2, a:3}',
-      errors: ['Expected object keys to be in descending order. \'a\' should be before \'\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'a\' should be before \'\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {a:3, [b+c]:2, \'\':1}',
-      parserOptions: {ecmaVersion: 6},
+      parserOptions: {
+        ecmaVersion: 6,
+      },
     },
     {
       code: 'var obj = {b:1, [f()]:2, \'\':3, a:4}',
-      errors: ['Expected object keys to be in descending order. \'a\' should be before \'\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'a\' should be before \'\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {b:1, [f()]:2, a:4, \'\':3}',
-      parserOptions: {ecmaVersion: 6},
+      parserOptions: {
+        ecmaVersion: 6,
+      },
     },
 
     // not ignore simple computed properties.
     {
       code: 'var obj = {a:1, b:3, [a]: -1, c:2}',
-      errors: ['Expected object keys to be in ascending order. \'a\' should be before \'b\'.'],
+      errors: [
+        'Expected object keys to be in ascending order. \'a\' should be before \'b\'.',
+      ],
       output: 'var obj = {a:1, [a]: -1, b:3, c:2}',
-      parserOptions: {ecmaVersion: 6},
+      parserOptions: {
+        ecmaVersion: 6,
+      },
     },
 
     // nested
@@ -158,44 +232,72 @@ export default {
     // asc
     {
       code: 'var obj = {a:1, _:2, b:3} // asc',
-      errors: ['Expected object keys to be in ascending order. \'_\' should be before \'a\'.'],
-      options: ['asc'],
+      errors: [
+        'Expected object keys to be in ascending order. \'_\' should be before \'a\'.',
+      ],
+      options: [
+        'asc',
+      ],
       output: 'var obj = {_:2, a:1, b:3} // asc',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in ascending order. \'b\' should be before \'c\'.'],
-      options: ['asc'],
+      errors: [
+        'Expected object keys to be in ascending order. \'b\' should be before \'c\'.',
+      ],
+      options: [
+        'asc',
+      ],
       output: 'var obj = {a:1, b:3, c:2}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in ascending order. \'a\' should be before \'b_\'.'],
-      options: ['asc'],
+      errors: [
+        'Expected object keys to be in ascending order. \'a\' should be before \'b_\'.',
+      ],
+      options: [
+        'asc',
+      ],
       output: 'var obj = {a:2, b_:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
-      errors: ['Expected object keys to be in ascending order. \'C\' should be before \'c\'.'],
-      options: ['asc'],
+      errors: [
+        'Expected object keys to be in ascending order. \'C\' should be before \'c\'.',
+      ],
+      options: [
+        'asc',
+      ],
       output: 'var obj = {b_:1, C:3, c:2}',
     },
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
-      errors: ['Expected object keys to be in ascending order. \'A\' should be before \'_\'.'],
-      options: ['asc'],
+      errors: [
+        'Expected object keys to be in ascending order. \'A\' should be before \'_\'.',
+      ],
+      options: [
+        'asc',
+      ],
       output: 'var obj = {$:1, A:3, _:2, a:4}',
     },
     {
       code: 'var obj = {1:1, 2:4, A:3, \'11\':2}',
-      errors: ['Expected object keys to be in ascending order. \'11\' should be before \'A\'.'],
-      options: ['asc'],
+      errors: [
+        'Expected object keys to be in ascending order. \'11\' should be before \'A\'.',
+      ],
+      options: [
+        'asc',
+      ],
       output: 'var obj = {1:1, 2:4, \'11\':2, A:3}',
     },
     {
       code: 'var obj = {\'#\':1, À:3, \'Z\':2, è:4}',
-      errors: ['Expected object keys to be in ascending order. \'Z\' should be before \'À\'.'],
-      options: ['asc'],
+      errors: [
+        'Expected object keys to be in ascending order. \'Z\' should be before \'À\'.',
+      ],
+      options: [
+        'asc',
+      ],
       output: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
     },
 
@@ -209,38 +311,80 @@ export default {
     // asc, insensitive
     {
       code: 'var obj = {a:1, _:2, b:3} // asc, insensitive',
-      errors: ['Expected object keys to be in insensitive ascending order. \'_\' should be before \'a\'.'],
-      options: ['asc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive ascending order. \'_\' should be before \'a\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {_:2, a:1, b:3} // asc, insensitive',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in insensitive ascending order. \'b\' should be before \'c\'.'],
-      options: ['asc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive ascending order. \'b\' should be before \'c\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {a:1, b:3, c:2}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in insensitive ascending order. \'a\' should be before \'b_\'.'],
-      options: ['asc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive ascending order. \'a\' should be before \'b_\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {a:2, b_:1, b:3}',
     },
     {
       code: 'var obj = {$:1, A:3, _:2, a:4}',
-      errors: ['Expected object keys to be in insensitive ascending order. \'_\' should be before \'A\'.'],
-      options: ['asc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive ascending order. \'_\' should be before \'A\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {$:1, _:2, A:3, a:4}',
     },
     {
       code: 'var obj = {1:1, 2:4, A:3, \'11\':2}',
-      errors: ['Expected object keys to be in insensitive ascending order. \'11\' should be before \'A\'.'],
-      options: ['asc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive ascending order. \'11\' should be before \'A\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {1:1, 2:4, \'11\':2, A:3}',
     },
     {
       code: 'var obj = {\'#\':1, À:3, \'Z\':2, è:4}',
-      errors: ['Expected object keys to be in insensitive ascending order. \'Z\' should be before \'À\'.'],
-      options: ['asc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive ascending order. \'Z\' should be before \'À\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
     },
 
@@ -254,44 +398,93 @@ export default {
     // asc, natural
     {
       code: 'var obj = {a:1, _:2, b:3} // asc, natural',
-      errors: ['Expected object keys to be in natural ascending order. \'_\' should be before \'a\'.'],
-      options: ['asc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural ascending order. \'_\' should be before \'a\'.',
+      ],
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {_:2, a:1, b:3} // asc, natural',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in natural ascending order. \'b\' should be before \'c\'.'],
-      options: ['asc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural ascending order. \'b\' should be before \'c\'.',
+      ],
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {a:1, b:3, c:2}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in natural ascending order. \'a\' should be before \'b_\'.'],
-      options: ['asc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural ascending order. \'a\' should be before \'b_\'.',
+      ],
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {a:2, b_:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
-      errors: ['Expected object keys to be in natural ascending order. \'C\' should be before \'c\'.'],
-      options: ['asc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural ascending order. \'C\' should be before \'c\'.',
+      ],
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {b_:1, C:3, c:2}',
     },
     {
       code: 'var obj = {$:1, A:3, _:2, a:4}',
-      errors: ['Expected object keys to be in natural ascending order. \'_\' should be before \'A\'.'],
-      options: ['asc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural ascending order. \'_\' should be before \'A\'.',
+      ],
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {$:1, _:2, A:3, a:4}',
     },
     {
       code: 'var obj = {1:1, 2:4, A:3, \'11\':2}',
-      errors: ['Expected object keys to be in natural ascending order. \'11\' should be before \'A\'.'],
-      options: ['asc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural ascending order. \'11\' should be before \'A\'.',
+      ],
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {1:1, 2:4, \'11\':2, A:3}',
     },
     {
       code: 'var obj = {\'#\':1, À:3, \'Z\':2, è:4}',
-      errors: ['Expected object keys to be in natural ascending order. \'Z\' should be before \'À\'.'],
-      options: ['asc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural ascending order. \'Z\' should be before \'À\'.',
+      ],
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
     },
 
@@ -305,38 +498,86 @@ export default {
     // asc, natural, insensitive
     {
       code: 'var obj = {a:1, _:2, b:3} // asc, natural, insensitive',
-      errors: ['Expected object keys to be in natural insensitive ascending order. \'_\' should be before \'a\'.'],
-      options: ['asc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive ascending order. \'_\' should be before \'a\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {_:2, a:1, b:3} // asc, natural, insensitive',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in natural insensitive ascending order. \'b\' should be before \'c\'.'],
-      options: ['asc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive ascending order. \'b\' should be before \'c\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {a:1, b:3, c:2}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in natural insensitive ascending order. \'a\' should be before \'b_\'.'],
-      options: ['asc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive ascending order. \'a\' should be before \'b_\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {a:2, b_:1, b:3}',
     },
     {
       code: 'var obj = {$:1, A:3, _:2, a:4}',
-      errors: ['Expected object keys to be in natural insensitive ascending order. \'_\' should be before \'A\'.'],
-      options: ['asc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive ascending order. \'_\' should be before \'A\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {$:1, _:2, A:3, a:4}',
     },
     {
       code: 'var obj = {1:1, \'11\':2, 2:4, A:3}',
-      errors: ['Expected object keys to be in natural insensitive ascending order. \'2\' should be before \'11\'.'],
-      options: ['asc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive ascending order. \'2\' should be before \'11\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {1:1, 2:4, \'11\':2, A:3}',
     },
     {
       code: 'var obj = {\'#\':1, À:3, \'Z\':2, è:4}',
-      errors: ['Expected object keys to be in natural insensitive ascending order. \'Z\' should be before \'À\'.'],
-      options: ['asc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive ascending order. \'Z\' should be before \'À\'.',
+      ],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
     },
 
@@ -350,26 +591,42 @@ export default {
     // desc
     {
       code: 'var obj = {a:1, _:2, b:3} // desc',
-      errors: ['Expected object keys to be in descending order. \'b\' should be before \'_\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'b\' should be before \'_\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {a:1, b:3, _:2} // desc',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in descending order. \'c\' should be before \'a\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'c\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {c:2, a:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in descending order. \'b\' should be before \'a\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'b\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {b_:1, b:3, a:2}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
-      errors: ['Expected object keys to be in descending order. \'c\' should be before \'b_\'.'],
-      options: ['desc'],
+      errors: [
+        'Expected object keys to be in descending order. \'c\' should be before \'b_\'.',
+      ],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {c:2, b_:1, C:3}',
     },
     {
@@ -378,7 +635,9 @@ export default {
         'Expected object keys to be in descending order. \'_\' should be before \'$\'.',
         'Expected object keys to be in descending order. \'a\' should be before \'A\'.',
       ],
-      options: ['desc'],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {_:2, $:1, a:4, A:3}',
     },
     {
@@ -387,7 +646,9 @@ export default {
         'Expected object keys to be in descending order. \'2\' should be before \'1\'.',
         'Expected object keys to be in descending order. \'A\' should be before \'2\'.',
       ],
-      options: ['desc'],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {2:4, 1:1, A:3, \'11\':2}',
     },
     {
@@ -396,7 +657,9 @@ export default {
         'Expected object keys to be in descending order. \'À\' should be before \'#\'.',
         'Expected object keys to be in descending order. \'è\' should be before \'Z\'.',
       ],
-      options: ['desc'],
+      options: [
+        'desc',
+      ],
       output: 'var obj = {À:3, \'#\':1, è:4, \'Z\':2}',
     },
 
@@ -410,26 +673,54 @@ export default {
     // desc, insensitive
     {
       code: 'var obj = {a:1, _:2, b:3} // desc, insensitive',
-      errors: ['Expected object keys to be in insensitive descending order. \'b\' should be before \'_\'.'],
-      options: ['desc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive descending order. \'b\' should be before \'_\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {a:1, b:3, _:2} // desc, insensitive',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in insensitive descending order. \'c\' should be before \'a\'.'],
-      options: ['desc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive descending order. \'c\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {c:2, a:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in insensitive descending order. \'b\' should be before \'a\'.'],
-      options: ['desc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive descending order. \'b\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {b_:1, b:3, a:2}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
-      errors: ['Expected object keys to be in insensitive descending order. \'c\' should be before \'b_\'.'],
-      options: ['desc', {caseSensitive: false}],
+      errors: [
+        'Expected object keys to be in insensitive descending order. \'c\' should be before \'b_\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {c:2, b_:1, C:3}',
     },
     {
@@ -438,7 +729,12 @@ export default {
         'Expected object keys to be in insensitive descending order. \'_\' should be before \'$\'.',
         'Expected object keys to be in insensitive descending order. \'A\' should be before \'_\'.',
       ],
-      options: ['desc', {caseSensitive: false}],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {_:2, $:1, A:3, a:4}',
     },
     {
@@ -447,7 +743,12 @@ export default {
         'Expected object keys to be in insensitive descending order. \'2\' should be before \'1\'.',
         'Expected object keys to be in insensitive descending order. \'A\' should be before \'2\'.',
       ],
-      options: ['desc', {caseSensitive: false}],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {2:4, 1:1, A:3, \'11\':2}',
     },
     {
@@ -456,7 +757,12 @@ export default {
         'Expected object keys to be in insensitive descending order. \'À\' should be before \'#\'.',
         'Expected object keys to be in insensitive descending order. \'è\' should be before \'Z\'.',
       ],
-      options: ['desc', {caseSensitive: false}],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
       output: 'var obj = {À:3, \'#\':1, è:4, \'Z\':2}',
     },
 
@@ -470,26 +776,54 @@ export default {
     // desc, natural
     {
       code: 'var obj = {a:1, _:2, b:3} // desc, natural',
-      errors: ['Expected object keys to be in natural descending order. \'b\' should be before \'_\'.'],
-      options: ['desc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural descending order. \'b\' should be before \'_\'.',
+      ],
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {a:1, b:3, _:2} // desc, natural',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in natural descending order. \'c\' should be before \'a\'.'],
-      options: ['desc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural descending order. \'c\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {c:2, a:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in natural descending order. \'b\' should be before \'a\'.'],
-      options: ['desc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural descending order. \'b\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {b_:1, b:3, a:2}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
-      errors: ['Expected object keys to be in natural descending order. \'c\' should be before \'b_\'.'],
-      options: ['desc', {natural: true}],
+      errors: [
+        'Expected object keys to be in natural descending order. \'c\' should be before \'b_\'.',
+      ],
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {c:2, b_:1, C:3}',
     },
     {
@@ -499,7 +833,12 @@ export default {
         'Expected object keys to be in natural descending order. \'A\' should be before \'_\'.',
         'Expected object keys to be in natural descending order. \'a\' should be before \'A\'.',
       ],
-      options: ['desc', {natural: true}],
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {_:2, $:1, a:4, A:3}',
     },
     {
@@ -508,7 +847,12 @@ export default {
         'Expected object keys to be in natural descending order. \'2\' should be before \'1\'.',
         'Expected object keys to be in natural descending order. \'A\' should be before \'2\'.',
       ],
-      options: ['desc', {natural: true}],
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {2:4, 1:1, A:3, \'11\':2}',
     },
     {
@@ -517,7 +861,12 @@ export default {
         'Expected object keys to be in natural descending order. \'À\' should be before \'#\'.',
         'Expected object keys to be in natural descending order. \'è\' should be before \'Z\'.',
       ],
-      options: ['desc', {natural: true}],
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
       output: 'var obj = {À:3, \'#\':1, è:4, \'Z\':2}',
     },
 
@@ -531,26 +880,58 @@ export default {
     // desc, natural, insensitive
     {
       code: 'var obj = {a:1, _:2, b:3} // desc, natural, insensitive',
-      errors: ['Expected object keys to be in natural insensitive descending order. \'b\' should be before \'_\'.'],
-      options: ['desc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive descending order. \'b\' should be before \'_\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {a:1, b:3, _:2} // desc, natural, insensitive',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
-      errors: ['Expected object keys to be in natural insensitive descending order. \'c\' should be before \'a\'.'],
-      options: ['desc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive descending order. \'c\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {c:2, a:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
-      errors: ['Expected object keys to be in natural insensitive descending order. \'b\' should be before \'a\'.'],
-      options: ['desc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive descending order. \'b\' should be before \'a\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {b_:1, b:3, a:2}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
-      errors: ['Expected object keys to be in natural insensitive descending order. \'c\' should be before \'b_\'.'],
-      options: ['desc', {caseSensitive: false, natural: true}],
+      errors: [
+        'Expected object keys to be in natural insensitive descending order. \'c\' should be before \'b_\'.',
+      ],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {c:2, b_:1, C:3}',
     },
     {
@@ -559,7 +940,13 @@ export default {
         'Expected object keys to be in natural insensitive descending order. \'_\' should be before \'$\'.',
         'Expected object keys to be in natural insensitive descending order. \'A\' should be before \'_\'.',
       ],
-      options: ['desc', {caseSensitive: false, natural: true}],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {_:2, $:1, A:3, a:4}',
     },
     {
@@ -569,7 +956,13 @@ export default {
         'Expected object keys to be in natural insensitive descending order. \'11\' should be before \'2\'.',
         'Expected object keys to be in natural insensitive descending order. \'A\' should be before \'11\'.',
       ],
-      options: ['desc', {caseSensitive: false, natural: true}],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {2:4, 1:1, A:3, \'11\':2}',
     },
     {
@@ -578,7 +971,13 @@ export default {
         'Expected object keys to be in natural insensitive descending order. \'À\' should be before \'#\'.',
         'Expected object keys to be in natural insensitive descending order. \'è\' should be before \'Z\'.',
       ],
-      options: ['desc', {caseSensitive: false, natural: true}],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
       output: 'var obj = {À:3, \'#\':1, è:4, \'Z\':2}',
     },
 
@@ -591,85 +990,364 @@ export default {
   ],
   valid: [
     // default (asc)
-    {code: 'var obj = {_:2, a:1, b:3} // default', options: []},
-    {code: 'var obj = {a:1, b:3, c:2}', options: []},
-    {code: 'var obj = {a:2, b:3, b_:1}', options: []},
-    {code: 'var obj = {C:3, b_:1, c:2}', options: []},
-    {code: 'var obj = {$:1, A:3, _:2, a:4}', options: []},
-    {code: 'var obj = {1:1, \'11\':2, 2:4, A:3}', options: []},
-    {code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}', options: []},
+    {
+      code: 'var obj = {_:2, a:1, b:3} // default',
+      options: [],
+    },
+    {
+      code: 'var obj = {a:1, b:3, c:2}',
+      options: [],
+    },
+    {
+      code: 'var obj = {a:2, b:3, b_:1}',
+      options: [],
+    },
+    {
+      code: 'var obj = {C:3, b_:1, c:2}',
+      options: [],
+    },
+    {
+      code: 'var obj = {$:1, A:3, _:2, a:4}',
+      options: [],
+    },
+    {
+      code: 'var obj = {1:1, \'11\':2, 2:4, A:3}',
+      options: [],
+    },
+    {
+      code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
+      options: [],
+    },
 
     // ignore non-simple computed properties.
-    {code: 'var obj = {a:1, b:3, [a + b]: -1, c:2}', options: [], parserOptions: {ecmaVersion: 6}},
-    {code: 'var obj = {\'\':1, [f()]:2, a:3}', options: [], parserOptions: {ecmaVersion: 6}},
-    {code: 'var obj = {a:1, [b++]:2, \'\':3}', options: ['desc'], parserOptions: {ecmaVersion: 6}},
+    {
+      code: 'var obj = {a:1, b:3, [a + b]: -1, c:2}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 6,
+      },
+    },
+    {
+      code: 'var obj = {\'\':1, [f()]:2, a:3}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 6,
+      },
+    },
+    {
+      code: 'var obj = {a:1, [b++]:2, \'\':3}',
+      options: [
+        'desc',
+      ],
+      parserOptions: {
+        ecmaVersion: 6,
+      },
+    },
 
     // ignore properties separated by spread properties
-    {code: 'var obj = {a:1, ...z, b:1}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {b:1, ...z, a:1}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {...a, b:1, ...c, d:1}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {...a, b:1, ...d, ...c, e:2, z:5}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {b:1, ...c, ...d, e:2}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {a:1, ...z, \'\':2}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {\'\':1, ...z, \'a\':2}', options: ['desc'], parserOptions: {ecmaVersion: 2_018}},
+    {
+      code: 'var obj = {a:1, ...z, b:1}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {b:1, ...z, a:1}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {...a, b:1, ...c, d:1}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {...a, b:1, ...d, ...c, e:2, z:5}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {b:1, ...c, ...d, e:2}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {a:1, ...z, \'\':2}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {\'\':1, ...z, \'a\':2}',
+      options: [
+        'desc',
+      ],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
 
     // not ignore properties not separated by spread properties
-    {code: 'var obj = {...z, a:1, b:1}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {...z, ...c, a:1, b:1}', options: [], parserOptions: {ecmaVersion: 2_018}},
-    {code: 'var obj = {a:1, b:1, ...z}', options: [], parserOptions: {ecmaVersion: 2_018}},
+    {
+      code: 'var obj = {...z, a:1, b:1}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {...z, ...c, a:1, b:1}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
+    {
+      code: 'var obj = {a:1, b:1, ...z}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
     {
       code: 'var obj = {...z, ...x, a:1, ...c, ...d, f:5, e:4}',
-      options: ['desc'],
-      parserOptions: {ecmaVersion: 2_018},
+      options: [
+        'desc',
+      ],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
 
     // works when spread occurs somewhere other than an object literal
-    {code: 'function fn(...args) { return [...args].length; }', options: [], parserOptions: {ecmaVersion: 2_018}},
+    {
+      code: 'function fn(...args) { return [...args].length; }',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
+    },
     {
       code: 'function g() {}; function f(...args) { return g(...args); }',
       options: [],
-      parserOptions: {ecmaVersion: 2_018},
+      parserOptions: {
+        ecmaVersion: 2_018,
+      },
     },
 
     // ignore destructuring patterns.
-    {code: 'let {a, b} = {}', options: [], parserOptions: {ecmaVersion: 6}},
+    {
+      code: 'let {a, b} = {}',
+      options: [],
+      parserOptions: {
+        ecmaVersion: 6,
+      },
+    },
 
     // nested
-    {code: 'var obj = {a:1, b:{x:1, y:1}, c:1}', options: []},
+    {
+      code: 'var obj = {a:1, b:{x:1, y:1}, c:1}',
+      options: [],
+    },
 
     // asc
-    {code: 'var obj = {_:2, a:1, b:3} // asc', options: ['asc']},
-    {code: 'var obj = {a:1, b:3, c:2}', options: ['asc']},
-    {code: 'var obj = {a:2, b:3, b_:1}', options: ['asc']},
-    {code: 'var obj = {C:3, b_:1, c:2}', options: ['asc']},
-    {code: 'var obj = {$:1, A:3, _:2, a:4}', options: ['asc']},
-    {code: 'var obj = {1:1, \'11\':2, 2:4, A:3}', options: ['asc']},
-    {code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}', options: ['asc']},
+    {
+      code: 'var obj = {_:2, a:1, b:3} // asc',
+      options: [
+        'asc',
+      ],
+    },
+    {
+      code: 'var obj = {a:1, b:3, c:2}',
+      options: [
+        'asc',
+      ],
+    },
+    {
+      code: 'var obj = {a:2, b:3, b_:1}',
+      options: [
+        'asc',
+      ],
+    },
+    {
+      code: 'var obj = {C:3, b_:1, c:2}',
+      options: [
+        'asc',
+      ],
+    },
+    {
+      code: 'var obj = {$:1, A:3, _:2, a:4}',
+      options: [
+        'asc',
+      ],
+    },
+    {
+      code: 'var obj = {1:1, \'11\':2, 2:4, A:3}',
+      options: [
+        'asc',
+      ],
+    },
+    {
+      code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
+      options: [
+        'asc',
+      ],
+    },
 
     // asc, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {a:1, c:2, b:3}", options: ["asc", { minKeys: 4 }] },
 
     // asc, insensitive
-    {code: 'var obj = {_:2, a:1, b:3} // asc, insensitive', options: ['asc', {caseSensitive: false}]},
-    {code: 'var obj = {a:1, b:3, c:2}', options: ['asc', {caseSensitive: false}]},
-    {code: 'var obj = {a:2, b:3, b_:1}', options: ['asc', {caseSensitive: false}]},
-    {code: 'var obj = {b_:1, C:3, c:2}', options: ['asc', {caseSensitive: false}]},
-    {code: 'var obj = {b_:1, c:3, C:2}', options: ['asc', {caseSensitive: false}]},
-    {code: 'var obj = {$:1, _:2, A:3, a:4}', options: ['asc', {caseSensitive: false}]},
-    {code: 'var obj = {1:1, \'11\':2, 2:4, A:3}', options: ['asc', {caseSensitive: false}]},
-    {code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}', options: ['asc', {caseSensitive: false}]},
+    {
+      code: 'var obj = {_:2, a:1, b:3} // asc, insensitive',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:1, b:3, c:2}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:2, b:3, b_:1}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, C:3, c:2}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, c:3, C:2}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {$:1, _:2, A:3, a:4}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {1:1, \'11\':2, 2:4, A:3}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
 
     // asc, insensitive, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {$:1, A:3, _:2, a:4}", options: ["asc", { caseSensitive: false, minKeys: 5 }] },
 
     // asc, natural
-    {code: 'var obj = {_:2, a:1, b:3} // asc, natural', options: ['asc', {natural: true}]},
-    {code: 'var obj = {a:1, b:3, c:2}', options: ['asc', {natural: true}]},
-    {code: 'var obj = {a:2, b:3, b_:1}', options: ['asc', {natural: true}]},
-    {code: 'var obj = {C:3, b_:1, c:2}', options: ['asc', {natural: true}]},
-    {code: 'var obj = {$:1, _:2, A:3, a:4}', options: ['asc', {natural: true}]},
-    {code: 'var obj = {1:1, 2:4, \'11\':2, A:3}', options: ['asc', {natural: true}]},
-    {code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}', options: ['asc', {natural: true}]},
+    {
+      code: 'var obj = {_:2, a:1, b:3} // asc, natural',
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:1, b:3, c:2}',
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:2, b:3, b_:1}',
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {C:3, b_:1, c:2}',
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {$:1, _:2, A:3, a:4}',
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {1:1, 2:4, \'11\':2, A:3}',
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
+      options: [
+        'asc',
+        {
+          natural: true,
+        },
+      ],
+    },
 
     // asc, natural, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {b_:1, a:2, b:3}", options: ["asc", { natural: true, minKeys: 4 }] },
@@ -677,52 +1355,276 @@ export default {
     // asc, natural, insensitive
     {
       code: 'var obj = {_:2, a:1, b:3} // asc, natural, insensitive',
-      options: ['asc', {caseSensitive: false, natural: true}],
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
     },
-    {code: 'var obj = {a:1, b:3, c:2}', options: ['asc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {a:2, b:3, b_:1}', options: ['asc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {b_:1, C:3, c:2}', options: ['asc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {b_:1, c:3, C:2}', options: ['asc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {$:1, _:2, A:3, a:4}', options: ['asc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {1:1, 2:4, \'11\':2, A:3}', options: ['asc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}', options: ['asc', {caseSensitive: false, natural: true}]},
+    {
+      code: 'var obj = {a:1, b:3, c:2}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:2, b:3, b_:1}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, C:3, c:2}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, c:3, C:2}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {$:1, _:2, A:3, a:4}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {1:1, 2:4, \'11\':2, A:3}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {\'#\':1, \'Z\':2, À:3, è:4}',
+      options: [
+        'asc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
 
     // asc, natural, insensitive, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {a:1, _:2, b:3}", options: ["asc", { natural: true, caseSensitive: false, minKeys: 4 }] },
 
     // desc
-    {code: 'var obj = {b:3, a:1, _:2} // desc', options: ['desc']},
-    {code: 'var obj = {c:2, b:3, a:1}', options: ['desc']},
-    {code: 'var obj = {b_:1, b:3, a:2}', options: ['desc']},
-    {code: 'var obj = {c:2, b_:1, C:3}', options: ['desc']},
-    {code: 'var obj = {a:4, _:2, A:3, $:1}', options: ['desc']},
-    {code: 'var obj = {A:3, 2:4, \'11\':2, 1:1}', options: ['desc']},
-    {code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}', options: ['desc']},
+    {
+      code: 'var obj = {b:3, a:1, _:2} // desc',
+      options: [
+        'desc',
+      ],
+    },
+    {
+      code: 'var obj = {c:2, b:3, a:1}',
+      options: [
+        'desc',
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, b:3, a:2}',
+      options: [
+        'desc',
+      ],
+    },
+    {
+      code: 'var obj = {c:2, b_:1, C:3}',
+      options: [
+        'desc',
+      ],
+    },
+    {
+      code: 'var obj = {a:4, _:2, A:3, $:1}',
+      options: [
+        'desc',
+      ],
+    },
+    {
+      code: 'var obj = {A:3, 2:4, \'11\':2, 1:1}',
+      options: [
+        'desc',
+      ],
+    },
+    {
+      code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}',
+      options: [
+        'desc',
+      ],
+    },
 
     // desc, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {a:1, c:2, b:3}", options: ["desc", { minKeys: 4 }] },
 
     // desc, insensitive
-    {code: 'var obj = {b:3, a:1, _:2} // desc, insensitive', options: ['desc', {caseSensitive: false}]},
-    {code: 'var obj = {c:2, b:3, a:1}', options: ['desc', {caseSensitive: false}]},
-    {code: 'var obj = {b_:1, b:3, a:2}', options: ['desc', {caseSensitive: false}]},
-    {code: 'var obj = {c:2, C:3, b_:1}', options: ['desc', {caseSensitive: false}]},
-    {code: 'var obj = {C:2, c:3, b_:1}', options: ['desc', {caseSensitive: false}]},
-    {code: 'var obj = {a:4, A:3, _:2, $:1}', options: ['desc', {caseSensitive: false}]},
-    {code: 'var obj = {A:3, 2:4, \'11\':2, 1:1}', options: ['desc', {caseSensitive: false}]},
-    {code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}', options: ['desc', {caseSensitive: false}]},
+    {
+      code: 'var obj = {b:3, a:1, _:2} // desc, insensitive',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {c:2, b:3, a:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, b:3, a:2}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {c:2, C:3, b_:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {C:2, c:3, b_:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:4, A:3, _:2, $:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {A:3, 2:4, \'11\':2, 1:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+        },
+      ],
+    },
 
     // desc, insensitive, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {$:1, _:2, A:3, a:4}", options: ["desc", { caseSensitive: false, minKeys: 5 }] },
 
     // desc, natural
-    {code: 'var obj = {b:3, a:1, _:2} // desc, natural', options: ['desc', {natural: true}]},
-    {code: 'var obj = {c:2, b:3, a:1}', options: ['desc', {natural: true}]},
-    {code: 'var obj = {b_:1, b:3, a:2}', options: ['desc', {natural: true}]},
-    {code: 'var obj = {c:2, b_:1, C:3}', options: ['desc', {natural: true}]},
-    {code: 'var obj = {a:4, A:3, _:2, $:1}', options: ['desc', {natural: true}]},
-    {code: 'var obj = {A:3, \'11\':2, 2:4, 1:1}', options: ['desc', {natural: true}]},
-    {code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}', options: ['desc', {natural: true}]},
+    {
+      code: 'var obj = {b:3, a:1, _:2} // desc, natural',
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {c:2, b:3, a:1}',
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, b:3, a:2}',
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {c:2, b_:1, C:3}',
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:4, A:3, _:2, $:1}',
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {A:3, \'11\':2, 2:4, 1:1}',
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}',
+      options: [
+        'desc',
+        {
+          natural: true,
+        },
+      ],
+    },
 
     // desc, natural, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {b_:1, a:2, b:3}", options: ["desc", { natural: true, minKeys: 4 }] },
@@ -730,15 +1632,84 @@ export default {
     // desc, natural, insensitive
     {
       code: 'var obj = {b:3, a:1, _:2} // desc, natural, insensitive',
-      options: ['desc', {caseSensitive: false, natural: true}],
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
     },
-    {code: 'var obj = {c:2, b:3, a:1}', options: ['desc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {b_:1, b:3, a:2}', options: ['desc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {c:2, C:3, b_:1}', options: ['desc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {C:2, c:3, b_:1}', options: ['desc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {a:4, A:3, _:2, $:1}', options: ['desc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {A:3, \'11\':2, 2:4, 1:1}', options: ['desc', {caseSensitive: false, natural: true}]},
-    {code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}', options: ['desc', {caseSensitive: false, natural: true}]},
+    {
+      code: 'var obj = {c:2, b:3, a:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {b_:1, b:3, a:2}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {c:2, C:3, b_:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {C:2, c:3, b_:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {a:4, A:3, _:2, $:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {A:3, \'11\':2, 2:4, 1:1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
+    {
+      code: 'var obj = {è:4, À:3, \'Z\':2, \'#\':1}',
+      options: [
+        'desc',
+        {
+          caseSensitive: false,
+          natural: true,
+        },
+      ],
+    },
 
     // desc, natural, insensitive, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {a:1, _:2, b:3}", options: ["desc", { natural: true, caseSensitive: false, minKeys: 4 }] }

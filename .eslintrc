@@ -1,6 +1,7 @@
 {
   "extends": [
     "canonical",
+    "canonical/node",
     "plugin:eslint-plugin/recommended"
   ],
   "plugins": [
@@ -8,7 +9,9 @@
   ],
   "rules": {
     "unicorn/prevent-abbreviations": 0,
-    "jsdoc/no-undefined-types": 0
+    "jsdoc/no-undefined-types": 0,
+    "node/global-require": 0,
+    "node/no-sync": 0
   },
   "overrides": [
     {

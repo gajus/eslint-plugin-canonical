@@ -1,6 +1,8 @@
 export default {
   create: (context) => {
-    const {options} = context;
+    const {
+      options,
+    } = context;
 
     const disallowedStrings = options[0] || [];
 
@@ -12,7 +14,10 @@ export default {
         ) {
           for (const disallowedString of disallowedStrings) {
             if (node.value.includes(disallowedString)) {
-              context.report({message: `Disallowed string: '${disallowedString}'.`, node});
+              context.report({
+                message: `Disallowed string: '${disallowedString}'.`,
+                node,
+              });
             }
           }
         }
@@ -22,7 +27,10 @@ export default {
         if (node.value.raw !== '') {
           for (const disallowedString of disallowedStrings) {
             if (node.value.raw.includes(disallowedString)) {
-              context.report({message: `Disallowed string in template: '${disallowedString}'.`, node});
+              context.report({
+                message: `Disallowed string in template: '${disallowedString}'.`,
+                node,
+              });
             }
           }
         }

@@ -1,7 +1,5 @@
-#!/usr/bin/env node
-
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import {
   getRules,
   isFile,
@@ -28,7 +26,9 @@ const getTestIndexRules = () => {
     rules: [],
   });
 
-  const {rules} = result;
+  const {
+    rules,
+  } = result;
 
   if (rules.length === 0) {
     throw new Error('Tests checker is broken - it could not extract rules from test index file.');

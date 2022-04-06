@@ -79,7 +79,10 @@ const getJsTypeAndPropertyName = (node) => {
 
   propertyName = propertyName || node.property.name || node.property.value;
 
-  return {jsType, propertyName};
+  return {
+    jsType,
+    propertyName,
+  };
 };
 
 const isUnkownGettSetterOrJsTypeExpressed = (jsType, propertyName, usageType) => {
@@ -131,10 +134,16 @@ export default {
         const isArgToParent = node.parent.arguments && node.parent.arguments.includes(node);
         const usageType = isArgToParent ? node.type : node.parent.type;
 
-        const {propertyName, jsType} = getJsTypeAndPropertyName(node);
+        const {
+          propertyName,
+          jsType,
+        } = getJsTypeAndPropertyName(node);
 
         if (isInvalid(jsType, propertyName, usageType) && isInvalid('Function', propertyName, usageType)) {
-          context.report({message: 'Avoid using extended native objects', node});
+          context.report({
+            message: 'Avoid using extended native objects',
+            node,
+          });
         }
       },
     };

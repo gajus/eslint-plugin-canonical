@@ -3,7 +3,7 @@
  * @author Stefan Lau
  */
 
-import path from 'path';
+import path from 'node:path';
 import {
   isIgnoredFilename,
 } from '../utilities/isIgnoredFilename';
@@ -29,7 +29,8 @@ const create = (context) => {
 
       if (isIndex) {
         context.report({
-          message: '\'index.js\' files are not allowed.', node,
+          message: '\'index.js\' files are not allowed.',
+          node,
         });
       }
     },

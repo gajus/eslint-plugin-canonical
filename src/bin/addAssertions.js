@@ -1,11 +1,9 @@
-#!/usr/bin/env node
-
 /**
  * @file This script is used to inline assertions into the README.md documents.
  */
 
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import glob from 'glob';
 import _ from 'lodash';
 

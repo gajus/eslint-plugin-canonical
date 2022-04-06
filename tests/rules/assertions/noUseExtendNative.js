@@ -73,7 +73,9 @@ const valid = [
   'new Array()[\'length\']',
   'new Array()[\'toString\']()',
 ].map((code) => {
-  return {code};
+  return {
+    code,
+  };
 });
 
 const invalid = [
@@ -126,7 +128,11 @@ const invalid = [
 ].map((code) => {
   return {
     code,
-    errors: [{message: 'Avoid using extended native objects'}],
+    errors: [
+      {
+        message: 'Avoid using extended native objects',
+      },
+    ],
   };
 });
 

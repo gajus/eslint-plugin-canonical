@@ -173,8 +173,12 @@ export default {
           return;
         }
 
-        const {prevName} = stack;
-        const {prevNode} = stack;
+        const {
+          prevName,
+        } = stack;
+        const {
+          prevNode,
+        } = stack;
         const thisName = getPropertyName(node);
 
         if (thisName !== null) {
@@ -236,7 +240,10 @@ export default {
     fixable: 'code',
     schema: [
       {
-        enum: ['asc', 'desc'],
+        enum: [
+          'asc',
+          'desc',
+        ],
       },
       {
         additionalProperties: false,

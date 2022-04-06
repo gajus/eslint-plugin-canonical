@@ -4,7 +4,7 @@
  * @see https://github.com/selaux/eslint-plugin-filenames/blob/32fc70dd7572211d1e5b97e06ec7a005c77fe8d4/lib/rules/match-exported.js
  */
 
-import path from 'path';
+import path from 'node:path';
 import {
   camelCase,
   kebabCase,
@@ -45,7 +45,9 @@ const getStringToCheckAgainstExport = (parsed, replacePattern) => {
 };
 
 const getTransformsFromOptions = (option) => {
-  const usedTransforms = option && option.push ? option : [option];
+  const usedTransforms = option && option.push ? option : [
+    option,
+  ];
 
   return usedTransforms.map((name) => {
     return transformMap[name];

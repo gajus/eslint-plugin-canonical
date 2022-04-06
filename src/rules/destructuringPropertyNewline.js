@@ -31,7 +31,10 @@ export default {
             context.report({
               fix (fixer) {
                 const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
-                const rangeAfterComma = [comma.range[1], firstTokenOfCurrentProperty.range[0]];
+                const rangeAfterComma = [
+                  comma.range[1],
+                  firstTokenOfCurrentProperty.range[0],
+                ];
 
                 // Don't perform a fix if there are any comments between the comma and the next property.
                 if (sourceCode.text.slice(rangeAfterComma[0], rangeAfterComma[1]).trim()) {
@@ -66,7 +69,10 @@ export default {
             context.report({
               fix (fixer) {
                 const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
-                const rangeAfterComma = [comma.range[1], firstTokenOfCurrentProperty.range[0]];
+                const rangeAfterComma = [
+                  comma.range[1],
+                  firstTokenOfCurrentProperty.range[0],
+                ];
 
                 // Don't perform a fix if there are any comments between the comma and the next property.
                 if (sourceCode.text.slice(rangeAfterComma[0], rangeAfterComma[1]).trim()) {

@@ -2,9 +2,11 @@ export default {
   invalid: [
     {
       code: 'import type {foo} from \'bar\'',
-      errors: [{
-        messageId: 'noTypeImport',
-      }],
+      errors: [
+        {
+          messageId: 'noTypeImport',
+        },
+      ],
       output: 'import {type foo} from \'bar\'',
     },
   ],

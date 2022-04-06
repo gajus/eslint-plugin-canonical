@@ -2,16 +2,20 @@ export default {
   invalid: [
     {
       code: 'const {a,b} = obj;',
-      errors: [{
-        messageId: 'propertiesOnNewline',
-      }],
+      errors: [
+        {
+          messageId: 'propertiesOnNewline',
+        },
+      ],
       output: 'const {a,\nb} = obj;',
     },
     {
       code: 'const [a,b] = obj;',
-      errors: [{
-        messageId: 'propertiesOnNewline',
-      }],
+      errors: [
+        {
+          messageId: 'propertiesOnNewline',
+        },
+      ],
       output: 'const [a,\nb] = obj;',
     },
     {

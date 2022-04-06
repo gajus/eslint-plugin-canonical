@@ -5,14 +5,22 @@ export default {
     {
       code: testCode,
       errors: [
-        {column: 1, line: 1, message: '\'index.js\' files are not allowed.'},
+        {
+          column: 1,
+          line: 1,
+          message: '\'index.js\' files are not allowed.',
+        },
       ],
       filename: 'index.js',
     },
     {
       code: testCode,
       errors: [
-        {column: 1, line: 1, message: '\'index.js\' files are not allowed.'},
+        {
+          column: 1,
+          line: 1,
+          message: '\'index.js\' files are not allowed.',
+        },
       ],
       filename: '/some/dir/index.js',
     },
