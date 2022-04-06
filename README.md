@@ -21,6 +21,7 @@ ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-cano
         * [`import-specifier-newline`](#eslint-plugin-canonical-rules-import-specifier-newline)
         * [`no-restricted-strings`](#eslint-plugin-canonical-rules-no-restricted-strings)
         * [`no-use-extend-native`](#eslint-plugin-canonical-rules-no-use-extend-native)
+        * [`prefer-inline-type-import`](#eslint-plugin-canonical-rules-prefer-inline-type-import)
         * [`sort-keys`](#eslint-plugin-canonical-rules-sort-keys)
 
 
@@ -1197,6 +1198,28 @@ new WeakSet().has()
 new Array()['length']
 
 new Array()['toString']()
+```
+
+
+
+<a name="eslint-plugin-canonical-rules-prefer-inline-type-import"></a>
+### <code>prefer-inline-type-import</code>
+
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
+
+TypeScript 4.5 introduced [type modifiers](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names) that allow to inline type imports as opposed to having dedicated `import type`. This allows to remove duplicate type imports. This rule enforces use of import type modifiers.
+
+The following patterns are considered problems:
+
+```js
+import type {foo} from 'bar'
+// Message: undefined
+```
+
+The following patterns are not considered problems:
+
+```js
+import {type foo} from 'bar'
 ```
 
 

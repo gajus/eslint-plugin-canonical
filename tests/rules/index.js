@@ -30,9 +30,10 @@ const reportingRules = [
   'no-restricted-strings',
   'no-use-extend-native',
   'sort-keys',
+  'prefer-inline-type-import',
 ];
 
-const parser = require.resolve('@babel/eslint-parser');
+const parser = require.resolve('@typescript-eslint/parser');
 
 const ajv = new Ajv({
   verbose: true,

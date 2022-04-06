@@ -8,6 +8,7 @@ import idMatch from './rules/idMatch';
 import importSpecifierNewline from './rules/importSpecifierNewline';
 import noRestrictedStrings from './rules/noRestrictedStrings';
 import noUseExtendNative from './rules/noUseExtendNative';
+import preferInlineTypeImport from './rules/preferInlineTypeImport';
 import sortKeys from './rules/sortKeys';
 
 export default {
@@ -24,6 +25,7 @@ export default {
     'import-specifier-newline': importSpecifierNewline,
     'no-restricted-strings': noRestrictedStrings,
     'no-use-extend-native': noUseExtendNative,
+    'prefer-inline-type-import': preferInlineTypeImport,
     'sort-keys': sortKeys,
   },
   rulesConfig: {
@@ -36,6 +38,7 @@ export default {
     'import-specifier-newline': 0,
     'no-restricted-strings': 0,
     'no-use-extend-native': 0,
+    'prefer-inline-type-import': 0,
     'sort-keys': 0,
   },
 };

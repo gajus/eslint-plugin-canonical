@@ -14,16 +14,17 @@
   },
   "description": "Canonical linting rules for ESLint.",
   "devDependencies": {
-    "@babel/cli": "^7.16.0",
-    "@babel/core": "^7.16.5",
-    "@babel/eslint-parser": "^7.16.5",
-    "@babel/node": "^7.16.5",
-    "@babel/plugin-transform-react-jsx": "^7.16.5",
-    "@babel/preset-env": "^7.16.5",
+    "@babel/cli": "^7.17.6",
+    "@babel/core": "^7.17.9",
+    "@babel/eslint-parser": "^7.17.0",
+    "@babel/node": "^7.16.8",
+    "@babel/plugin-transform-react-jsx": "^7.17.3",
+    "@babel/preset-env": "^7.16.11",
+    "@typescript-eslint/parser": "^5.18.0",
     "ajv": "^8.8.2",
     "babel-plugin-add-module-exports": "^1.0.4",
     "eclint": "^2.8.1",
-    "eslint": "^8.5.0",
+    "eslint": "^8.12.0",
     "eslint-config-canonical": "^32.46.1",
     "eslint-plugin-eslint-plugin": "^4.1.0",
     "gitdown": "^3.1.4",
@@ -46,7 +47,7 @@
   "main": "./dist/index.js",
   "name": "eslint-plugin-canonical",
   "peerDependencies": {
-    "eslint": "^8.5.0"
+    "eslint": "^8.12.0"
   },
   "repository": {
     "type": "git",
