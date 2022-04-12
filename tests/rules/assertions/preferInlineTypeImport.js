@@ -9,6 +9,15 @@ export default {
       ],
       output: 'import {type foo} from \'bar\'',
     },
+    {
+      code: 'import type {foo, baz} from \'bar\'',
+      errors: [
+        {
+          messageId: 'noTypeImport',
+        },
+      ],
+      output: 'import {type foo, type baz} from \'bar\'',
+    },
   ],
   valid: [
     {
