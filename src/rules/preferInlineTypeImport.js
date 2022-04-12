@@ -18,20 +18,32 @@ export default {
     const sourceCode = context.getSourceCode();
     return {
       ImportDeclaration: (node) => {
-        if (node.importKind === 'type') {
-          context.report({
-            *fix (fixer) {
-              yield* removeTypeSpecifier(fixer, sourceCode, node);
-
-              for (const specifier of node.specifiers) {
-                yield fixer.insertTextBefore(specifier, 'type ');
-              }
-            },
-            loc: node.loc,
-            messageId: 'noTypeImport',
-            node,
-          });
+        if (node.importKind !== 'type') {
+          return;
         }
+
+        // import type Foo from 'foo';
+        if (node.specifiers[0]?.type === 'ImportDefaultSpecifier') {
+          return;
+        }
+
+        // import type * as Foo from 'foo';
+        if (node.specifiers[0]?.type === 'ImportNamespaceSpecifier') {
+          return;
+        }
+
+        context.report({
+          *fix (fixer) {
+            yield* removeTypeSpecifier(fixer, sourceCode, node);
+
+            for (const specifier of node.specifiers) {
+              yield fixer.insertTextBefore(specifier, 'type ');
+            }
+          },
+          loc: node.loc,
+          messageId: 'noTypeImport',
+          node,
+        });
       },
     };
   },
