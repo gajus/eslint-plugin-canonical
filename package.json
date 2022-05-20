@@ -14,19 +14,19 @@
   },
   "description": "Canonical linting rules for ESLint.",
   "devDependencies": {
-    "@babel/cli": "^7.17.6",
-    "@babel/core": "^7.17.9",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.18.0",
     "@babel/eslint-parser": "^7.17.0",
-    "@babel/node": "^7.16.8",
-    "@babel/plugin-transform-react-jsx": "^7.17.3",
-    "@babel/preset-env": "^7.16.11",
-    "@typescript-eslint/parser": "^5.19.0",
+    "@babel/node": "^7.17.10",
+    "@babel/plugin-transform-react-jsx": "^7.17.12",
+    "@babel/preset-env": "^7.18.0",
+    "@typescript-eslint/parser": "^5.25.0",
     "ajv": "^8.11.0",
     "babel-plugin-add-module-exports": "^1.0.4",
     "eclint": "^2.8.1",
-    "eslint": "^8.13.0",
-    "eslint-config-canonical": "^34.1.1",
-    "eslint-plugin-eslint-plugin": "^4.1.0",
+    "eslint": "^8.15.0",
+    "eslint-config-canonical": "^35.0.0",
+    "eslint-plugin-eslint-plugin": "^4.2.0",
     "gitdown": "^3.1.5",
     "glob": "^7.2.0",
     "husky": "^7.0.4",
@@ -47,7 +47,7 @@
   "main": "./dist/index.js",
   "name": "eslint-plugin-canonical",
   "peerDependencies": {
-    "eslint": "^8.13.0"
+    "eslint": "^8.15.0"
   },
   "repository": {
     "type": "git",

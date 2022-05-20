@@ -120,7 +120,6 @@ export default {
   create (context) {
     return {
       MemberExpression (node) {
-        /* eslint complexity: [2, 9] */
         if (node.computed && node.property.type === 'Identifier') {
           /**
            * handles cases like {}[i][j]
