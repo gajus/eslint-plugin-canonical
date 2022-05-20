@@ -29,8 +29,9 @@ const reportingRules = [
   'import-specifier-newline',
   'no-restricted-strings',
   'no-use-extend-native',
-  'sort-keys',
   'prefer-inline-type-import',
+  'prefer-use-mount',
+  'sort-keys',
 ];
 
 const parser = require.resolve('@typescript-eslint/parser');

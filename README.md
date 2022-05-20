@@ -22,6 +22,7 @@ ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-cano
         * [`no-restricted-strings`](#eslint-plugin-canonical-rules-no-restricted-strings)
         * [`no-use-extend-native`](#eslint-plugin-canonical-rules-no-use-extend-native)
         * [`prefer-inline-type-import`](#eslint-plugin-canonical-rules-prefer-inline-type-import)
+        * [`prefer-use-mount`](#eslint-plugin-canonical-rules-prefer-use-mount)
         * [`sort-keys`](#eslint-plugin-canonical-rules-sort-keys)
 
 
@@ -1215,12 +1216,41 @@ The following patterns are considered problems:
 ```js
 import type {foo} from 'bar'
 // Message: undefined
+
+import type {foo, baz} from 'bar'
+// Message: undefined
 ```
 
 The following patterns are not considered problems:
 
 ```js
 import {type foo} from 'bar'
+
+import type Foo from 'bar'
+
+import type * as Foo from 'bar'
+```
+
+
+
+<a name="eslint-plugin-canonical-rules-prefer-use-mount"></a>
+### <code>prefer-use-mount</code>
+
+In React, it is common to use [`useEffect`](https://reactjs.org/docs/hooks-reference.html#useeffect) without dependencies when the intent is to run the effect only once (on mount and unmount). However, just doing that may lead to undesired side-effects, such as the effect being called twice in [Strict Mode](https://reactjs.org/docs/strict-mode.html). For this reason, it is better to use an abstraction such as [`useMount`](https://stackoverflow.com/a/72319081/368691) that handles this use case.
+
+The following patterns are considered problems:
+
+```js
+useEffect(() => {}, [])
+// Message: undefined
+```
+
+The following patterns are not considered problems:
+
+```js
+useEffect(() => {}, [foo])
+
+useMount(() => {}, [])
 ```
 
 

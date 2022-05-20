@@ -9,6 +9,7 @@ import importSpecifierNewline from './rules/importSpecifierNewline';
 import noRestrictedStrings from './rules/noRestrictedStrings';
 import noUseExtendNative from './rules/noUseExtendNative';
 import preferInlineTypeImport from './rules/preferInlineTypeImport';
+import preferUseMount from './rules/preferUseMount';
 import sortKeys from './rules/sortKeys';
 
 export default {
@@ -26,6 +27,7 @@ export default {
     'no-restricted-strings': noRestrictedStrings,
     'no-use-extend-native': noUseExtendNative,
     'prefer-inline-type-import': preferInlineTypeImport,
+    'prefer-use-mount': preferUseMount,
     'sort-keys': sortKeys,
   },
   rulesConfig: {
@@ -39,6 +41,7 @@ export default {
     'no-restricted-strings': 0,
     'no-use-extend-native': 0,
     'prefer-inline-type-import': 0,
+    'prefer-use-mount': 0,
     'sort-keys': 0,
   },
 };
