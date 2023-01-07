@@ -20,6 +20,9 @@
     "@babel/node": "^7.17.10",
     "@babel/plugin-transform-react-jsx": "^7.17.12",
     "@babel/preset-env": "^7.18.0",
+    "@semantic-release/commit-analyzer": "^9.0.2",
+    "@semantic-release/github": "^8.0.7",
+    "@semantic-release/npm": "^9.0.1",
     "@typescript-eslint/parser": "^5.25.0",
     "ajv": "^8.11.0",
     "babel-plugin-add-module-exports": "^1.0.4",
@@ -33,7 +36,7 @@
     "jsonlint": "^1.6.3",
     "mocha": "^9.2.2",
     "rimraf": "^3.0.2",
-    "semantic-release": "^18.0.1"
+    "semantic-release": "^20.0.0"
   },
   "engines": {
     "node": ">=16.0.0"

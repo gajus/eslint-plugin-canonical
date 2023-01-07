@@ -7,10 +7,10 @@
 .*
 !.babelrc
 !.editorconfig
-!.eslintrc
 !.eslintignore
+!.eslintrc
+!.github
 !.gitignore
 !.husky
 !.npmignore
 !.README
-!.travis.yml
