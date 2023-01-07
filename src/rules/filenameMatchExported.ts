@@ -29,8 +29,8 @@ const transformMap = {
 };
 
 const getStringToCheckAgainstExport = (parsed, replacePattern?: RegExp) => {
-  const dirArray = parsed.dir.split(path.sep);
-  const lastDirectory = dirArray[dirArray.length - 1];
+  const directoryArray = parsed.dir.split(path.sep);
+  const lastDirectory = directoryArray[directoryArray.length - 1];
 
   if (isIndexFile(parsed)) {
     return lastDirectory;

@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/no-undefined-types */
 /* eslint-disable func-style */
 
 /**
@@ -46,7 +47,7 @@ import {
 const getStaticPropertyName = (node) => {
   let property;
 
-  switch (node && node.type) {
+  switch (node.type) {
     case 'Property':
     case 'MethodDefinition':
       property = node.key;
@@ -59,7 +60,7 @@ const getStaticPropertyName = (node) => {
     // no default
   }
 
-  switch (property && property.type) {
+  switch (property.type) {
     case 'Literal':
       return String(property.value);
 
@@ -156,8 +157,8 @@ export default createRule({
       throw new TypeError('Unexpected state');
     }
 
-    const insensitive = (options && options.caseSensitive) === false;
-    const natural = Boolean(options && options.natural);
+    const insensitive = options.caseSensitive === false;
+    const natural = Boolean(options.natural);
     const isValidOrder = isValidOrders[order + (insensitive ? 'I' : '') + (natural ? 'N' : '')];
 
     // The stack to save the previous property's name for each object literals.

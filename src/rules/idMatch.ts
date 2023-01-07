@@ -1,3 +1,4 @@
+/* eslint-disable jsdoc/no-undefined-types */
 /* eslint-disable complexity */
 /* eslint-disable func-style */
 

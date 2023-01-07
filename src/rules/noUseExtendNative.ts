@@ -1,3 +1,4 @@
+/* eslint-disable no-prototype-builtins */
 /**
  * @author https://github.com/dustinspecker/eslint-plugin-no-use-extend-native/blob/master/src/no-use-extend-native.js
  */
@@ -134,7 +135,7 @@ export default createRule({
         }
 
         // @ts-expect-error TODO
-        const isArgumentToParent = node.parent && node.parent.hasOwnProperty('arguments') && node.parent.arguments.includes(node);
+        const isArgumentToParent = node.parent.hasOwnProperty('arguments') && node.parent.arguments.includes(node);
         const usageType = isArgumentToParent ? node.type : node.parent?.type;
 
         const {
