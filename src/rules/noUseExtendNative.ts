@@ -5,6 +5,9 @@ import isGetSetProp from 'is-get-set-prop';
 import isJsType from 'is-js-type';
 import isObjProp from 'is-obj-prop';
 import isProtoProp from 'is-proto-prop';
+import {
+  createRule,
+} from '../utilities';
 
 /**
  * Return type of value of left or right
@@ -55,26 +58,26 @@ const getJsTypeAndPropertyName = (node) => {
   let propertyName;
 
   switch (node.object.type) {
-  case 'NewExpression':
-    jsType = node.object.callee.name;
-    break;
-  case 'Literal':
-    jsType = getType(node.object);
-    break;
-  case 'BinaryExpression':
-    jsType = binaryExpressionProduces(node.object);
-    break;
-  case 'Identifier':
-    if (node.property.name === 'prototype' && node.parent.property) {
-      jsType = node.object.name;
-      propertyName = node.parent.property.name;
-    } else {
-      jsType = node.object.name;
-    }
+    case 'NewExpression':
+      jsType = node.object.callee.name;
+      break;
+    case 'Literal':
+      jsType = getType(node.object);
+      break;
+    case 'BinaryExpression':
+      jsType = binaryExpressionProduces(node.object);
+      break;
+    case 'Identifier':
+      if (node.property.name === 'prototype' && node.parent.property) {
+        jsType = node.object.name;
+        propertyName = node.parent.property.name;
+      } else {
+        jsType = node.object.name;
+      }
 
-    break;
-  default:
-    jsType = node.object.type.replace('Expression', '');
+      break;
+    default:
+      jsType = node.object.type.replace('Expression', '');
   }
 
   propertyName = propertyName || node.property.name || node.property.value;
@@ -116,7 +119,7 @@ const isInvalid = (jsType, propertyName, usageType) => {
   return unknownGetterSetterOrjsTypeExpressed || getterSetterCalledAsFunction || unknownjsTypeCalledAsFunction;
 };
 
-export default {
+export default createRule({
   create (context) {
     return {
       MemberExpression (node) {
@@ -130,8 +133,9 @@ export default {
           return;
         }
 
-        const isArgToParent = node.parent.arguments && node.parent.arguments.includes(node);
-        const usageType = isArgToParent ? node.type : node.parent.type;
+        // @ts-expect-error TODO
+        const isArgumentToParent = node.parent && node.parent.hasOwnProperty('arguments') && node.parent.arguments.includes(node);
+        const usageType = isArgumentToParent ? node.type : node.parent?.type;
 
         const {
           propertyName,
@@ -140,15 +144,24 @@ export default {
 
         if (isInvalid(jsType, propertyName, usageType) && isInvalid('Function', propertyName, usageType)) {
           context.report({
-            message: 'Avoid using extended native objects',
+            messageId: 'noExtendNative',
             node,
           });
         }
       },
     };
   },
+  defaultOptions: [],
   meta: {
+    docs: {
+      description: '',
+      recommended: 'error',
+    },
+    messages: {
+      noExtendNative: 'Avoid using extended native objects',
+    },
     schema: [],
     type: 'problem',
   },
-};
+  name: 'no-use-extend-native',
+});

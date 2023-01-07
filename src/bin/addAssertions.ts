@@ -8,7 +8,7 @@ import glob from 'glob';
 import _ from 'lodash';
 
 const formatCodeSnippet = (setup) => {
-  const paragraphs = [];
+  const paragraphs: string[] = [];
 
   if (setup.options) {
     paragraphs.push('// Options: ' + JSON.stringify(setup.options));
@@ -41,7 +41,7 @@ const getAssertions = () => {
   });
 
   const assertionCodes = _.map(assertionFiles, (filePath) => {
-    // eslint-disable-next-line import/no-dynamic-require
+    // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
     const codes = require(filePath);
 
     return {
@@ -57,9 +57,10 @@ const updateDocuments = (assertions) => {
   const readmeDocumentPath = path.join(__dirname, '../../README.md');
   let documentBody;
 
+  // eslint-disable-next-line node/no-sync
   documentBody = fs.readFileSync(readmeDocumentPath, 'utf8');
 
-  documentBody = documentBody.replace(/<!-- assertions ([a-z]+?) -->/ugi, (assertionsBlock) => {
+  documentBody = documentBody.replaceAll(/<!-- assertions ([a-z]+?) -->/ugi, (assertionsBlock) => {
     let exampleBody;
 
     const ruleName = assertionsBlock.match(/assertions ([a-z]+)/ui)[1];
@@ -83,8 +84,7 @@ const updateDocuments = (assertions) => {
     return exampleBody;
   });
 
-  // console.log(documentBody);
-
+  // eslint-disable-next-line node/no-sync
   fs.writeFileSync(readmeDocumentPath, documentBody);
 };
 

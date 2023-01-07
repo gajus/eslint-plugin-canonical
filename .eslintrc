@@ -1,19 +1,14 @@
 {
-  "extends": [
-    "canonical",
-    "canonical/node",
-    "plugin:eslint-plugin/recommended"
-  ],
-  "plugins": [
-    "eslint-plugin"
-  ],
-  "rules": {
-    "unicorn/prevent-abbreviations": 0,
-    "jsdoc/no-undefined-types": 0,
-    "node/global-require": 0,
-    "node/no-sync": 0
-  },
   "overrides": [
+    {
+      "extends": [
+        "canonical",
+        "canonical/node",
+        "canonical/typescript",
+        "canonical/typescript-disable-type-checking"
+      ],
+      "files": "*.ts"
+    },
     {
       "extends": [
         "canonical/json"

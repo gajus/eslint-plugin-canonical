@@ -1,6 +1,6 @@
 ### `filename-match-regex`
 
-A rule to enforce a certain file naming convention using a regular expression.
+Enforce a certain file naming convention using a regular expression.
 
 The convention can be configured using a regular expression (the default is `camelCase.js`). Additionally
 exporting files can be ignored with a second configuration parameter.

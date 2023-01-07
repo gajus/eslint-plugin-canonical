@@ -14,29 +14,21 @@
   },
   "description": "Canonical linting rules for ESLint.",
   "devDependencies": {
-    "@babel/cli": "^7.17.10",
-    "@babel/core": "^7.18.0",
-    "@babel/eslint-parser": "^7.17.0",
-    "@babel/node": "^7.17.10",
-    "@babel/plugin-transform-react-jsx": "^7.17.12",
-    "@babel/preset-env": "^7.18.0",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/github": "^8.0.7",
     "@semantic-release/npm": "^9.0.1",
     "@typescript-eslint/parser": "^5.25.0",
+    "@typescript-eslint/utils": "^5.48.0",
     "ajv": "^8.11.0",
-    "babel-plugin-add-module-exports": "^1.0.4",
-    "eclint": "^2.8.1",
-    "eslint": "^8.15.0",
-    "eslint-config-canonical": "^35.0.0",
-    "eslint-plugin-eslint-plugin": "^4.2.0",
+    "eslint": "^8.31.0",
+    "eslint-config-canonical": "^38.3.0",
     "gitdown": "^3.1.5",
     "glob": "^7.2.0",
     "husky": "^7.0.4",
-    "jsonlint": "^1.6.3",
     "mocha": "^9.2.2",
-    "rimraf": "^3.0.2",
-    "semantic-release": "^20.0.0"
+    "semantic-release": "^20.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.9.4"
   },
   "engines": {
     "node": ">=16.0.0"
@@ -49,22 +41,18 @@
   "license": "BSD-3-Clause",
   "main": "./dist/index.js",
   "name": "eslint-plugin-canonical",
-  "peerDependencies": {
-    "eslint": "^8.15.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/gajus/eslint-plugin-canonical"
   },
   "scripts": {
-    "build": "rimraf ./dist && babel ./src --out-dir ./dist --copy-files",
-    "check-docs": "babel-node ./src/bin/checkDocs",
-    "check-tests": "babel-node ./src/bin/checkTests",
+    "build": "rm -fr ./dist && tsc",
+    "check-docs": "tsx ./src/bin/checkDocumentation",
+    "check-tests": "tsx ./src/bin/checkTests",
     "create-readme": "gitdown ./.README/README.md --output-file ./README.md && npm run documentation-add-assertions",
-    "documentation-add-assertions": "babel-node ./src/bin/addAssertions",
-    "format-json": "jsonlint --sort-keys --in-place --indent \"  \" ./src/configs/recommended.json",
-    "lint": "eslint ./src ./tests",
-    "test": "mocha --require @babel/register ./tests/rules/index.js"
+    "documentation-add-assertions": "tsx ./src/bin/addAssertions",
+    "lint": "npm run check-documentation && npm run check-tests && eslint .",
+    "test": "mocha --require ts-node/register/transpile-only ./tests/rules/index.ts"
   },
   "version": "0.0.0-development"
 }

@@ -6,25 +6,27 @@ import {
 } from './utilities';
 
 const getTestIndexRules = () => {
+  // eslint-disable-next-line node/no-sync
   const content = fs.readFileSync(path.resolve(__dirname, '../../tests/rules/index.js'), 'utf8');
 
-  // eslint-disable-next-line unicorn/no-array-reduce
-  const result = content.split('\n').reduce((acc, line) => {
-    if (acc.inRulesArray) {
+  const result = {
+    inRulesArray: false,
+    rules: [] as string[],
+  };
+
+  const lines = content.split('\n');
+
+  for (const line of lines) {
+    if (result.inRulesArray) {
       if (line === '];') {
-        acc.inRulesArray = false;
+        result.inRulesArray = false;
       } else {
-        acc.rules.push(line.replace(/^\s*'([^']+)',?$/u, '$1'));
+        result.rules.push(line.replace(/^\s*'([^']+)',?$/u, '$1'));
       }
     } else if (line === 'const reportingRules = [') {
-      acc.inRulesArray = true;
+      result.inRulesArray = true;
     }
-
-    return acc;
-  }, {
-    inRulesArray: false,
-    rules: [],
-  });
+  }
 
   const {
     rules,
@@ -42,7 +44,7 @@ const getTestIndexRules = () => {
  *  - file `/tests/rules/assertions/<rule>.js` exists
  *  - rule is included in `reportingRules` variable in `/tests/rules/index.js`
  */
-const checkTests = (rulesNames) => {
+const checkTests = (rulesNames: readonly string[]): void => {
   const testIndexRules = getTestIndexRules();
 
   const invalid = rulesNames.filter((names) => {

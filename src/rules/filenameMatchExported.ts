@@ -12,17 +12,12 @@ import {
   snakeCase,
 } from 'lodash';
 import {
-  getExportedName,
-} from '../utilities/getExportedName';
-import {
+  createRule,
   isIgnoredFilename,
-} from '../utilities/isIgnoredFilename';
-import {
+  getExportedName,
   isIndexFile,
-} from '../utilities/isIndexFile';
-import {
   parseFilename,
-} from '../utilities/parseFilename';
+} from '../utilities';
 
 const transformMap = {
   camel: camelCase,
@@ -33,7 +28,7 @@ const transformMap = {
   snake: snakeCase,
 };
 
-const getStringToCheckAgainstExport = (parsed, replacePattern) => {
+const getStringToCheckAgainstExport = (parsed, replacePattern?: RegExp) => {
   const dirArray = parsed.dir.split(path.sep);
   const lastDirectory = dirArray[dirArray.length - 1];
 
@@ -45,7 +40,7 @@ const getStringToCheckAgainstExport = (parsed, replacePattern) => {
 };
 
 const getTransformsFromOptions = (option) => {
-  const usedTransforms = option && option.push ? option : [
+  const usedTransforms = option?.push ? option : [
     option,
   ];
 
@@ -80,7 +75,7 @@ const create = (context) => {
   return {
     Program (node) {
       const transforms = getTransformsFromOptions(context.options[0]);
-      const replacePattern = context.options[1] ? new RegExp(context.options[1], 'u') : null;
+      const replacePattern = context.options[1] ? new RegExp(context.options[1], 'u') : undefined;
       const filename = context.getFilename();
       const absoluteFilename = path.resolve(filename);
       const parsed = parseFilename(absoluteFilename);
@@ -122,9 +117,16 @@ const create = (context) => {
   };
 };
 
-export default {
+export default createRule({
   create,
+  defaultOptions: [],
   meta: {
+    docs: {
+      description:
+        'Match the file name against the default exported value in the module.',
+      recommended: 'warn',
+    },
+    messages: {},
     schema: [
       {
         anyOf: [
@@ -161,4 +163,5 @@ export default {
     ],
     type: 'suggestion',
   },
-};
+  name: 'filename-match-exported',
+});

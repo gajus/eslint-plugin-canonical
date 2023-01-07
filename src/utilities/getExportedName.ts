@@ -1,6 +1,8 @@
-const getNodeName = (node, options) => {
-  const op = options || [];
+import {
+  type TSESTree,
+} from '@typescript-eslint/utils';
 
+const getNodeName = (node, options = []) => {
   if (node.type === 'Identifier') {
     return node.name;
   }
@@ -9,14 +11,14 @@ const getNodeName = (node, options) => {
     return node.id.name;
   }
 
-  if (op[2] && node.type === 'CallExpression' && node.callee.type === 'Identifier') {
+  if (options[2] && node.type === 'CallExpression' && node.callee.type === 'Identifier') {
     return node.callee.name;
   }
 
   return null;
 };
 
-export const getExportedName = (programNode, options) => {
+export const getExportedName = (programNode: TSESTree.Program, options?: []) => {
   for (const node of programNode.body) {
     // export default ...
     if (node.type === 'ExportDefaultDeclaration') {

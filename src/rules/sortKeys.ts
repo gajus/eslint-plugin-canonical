@@ -4,8 +4,13 @@
  * @file Rule to require object keys to be sorted
  * @author Toru Nagashima
  */
-
+import {
+  type RuleFix,
+} from '@typescript-eslint/utils/dist/ts-eslint';
 import naturalCompare from 'natural-compare';
+import {
+  createRule,
+} from '../utilities';
 
 /**
  * Gets the property name of a given node.
@@ -39,38 +44,38 @@ import naturalCompare from 'natural-compare';
  * @returns {string|null} The property name if static. Otherwise, null.
  */
 const getStaticPropertyName = (node) => {
-  let prop;
+  let property;
 
   switch (node && node.type) {
-  case 'Property':
-  case 'MethodDefinition':
-    prop = node.key;
-    break;
+    case 'Property':
+    case 'MethodDefinition':
+      property = node.key;
+      break;
 
-  case 'MemberExpression':
-    prop = node.property;
-    break;
+    case 'MemberExpression':
+      property = node.property;
+      break;
 
     // no default
   }
 
-  switch (prop && prop.type) {
-  case 'Literal':
-    return String(prop.value);
+  switch (property && property.type) {
+    case 'Literal':
+      return String(property.value);
 
-  case 'TemplateLiteral':
-    if (prop.expressions.length === 0 && prop.quasis.length === 1) {
-      return prop.quasis[0].value.cooked;
-    }
+    case 'TemplateLiteral':
+      if (property.expressions.length === 0 && property.quasis.length === 1) {
+        return property.quasis[0].value.cooked;
+      }
 
-    break;
+      break;
 
-  case 'Identifier':
-    if (!node.computed) {
-      return prop.name;
-    }
+    case 'Identifier':
+      if (!node.computed) {
+        return property.name;
+      }
 
-    break;
+      break;
 
     // no default
   }
@@ -104,7 +109,7 @@ function getPropertyName (node) {
  * Functions which check that the given 2 names are in specific order.
  *
  * Postfix `I` is meant insensitive.
- * Postfix `N` is meant natual.
+ * Postfix `N` is meant natural.
  *
  * @private
  */
@@ -135,20 +140,35 @@ const isValidOrders = {
   },
 };
 
-export default {
+type Stack = {
+  prevName: string | null,
+  prevNode: unknown,
+  upper: Stack | null,
+};
+
+export default createRule({
   create (context) {
     // Parse options.
     const order = context.options[0] || 'asc';
     const options = context.options[1];
+
+    if (typeof options === 'string') {
+      throw new TypeError('Unexpected state');
+    }
+
     const insensitive = (options && options.caseSensitive) === false;
-    const natual = Boolean(options && options.natural);
-    const isValidOrder = isValidOrders[order + (insensitive ? 'I' : '') + (natual ? 'N' : '')];
+    const natural = Boolean(options && options.natural);
+    const isValidOrder = isValidOrders[order + (insensitive ? 'I' : '') + (natural ? 'N' : '')];
 
     // The stack to save the previous property's name for each object literals.
-    let stack = null;
+    let stack: Stack | null = null;
 
     const SpreadElement = (node) => {
       if (node.parent.type === 'ObjectExpression') {
+        if (!stack) {
+          throw new Error('Unexpected state');
+        }
+
         stack.prevName = null;
       }
     };
@@ -165,17 +185,26 @@ export default {
       },
 
       'ObjectExpression:exit' () {
+        if (!stack) {
+          throw new Error('Unexpected state');
+        }
+
         stack = stack.upper;
       },
 
       Property (node) {
-        if (node.parent.type === 'ObjectPattern') {
+        if (node.parent?.type === 'ObjectPattern') {
           return;
+        }
+
+        if (!stack) {
+          throw new Error('Unexpected state');
         }
 
         const {
           prevName,
         } = stack;
+
         const {
           prevNode,
         } = stack;
@@ -194,23 +223,23 @@ export default {
           context.report({
             data: {
               insensitive: insensitive ? 'insensitive ' : '',
-              natual: natual ? 'natural ' : '',
+              natural: natural ? 'natural ' : '',
               order,
               prevName,
               thisName,
             },
             fix (fixer) {
-              const fixes = [];
+              const fixes: RuleFix[] = [];
               const sourceCode = context.getSourceCode();
               const moveProperty = (fromNode, toNode) => {
-                const prevText = sourceCode.getText(fromNode);
+                const previousText = sourceCode.getText(fromNode);
                 const thisComments = sourceCode.getCommentsBefore(fromNode);
                 for (const thisComment of thisComments) {
                   fixes.push(fixer.insertTextBefore(toNode, sourceCode.getText(thisComment) + '\n'));
                   fixes.push(fixer.remove(thisComment));
                 }
 
-                fixes.push(fixer.replaceText(toNode, prevText));
+                fixes.push(fixer.replaceText(toNode, previousText));
               };
 
               moveProperty(node, prevNode);
@@ -219,8 +248,7 @@ export default {
               return fixes;
             },
             loc: node.key.loc,
-            message:
-              'Expected object keys to be in {{natual}}{{insensitive}}{{order}}ending order. \'{{thisName}}\' should be before \'{{prevName}}\'.',
+            messageId: 'sort',
             node,
           });
         }
@@ -229,15 +257,23 @@ export default {
       SpreadElement,
     };
   },
-
+  defaultOptions: [
+    'asc',
+    {
+      caseSensitive: true,
+      minKeys: 2,
+      natural: true,
+    },
+  ],
   meta: {
     docs: {
-      category: 'Stylistic Issues',
       description: 'require object keys to be sorted',
-      recommended: false,
-      url: 'https://github.com/leo-buneev/eslint-plugin-sort-keys-fix',
+      recommended: 'error',
     },
     fixable: 'code',
+    messages: {
+      sort: 'Expected object keys to be in {{natural}}{{insensitive}}{{order}}ending order. \'{{thisName}}\' should be before \'{{prevName}}\'.',
+    },
     schema: [
       {
         enum: [
@@ -260,4 +296,5 @@ export default {
     ],
     type: 'suggestion',
   },
-};
+  name: 'sort-keys',
+});

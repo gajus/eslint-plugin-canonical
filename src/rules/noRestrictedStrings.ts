@@ -1,21 +1,29 @@
-export default {
+import {
+  createRule,
+} from '../utilities';
+
+export default createRule({
   create: (context) => {
     const {
       options,
     } = context;
 
-    const disallowedStrings = options[0] || [];
+    const disallowedStrings = options[0] ?? [];
 
     return {
       Literal: (node) => {
         if (
           node.value !== '' &&
+          typeof node.value === 'string' &&
           /\S/u.test(node.value)
         ) {
           for (const disallowedString of disallowedStrings) {
             if (node.value.includes(disallowedString)) {
               context.report({
-                message: `Disallowed string: '${disallowedString}'.`,
+                data: {
+                  disallowedString,
+                },
+                messageId: 'disallowedString',
                 node,
               });
             }
@@ -28,7 +36,10 @@ export default {
           for (const disallowedString of disallowedStrings) {
             if (node.value.raw.includes(disallowedString)) {
               context.report({
-                message: `Disallowed string in template: '${disallowedString}'.`,
+                data: {
+                  disallowedString,
+                },
+                messageId: 'disallowedStringInTemplate',
                 node,
               });
             }
@@ -37,13 +48,18 @@ export default {
       },
     };
   },
+  defaultOptions: [
+    [] as string[],
+  ],
   meta: {
     docs: {
-      category: '',
       description: 'Disallowed string.',
       recommended: false,
     },
-    fixable: null,
+    messages: {
+      disallowedString: 'Disallowed string: \'{{disallowedString}}\'.',
+      disallowedStringInTemplate: 'Disallowed string in template: \'{{disallowedString}}\'.',
+    },
     schema: {
       items: {
         items: {
@@ -55,4 +71,5 @@ export default {
     },
     type: 'problem',
   },
-};
+  name: 'no-restricted-strings',
+});

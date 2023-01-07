@@ -5,17 +5,20 @@ import {
   isFile,
 } from './utilities';
 
-const windows = (array, size) => {
-  const output = [];
+const windows = <T>(array: T[], size): T[][] => {
+  const output: T[][] = [];
 
   for (let ii = 0; ii < array.length - size + 1; ii++) {
-    output.push(array.slice(ii, ii + size));
+    const slice = array.slice(ii, ii + size);
+
+    output.push(slice);
   }
 
   return output;
 };
 
-const getDocIndexRules = () => {
+const getDocumentIndexRules = () => {
+  // eslint-disable-next-line node/no-sync
   const content = fs.readFileSync(path.resolve(__dirname, '../../.README/README.md'), 'utf8');
 
   const rules = content.split('\n').map((line) => {
@@ -37,8 +40,9 @@ const getDocIndexRules = () => {
   return rules;
 };
 
-const hasCorrectAssertions = (docPath, name) => {
-  const content = fs.readFileSync(docPath, 'utf8');
+const hasCorrectAssertions = (documentPath, name) => {
+  // eslint-disable-next-line node/no-sync
+  const content = fs.readFileSync(documentPath, 'utf8');
 
   const match = /<!-- assertions ([A-Za-z]+) -->/u.exec(content);
 
@@ -56,12 +60,12 @@ const hasCorrectAssertions = (docPath, name) => {
  *  - rule is included in gitdown directive in `/.README/README.md`
  *  - rules in `/.README/README.md` are alphabetically sorted
  */
-const checkDocs = (rulesNames) => {
-  const docIndexRules = getDocIndexRules();
+const checkDocumentation = (rulesNames) => {
+  const documentIndexRules = getDocumentIndexRules();
 
-  const sorted = windows(docIndexRules, 2)
+  const sorted = windows(documentIndexRules, 2)
     .every((chunk) => {
-      return chunk[0] < chunk[1];
+      return chunk[0] && chunk[1] && chunk[0] < chunk[1];
     });
 
   if (!sorted) {
@@ -69,12 +73,12 @@ const checkDocs = (rulesNames) => {
   }
 
   const invalid = rulesNames.filter((names) => {
-    const docPath = path.resolve(__dirname, '../../.README/rules', names[1] + '.md');
-    const docExists = isFile(docPath);
-    const inIndex = docIndexRules.includes(names[1]);
-    const hasAssertions = docExists ? hasCorrectAssertions(docPath, names[0]) : false;
+    const documentPath = path.resolve(__dirname, '../../.README/rules', names[1] + '.md');
+    const documentExists = isFile(documentPath);
+    const inIndex = documentIndexRules.includes(names[1]);
+    const hasAssertions = documentExists ? hasCorrectAssertions(documentPath, names[0]) : false;
 
-    return !(docExists && inIndex && hasAssertions);
+    return !(documentExists && inIndex && hasAssertions);
   });
 
   if (invalid.length > 0) {
@@ -91,4 +95,4 @@ const checkDocs = (rulesNames) => {
   }
 };
 
-checkDocs(getRules());
+checkDocumentation(getRules());

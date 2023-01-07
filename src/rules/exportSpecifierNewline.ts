@@ -1,4 +1,8 @@
-export default {
+import {
+  createRule,
+} from '../utilities';
+
+export default createRule({
   create: (context) => {
     return {
       ExportNamedDeclaration: (node) => {
@@ -7,11 +11,20 @@ export default {
           const lastTokenOfPreviousProperty = sourceCode.getLastToken(node.specifiers[index - 1]);
           const firstTokenOfCurrentProperty = sourceCode.getFirstToken(node.specifiers[index]);
 
-          if (lastTokenOfPreviousProperty.loc.end.line === firstTokenOfCurrentProperty.loc.start.line) {
+          if (lastTokenOfPreviousProperty === null) {
+            return;
+          }
+
+          if (lastTokenOfPreviousProperty?.loc.end.line === firstTokenOfCurrentProperty?.loc.start.line) {
             context.report({
               fix (fixer) {
                 const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
-                const rangeAfterComma = [
+
+                if (comma === null) {
+                  return null;
+                }
+
+                const rangeAfterComma: readonly [number, number] = [
                   comma.range[1],
                   firstTokenOfCurrentProperty.range[0],
                 ];
@@ -32,7 +45,13 @@ export default {
       },
     };
   },
+  defaultOptions: [],
   meta: {
+    docs: {
+      description:
+        'Forces every export specifier to be on a new line.',
+      recommended: 'error',
+    },
     fixable: 'whitespace',
     messages: {
       specifiersOnNewline: 'Export specifiers must go on a new line.',
@@ -40,4 +59,5 @@ export default {
     schema: [],
     type: 'layout',
   },
-};
+  name: 'export-specifier-newline',
+});

@@ -54,6 +54,22 @@ export default {
       code: 'const {a,\nb} = obj;',
     },
     {
+      code: 'const {a,b} = obj;',
+      options: [
+        {
+          allowAllPropertiesOnSameLine: true,
+        },
+      ],
+    },
+    {
+      code: 'const [a,b] = obj;',
+      options: [
+        {
+          allowAllPropertiesOnSameLine: true,
+        },
+      ],
+    },
+    {
       code: 'const {a} = obj;',
     },
     {

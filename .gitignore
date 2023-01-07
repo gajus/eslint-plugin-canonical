@@ -2,15 +2,11 @@
 /dist
 /node_modules
 /package-lock.json
-/yarn.lock
 *.log
 .*
-!.babelrc
-!.editorconfig
 !.eslintignore
 !.eslintrc
 !.github
 !.gitignore
 !.husky
-!.npmignore
 !.README

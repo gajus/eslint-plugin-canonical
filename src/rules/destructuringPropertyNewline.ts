@@ -1,7 +1,11 @@
-export default {
+import {
+  createRule,
+} from '../utilities';
+
+export default createRule({
   create (context) {
-    const allowSameLine = context.options[0] && context.options[0].allowAllPropertiesOnSameLine;
-    const messageId = allowSameLine ?
+    const allowAllPropertiesOnSameLine = context.options[0]?.allowAllPropertiesOnSameLine;
+    const messageId = allowAllPropertiesOnSameLine ?
       'propertiesOnNewlineAll' :
       'propertiesOnNewline';
 
@@ -9,9 +13,28 @@ export default {
 
     return {
       ArrayPattern: (node) => {
-        if (allowSameLine && node.elements.length > 1) {
-          const firstTokenOfFirstProperty = sourceCode.getFirstToken(node.elements[0]);
-          const lastTokenOfLastProperty = sourceCode.getLastToken(node.elements[node.properties.length - 1]);
+        if (allowAllPropertiesOnSameLine && node.elements.length > 1) {
+          const firstToken = node.elements[0];
+          const lastToken = node.elements[node.elements.length - 1];
+
+          if (firstToken === null) {
+            return;
+          }
+
+          if (lastToken === null) {
+            return;
+          }
+
+          const firstTokenOfFirstProperty = sourceCode.getFirstToken(firstToken);
+          const lastTokenOfLastProperty = sourceCode.getLastToken(lastToken);
+
+          if (firstTokenOfFirstProperty === null) {
+            return;
+          }
+
+          if (lastTokenOfLastProperty === null) {
+            return;
+          }
 
           if (firstTokenOfFirstProperty.loc.end.line === lastTokenOfLastProperty.loc.start.line) {
             // All keys and values are on the same line
@@ -20,18 +43,30 @@ export default {
         }
 
         for (let index = 1; index < node.elements.length; index++) {
-          if (node.elements[index] === null || node.elements[index - 1] === null) {
+          const currentNode = node.elements[index];
+          const previousNode = node.elements[index - 1];
+
+          if (currentNode === null || previousNode === null) {
             continue;
           }
 
-          const lastTokenOfPreviousProperty = sourceCode.getLastToken(node.elements[index - 1]);
-          const firstTokenOfCurrentProperty = sourceCode.getFirstToken(node.elements[index]);
+          const lastTokenOfPreviousProperty = sourceCode.getLastToken(previousNode);
+          const firstTokenOfCurrentProperty = sourceCode.getFirstToken(currentNode);
+
+          if (lastTokenOfPreviousProperty === null || firstTokenOfCurrentProperty === null) {
+            continue;
+          }
 
           if (lastTokenOfPreviousProperty.loc.end.line === firstTokenOfCurrentProperty.loc.start.line) {
             context.report({
               fix (fixer) {
                 const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
-                const rangeAfterComma = [
+
+                if (comma === null) {
+                  return null;
+                }
+
+                const rangeAfterComma: readonly [number, number] = [
                   comma.range[1],
                   firstTokenOfCurrentProperty.range[0],
                 ];
@@ -51,9 +86,13 @@ export default {
         }
       },
       ObjectPattern: (node) => {
-        if (allowSameLine && node.properties.length > 1) {
+        if (allowAllPropertiesOnSameLine && node.properties.length > 1) {
           const firstTokenOfFirstProperty = sourceCode.getFirstToken(node.properties[0]);
           const lastTokenOfLastProperty = sourceCode.getLastToken(node.properties[node.properties.length - 1]);
+
+          if (firstTokenOfFirstProperty === null || lastTokenOfLastProperty === null) {
+            return;
+          }
 
           if (firstTokenOfFirstProperty.loc.end.line === lastTokenOfLastProperty.loc.start.line) {
             // All keys and values are on the same line
@@ -65,11 +104,20 @@ export default {
           const lastTokenOfPreviousProperty = sourceCode.getLastToken(node.properties[index - 1]);
           const firstTokenOfCurrentProperty = sourceCode.getFirstToken(node.properties[index]);
 
+          if (lastTokenOfPreviousProperty === null || firstTokenOfCurrentProperty === null) {
+            return;
+          }
+
           if (lastTokenOfPreviousProperty.loc.end.line === firstTokenOfCurrentProperty.loc.start.line) {
             context.report({
               fix (fixer) {
                 const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
-                const rangeAfterComma = [
+
+                if (comma === null) {
+                  return null;
+                }
+
+                const rangeAfterComma: readonly [number, number] = [
                   comma.range[1],
                   firstTokenOfCurrentProperty.range[0],
                 ];
@@ -90,7 +138,16 @@ export default {
       },
     };
   },
+  defaultOptions: [
+    {
+      allowAllPropertiesOnSameLine: false,
+    },
+  ],
   meta: {
+    docs: {
+      description: 'Like `object-property-newline`, but for destructuring.',
+      recommended: 'error',
+    },
     fixable: 'whitespace',
     messages: {
       propertiesOnNewline: 'Destructuring properties must go on a new line.',
@@ -110,4 +167,5 @@ export default {
     ],
     type: 'layout',
   },
-};
+  name: 'destructuring-property-newline',
+});

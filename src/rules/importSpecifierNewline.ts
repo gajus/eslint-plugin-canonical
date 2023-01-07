@@ -1,4 +1,8 @@
-export default {
+import {
+  createRule,
+} from '../utilities';
+
+export default createRule({
   create: (context) => {
     return {
       ImportDeclaration: (node) => {
@@ -12,11 +16,24 @@ export default {
           const lastTokenOfPreviousProperty = sourceCode.getLastToken(importSpecifiers[index - 1]);
           const firstTokenOfCurrentProperty = sourceCode.getFirstToken(importSpecifiers[index]);
 
+          if (lastTokenOfPreviousProperty === null) {
+            continue;
+          }
+
+          if (firstTokenOfCurrentProperty === null) {
+            continue;
+          }
+
           if (lastTokenOfPreviousProperty.loc.end.line === firstTokenOfCurrentProperty.loc.start.line) {
             context.report({
               fix (fixer) {
                 const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
-                const rangeAfterComma = [
+
+                if (comma === null) {
+                  return null;
+                }
+
+                const rangeAfterComma: readonly [number, number] = [
                   comma.range[1],
                   firstTokenOfCurrentProperty.range[0],
                 ];
@@ -37,7 +54,12 @@ export default {
       },
     };
   },
+  defaultOptions: [],
   meta: {
+    docs: {
+      description: '',
+      recommended: 'error',
+    },
     fixable: 'whitespace',
     messages: {
       specifiersOnNewline: 'Import specifiers must go on a new line.',
@@ -45,4 +67,5 @@ export default {
     schema: [],
     type: 'layout',
   },
-};
+  name: 'import-specifiers-newline',
+});

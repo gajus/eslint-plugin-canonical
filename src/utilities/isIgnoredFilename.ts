@@ -3,6 +3,6 @@ const ignoredFilenames = [
   '<input>',
 ];
 
-export const isIgnoredFilename = (filename) => {
+export const isIgnoredFilename = (filename: string): boolean => {
   return ignoredFilenames.includes(filename);
 };

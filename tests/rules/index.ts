@@ -10,11 +10,6 @@ import plugin from '../../src';
 
 const ruleTester = new RuleTester({
   parserOptions: {
-    babelOptions: {
-      plugins: [
-        '@babel/plugin-transform-react-jsx',
-      ],
-    },
     requireConfigFile: false,
   },
 });
@@ -41,8 +36,8 @@ const ajv = new Ajv({
 });
 
 for (const ruleName of reportingRules) {
-  // eslint-disable-next-line import/no-dynamic-require
-  const assertions = require('./assertions/' + camelCase(ruleName));
+  // eslint-disable-next-line @typescript-eslint/no-require-imports, @typescript-eslint/no-var-requires
+  const assertions = require('./assertions/' + camelCase(ruleName)).default;
 
   if (assertions.misconfigured) {
     for (const misconfiguration of assertions.misconfigured) {

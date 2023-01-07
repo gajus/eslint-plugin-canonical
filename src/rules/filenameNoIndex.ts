@@ -5,6 +5,9 @@
 
 import path from 'node:path';
 import {
+  createRule,
+} from '../utilities';
+import {
   isIgnoredFilename,
 } from '../utilities/isIgnoredFilename';
 import {
@@ -29,7 +32,7 @@ const create = (context) => {
 
       if (isIndex) {
         context.report({
-          message: '\'index.js\' files are not allowed.',
+          messageId: 'noIndex',
           node,
         });
       }
@@ -37,10 +40,19 @@ const create = (context) => {
   };
 };
 
-export default {
+export default createRule({
   create,
+  defaultOptions: [],
   meta: {
+    docs: {
+      description: '',
+      recommended: false,
+    },
+    messages: {
+      noIndex: '\'index.js\' files are not allowed.',
+    },
     schema: [],
     type: 'suggestion',
   },
-};
+  name: 'filename-no-index',
+});

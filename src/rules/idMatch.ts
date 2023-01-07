@@ -1,6 +1,10 @@
 /* eslint-disable complexity */
 /* eslint-disable func-style */
 
+import {
+  createRule,
+} from '../utilities';
+
 /**
  * @file Rule to flag non-matching identifiers
  * @author Matthieu Larcher
@@ -250,22 +254,21 @@ const create = (context) => {
   };
 };
 
-export default {
+export default createRule({
   create,
+  defaultOptions: [],
   meta: {
     docs: {
       description:
         'require identifiers to match a specified regular expression',
       recommended: false,
     },
-
     messages: {
       notMatch:
         'Identifier \'{{name}}\' does not match the pattern \'{{pattern}}\'.',
       notMatchPrivate:
         'Identifier \'#{{name}}\' does not match the pattern \'{{pattern}}\'.',
     },
-
     schema: [
       {
         type: 'string',
@@ -299,4 +302,5 @@ export default {
     ],
     type: 'suggestion',
   },
-};
+  name: 'id-match',
+});

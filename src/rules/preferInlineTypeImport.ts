@@ -1,3 +1,7 @@
+import {
+  createRule,
+} from '../utilities';
+
 const removeTypeSpecifier = function *(fixer, sourceCode, node) {
   const importKeyword = sourceCode.getFirstToken(node);
 
@@ -13,7 +17,7 @@ const removeTypeSpecifier = function *(fixer, sourceCode, node) {
   }
 };
 
-export default {
+export default createRule({
   create: (context) => {
     const sourceCode = context.getSourceCode();
     return {
@@ -34,6 +38,7 @@ export default {
 
         context.report({
           *fix (fixer) {
+            // @ts-expect-error TODO
             yield* removeTypeSpecifier(fixer, sourceCode, node);
 
             for (const specifier of node.specifiers) {
@@ -47,7 +52,12 @@ export default {
       },
     };
   },
+  defaultOptions: [],
   meta: {
+    docs: {
+      description: '',
+      recommended: 'error',
+    },
     fixable: 'code',
     messages: {
       noTypeImport: 'Type imports must be inlined',
@@ -55,4 +65,5 @@ export default {
     schema: [],
     type: 'suggestion',
   },
-};
+  name: 'prefer-inline-type-imports',
+});
