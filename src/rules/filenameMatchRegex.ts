@@ -28,13 +28,13 @@ export default createRule({
         const absoluteFilename = path.resolve(filename);
         const parsed = parseFilename(absoluteFilename);
         const shouldIgnore = isIgnoredFilename(filename);
-        const isExporting = Boolean(getExportedName(node));
-
         const matchesRegex = conventionRegexp.test(parsed.name);
 
         if (shouldIgnore) {
           return;
         }
+
+        const isExporting = Boolean(getExportedName(node));
 
         if (ignoreExporting && isExporting) {
           return;
