@@ -40,7 +40,7 @@
     "canonical"
   ],
   "license": "BSD-3-Clause",
-  "main": "./dist/index.js",
+  "main": "./dist/src/index.js",
   "name": "eslint-plugin-canonical",
   "repository": {
     "type": "git",
