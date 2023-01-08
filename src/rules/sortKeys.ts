@@ -147,11 +147,17 @@ type Stack = {
   upper: Stack | null,
 };
 
+const defaultOptions = {
+  caseSensitive: true,
+  minKeys: 2,
+  natural: false,
+};
+
 export default createRule({
   create (context) {
     // Parse options.
     const order = context.options[0] || 'asc';
-    const options = context.options[1];
+    const options = context.options[1] ?? defaultOptions;
 
     if (typeof options === 'string') {
       throw new TypeError('Unexpected state');
@@ -260,11 +266,7 @@ export default createRule({
   },
   defaultOptions: [
     'asc',
-    {
-      caseSensitive: true,
-      minKeys: 2,
-      natural: true,
-    },
+    defaultOptions,
   ],
   meta: {
     docs: {
