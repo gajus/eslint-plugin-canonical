@@ -7,7 +7,7 @@ import {
 
 const getTestIndexRules = () => {
   // eslint-disable-next-line node/no-sync
-  const content = fs.readFileSync(path.resolve(__dirname, '../../tests/rules/index.js'), 'utf8');
+  const content = fs.readFileSync(path.resolve(__dirname, '../../tests/rules/index.ts'), 'utf8');
 
   const result = {
     inRulesArray: false,
