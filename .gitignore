@@ -9,3 +9,4 @@
 !.gitignore
 !.husky
 !.README
+!.releaserc
