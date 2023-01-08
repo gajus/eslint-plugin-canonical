@@ -48,8 +48,8 @@
   },
   "scripts": {
     "build": "rm -fr ./dist && tsc",
-    "check-documentation": "tsx ./src/bin/checkDocumentation",
-    "check-tests": "tsx ./src/bin/checkTests",
+    "check-documentation": "ts-node ./src/bin/checkDocumentation",
+    "check-tests": "ts-node ./src/bin/checkTests",
     "create-readme": "gitdown ./.README/README.md --output-file ./README.md && npm run documentation-add-assertions",
     "documentation-add-assertions": "tsx ./src/bin/addAssertions",
     "lint": "npm run check-documentation && npm run check-tests && eslint .",
