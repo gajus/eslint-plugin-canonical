@@ -34,6 +34,10 @@
   "engines": {
     "node": ">=16.0.0"
   },
+  "files": [
+    "dist",
+    "LICENSE"
+  ],
   "keywords": [
     "eslint",
     "plugin",
