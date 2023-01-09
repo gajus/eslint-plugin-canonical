@@ -8,7 +8,8 @@
         "canonical",
         "canonical/node",
         "canonical/typescript",
-        "canonical/typescript-disable-type-checking"
+        "canonical/typescript-disable-type-checking",
+        "canonical/prettier"
       ],
       "files": "*.ts"
     },
