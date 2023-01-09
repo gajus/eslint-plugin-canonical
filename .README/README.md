@@ -6,21 +6,19 @@
 
 ESLint rules for [Canonical ruleset](https://github.com/gajus/eslint-config-canonical).
 
-{"gitdown": "contents"}
-
 ## Installation
 
 <!-- -->
 
 ```bash
 npm install eslint --save-dev
-npm install @babel/eslint-parser --save-dev
+npm install @typescript-eslint/parser --save-dev
 npm install eslint-plugin-canonical --save-dev
 ```
 
 ## Configuration
 
-1. Set `parser` property to `babel-eslint`.
+1. Set `parser` property to `@typescript-eslint/parser`.
 1. Add `plugins` section and specify `eslint-plugin-canonical` as a plugin.
 1. Enable rules.
 
@@ -28,7 +26,7 @@ npm install eslint-plugin-canonical --save-dev
 
 ```json
 {
-  "parser": "@babel/eslint-parser",
+  "parser": "@typescript-eslint/parser",
   "plugins": [
     "canonical"
   ],
@@ -98,3 +96,11 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 {"gitdown": "include", "file": "./rules/prefer-inline-type-import.md"}
 {"gitdown": "include", "file": "./rules/prefer-use-mount.md"}
 {"gitdown": "include", "file": "./rules/sort-keys.md"}
+
+## FAQ
+
+### Why is the `@typescript-eslint/parser`?
+
+This ESLint plugin is written using `@typescript-eslint/utils`, which assume that `@typescript-eslint/parser` is used.
+
+Some rules may work without `@typescript-eslint/parser`. However, rules are implemented and tested assuming that `@typescript-eslint/parser` is used.
