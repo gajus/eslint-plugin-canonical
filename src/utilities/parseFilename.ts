@@ -1,10 +1,10 @@
 import path from 'node:path';
 
 export type ParsedName = {
-  base: string,
-  dir: string,
-  ext: string,
-  name: string,
+  base: string;
+  dir: string;
+  ext: string;
+  name: string;
 };
 
 export const parseFilename = (filename: string): ParsedName => {

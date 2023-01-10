@@ -6,9 +6,7 @@ import isGetSetProp from 'is-get-set-prop';
 import isJsType from 'is-js-type';
 import isObjProp from 'is-obj-prop';
 import isProtoProp from 'is-proto-prop';
-import {
-  createRule,
-} from '../utilities';
+import { createRule } from '../utilities';
 
 /**
  * Return type of value of left or right
@@ -33,8 +31,14 @@ const getType = (subject) => {
  * @returns {string} - type of value produced
  */
 const binaryExpressionProduces = (subject) => {
-  const leftType = subject.left.type === 'BinaryExpression' ? binaryExpressionProduces(subject.left) : getType(subject.left);
-  const rightType = subject.right.type === 'BinaryExpression' ? binaryExpressionProduces(subject.right) : getType(subject.right);
+  const leftType =
+    subject.left.type === 'BinaryExpression'
+      ? binaryExpressionProduces(subject.left)
+      : getType(subject.left);
+  const rightType =
+    subject.right.type === 'BinaryExpression'
+      ? binaryExpressionProduces(subject.right)
+      : getType(subject.right);
 
   const isRegExp = leftType === rightType && leftType === 'RegExp';
   if (leftType === 'String' || rightType === 'String' || isRegExp) {
@@ -89,11 +93,20 @@ const getJsTypeAndPropertyName = (node) => {
   };
 };
 
-const isUnkownGettSetterOrJsTypeExpressed = (jsType, propertyName, usageType) => {
-  const isExpression = usageType === 'ExpressionStatement' || usageType === 'MemberExpression';
+const isUnkownGettSetterOrJsTypeExpressed = (
+  jsType,
+  propertyName,
+  usageType,
+) => {
+  const isExpression =
+    usageType === 'ExpressionStatement' || usageType === 'MemberExpression';
 
-  return isExpression && !isGetSetProp(jsType, propertyName) &&
-    !isProtoProp(jsType, propertyName) && !isObjProp(jsType, propertyName);
+  return (
+    isExpression &&
+    !isGetSetProp(jsType, propertyName) &&
+    !isProtoProp(jsType, propertyName) &&
+    !isObjProp(jsType, propertyName)
+  );
 };
 
 /**
@@ -105,25 +118,37 @@ const isUnkownGettSetterOrJsTypeExpressed = (jsType, propertyName, usageType) =>
  * @returns {boolean} - is the usage invalid?
  */
 const isInvalid = (jsType, propertyName, usageType) => {
-  if (typeof propertyName !== 'string' || typeof jsType !== 'string' || !isJsType(jsType)) {
+  if (
+    typeof propertyName !== 'string' ||
+    typeof jsType !== 'string' ||
+    !isJsType(jsType)
+  ) {
     return false;
   }
 
-  const unknownGetterSetterOrjsTypeExpressed = isUnkownGettSetterOrJsTypeExpressed(jsType, propertyName, usageType);
+  const unknownGetterSetterOrjsTypeExpressed =
+    isUnkownGettSetterOrJsTypeExpressed(jsType, propertyName, usageType);
 
   const isFunctionCall = usageType === 'CallExpression';
-  const getterSetterCalledAsFunction = isFunctionCall && isGetSetProp(jsType, propertyName);
+  const getterSetterCalledAsFunction =
+    isFunctionCall && isGetSetProp(jsType, propertyName);
 
-  const unknownjsTypeCalledAsFunction = isFunctionCall && !isProtoProp(jsType, propertyName) &&
+  const unknownjsTypeCalledAsFunction =
+    isFunctionCall &&
+    !isProtoProp(jsType, propertyName) &&
     !isObjProp(jsType, propertyName);
 
-  return unknownGetterSetterOrjsTypeExpressed || getterSetterCalledAsFunction || unknownjsTypeCalledAsFunction;
+  return (
+    unknownGetterSetterOrjsTypeExpressed ||
+    getterSetterCalledAsFunction ||
+    unknownjsTypeCalledAsFunction
+  );
 };
 
 export default createRule({
-  create (context) {
+  create(context) {
     return {
-      MemberExpression (node) {
+      MemberExpression(node) {
         if (node.computed && node.property.type === 'Identifier') {
           /**
            * handles cases like {}[i][j]
@@ -135,15 +160,17 @@ export default createRule({
         }
 
         // @ts-expect-error TODO
-        const isArgumentToParent = node.parent.hasOwnProperty('arguments') && node.parent.arguments.includes(node);
+        const isArgumentToParent =
+          node.parent.hasOwnProperty('arguments') &&
+          node.parent.arguments.includes(node);
         const usageType = isArgumentToParent ? node.type : node.parent?.type;
 
-        const {
-          propertyName,
-          jsType,
-        } = getJsTypeAndPropertyName(node);
+        const { propertyName, jsType } = getJsTypeAndPropertyName(node);
 
-        if (isInvalid(jsType, propertyName, usageType) && isInvalid('Function', propertyName, usageType)) {
+        if (
+          isInvalid(jsType, propertyName, usageType) &&
+          isInvalid('Function', propertyName, usageType)
+        ) {
           context.report({
             messageId: 'noExtendNative',
             node,

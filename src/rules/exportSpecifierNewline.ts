@@ -1,6 +1,4 @@
-import {
-  createRule,
-} from '../utilities';
+import { createRule } from '../utilities';
 
 export default createRule({
   create: (context) => {
@@ -8,17 +6,26 @@ export default createRule({
       ExportNamedDeclaration: (node) => {
         const sourceCode = context.getSourceCode();
         for (let index = 1; index < node.specifiers.length; index++) {
-          const lastTokenOfPreviousProperty = sourceCode.getLastToken(node.specifiers[index - 1]);
-          const firstTokenOfCurrentProperty = sourceCode.getFirstToken(node.specifiers[index]);
+          const lastTokenOfPreviousProperty = sourceCode.getLastToken(
+            node.specifiers[index - 1],
+          );
+          const firstTokenOfCurrentProperty = sourceCode.getFirstToken(
+            node.specifiers[index],
+          );
 
           if (lastTokenOfPreviousProperty === null) {
             return;
           }
 
-          if (lastTokenOfPreviousProperty?.loc.end.line === firstTokenOfCurrentProperty?.loc.start.line) {
+          if (
+            lastTokenOfPreviousProperty?.loc.end.line ===
+            firstTokenOfCurrentProperty?.loc.start.line
+          ) {
             context.report({
-              fix (fixer) {
-                const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
+              fix(fixer) {
+                const comma = sourceCode.getTokenBefore(
+                  firstTokenOfCurrentProperty,
+                );
 
                 if (comma === null) {
                   return null;
@@ -30,7 +37,11 @@ export default createRule({
                 ];
 
                 // Don't perform a fix if there are any comments between the comma and the next property.
-                if (sourceCode.text.slice(rangeAfterComma[0], rangeAfterComma[1]).trim()) {
+                if (
+                  sourceCode.text
+                    .slice(rangeAfterComma[0], rangeAfterComma[1])
+                    .trim()
+                ) {
                   return null;
                 }
 
@@ -48,8 +59,7 @@ export default createRule({
   defaultOptions: [],
   meta: {
     docs: {
-      description:
-        'Forces every export specifier to be on a new line.',
+      description: 'Forces every export specifier to be on a new line.',
       recommended: 'error',
     },
     fixable: 'whitespace',

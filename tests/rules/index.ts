@@ -1,11 +1,7 @@
 import assert from 'node:assert';
 import Ajv from 'ajv';
-import {
-  RuleTester,
-} from 'eslint';
-import {
-  camelCase,
-} from 'lodash';
+import { RuleTester } from 'eslint';
+import { camelCase } from 'lodash';
 import plugin from '../../src';
 
 const ruleTester = new RuleTester({
@@ -44,7 +40,8 @@ for (const ruleName of reportingRules) {
       RuleTester.describe(ruleName, () => {
         RuleTester.describe('misconfigured', () => {
           RuleTester.it(JSON.stringify(misconfiguration.options), () => {
-            const schema = plugin.rules[ruleName].schema && plugin.rules[ruleName].schema;
+            const schema =
+              plugin.rules[ruleName].schema && plugin.rules[ruleName].schema;
 
             if (!schema) {
               throw new Error('No schema.');
@@ -61,7 +58,10 @@ for (const ruleName of reportingRules) {
               throw new Error('Schema was valid.');
             }
 
-            assert.deepStrictEqual(validateSchema.errors, misconfiguration.errors);
+            assert.deepStrictEqual(
+              validateSchema.errors,
+              misconfiguration.errors,
+            );
           });
         });
       });
@@ -80,9 +80,5 @@ for (const ruleName of reportingRules) {
     return assertion;
   });
 
-  ruleTester.run(
-    ruleName,
-    plugin.rules[ruleName],
-    assertions,
-  );
+  ruleTester.run(ruleName, plugin.rules[ruleName], assertions);
 }

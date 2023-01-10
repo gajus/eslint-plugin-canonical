@@ -36,13 +36,13 @@ export default {
   ],
   valid: [
     {
-      code: 'export { \n a,\nb,\nc\n } from \'foo\'',
+      code: "export { \n a,\nb,\nc\n } from 'foo'",
     },
     {
       code: 'const a = 1; const b = 2; const c = 3; export { \n a,\nb,\nc\n };',
     },
     {
-      code: 'export * from \'foo\'',
+      code: "export * from 'foo'",
     },
   ],
 };

@@ -1,19 +1,23 @@
 /* eslint-disable canonical/id-match */
 
-const testCode = 'var foo = \'bar\';';
+const testCode = "var foo = 'bar';";
 const testCallCode = 'export default foo();';
 const exportedVariableCode = 'module.exports = exported;';
-const exportedJsxClassCode = 'module.exports = class Foo { render() { return <span>Test Class</span>; } };';
+const exportedJsxClassCode =
+  'module.exports = class Foo { render() { return <span>Test Class</span>; } };';
 const exportedClassCode = 'module.exports = class Foo {};';
 const exportedFunctionCode = 'module.exports = function foo() {};';
 const exportUnnamedFunctionCode = 'module.exports = function() {};';
 const exportedCalledFunctionCode = 'module.exports = foo();';
-const exportedJsxFunctionCode = 'module.exports = function foo() { return <span>Test Fn</span> };';
+const exportedJsxFunctionCode =
+  'module.exports = function foo() { return <span>Test Fn</span> };';
 const exportedEs6VariableCode = 'export default exported;';
 const exportedEs6ClassCode = 'export default class Foo {};';
-const exportedEs6JsxClassCode = 'export default class Foo { render() { return <span>Test Class</span>; } };';
+const exportedEs6JsxClassCode =
+  'export default class Foo { render() { return <span>Test Class</span>; } };';
 const exportedEs6FunctionCode = 'export default function foo() {};';
-const exportedEs6JsxFunctionCode = 'export default function foo() { return <span>Test Fn</span> };';
+const exportedEs6JsxFunctionCode =
+  'export default function foo() { return <span>Test Fn</span> };';
 const exportedEs6Index = 'export default function index() {};';
 const camelCaseCommonJS = 'module.exports = variableName;';
 const snakeCaseCommonJS = 'module.exports = variable_name;';
@@ -28,7 +32,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'fooBar\' must match the exported name \'exported\'.',
+          message: "Filename 'fooBar' must match the exported name 'exported'.",
         },
       ],
       filename: '/some/dir/fooBar.js',
@@ -39,7 +43,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'foo\' must match the exported name \'Foo\'.',
+          message: "Filename 'foo' must match the exported name 'Foo'.",
         },
       ],
       filename: '/some/dir/foo.js',
@@ -53,7 +57,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'foo\' must match the exported name \'Foo\'.',
+          message: "Filename 'foo' must match the exported name 'Foo'.",
         },
       ],
       filename: '/some/dir/foo.js',
@@ -70,7 +74,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'bar\' must match the exported name \'foo\'.',
+          message: "Filename 'bar' must match the exported name 'foo'.",
         },
       ],
       filename: '/some/dir/bar.js',
@@ -81,7 +85,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'bar\' must match the exported name \'foo\'.',
+          message: "Filename 'bar' must match the exported name 'foo'.",
         },
       ],
       filename: '/some/dir/bar.js',
@@ -97,7 +101,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'fooBar\' must match the exported name \'exported\'.',
+          message: "Filename 'fooBar' must match the exported name 'exported'.",
         },
       ],
       filename: '/some/dir/fooBar.js',
@@ -112,7 +116,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'bar\' must match the exported name \'Foo\'.',
+          message: "Filename 'bar' must match the exported name 'Foo'.",
         },
       ],
       filename: '/some/dir/bar.js',
@@ -127,7 +131,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'bar\' must match the exported name \'Foo\'.',
+          message: "Filename 'bar' must match the exported name 'Foo'.",
         },
       ],
       filename: '/some/dir/bar.js',
@@ -145,7 +149,8 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'The directory \'fooBar\' must be named \'foo\', after the exported value of its index file.',
+          message:
+            "The directory 'fooBar' must be named 'foo', after the exported value of its index file.",
         },
       ],
       filename: '/some/dir/fooBar/index.js',
@@ -161,7 +166,8 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'The directory \'fooBar\' must be named \'foo\', after the exported value of its index file.',
+          message:
+            "The directory 'fooBar' must be named 'foo', after the exported value of its index file.",
         },
       ],
       filename: '/some/dir/fooBar/index.js',
@@ -179,7 +185,8 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'The directory \'eslint-plugin-canonical\' must be named \'exported\', after the exported value of its index file.',
+          message:
+            "The directory 'eslint-plugin-canonical' must be named 'exported', after the exported value of its index file.",
         },
       ],
       filename: 'index.js',
@@ -194,7 +201,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'Foo.react\' must match the exported name \'Foo\'.',
+          message: "Filename 'Foo.react' must match the exported name 'Foo'.",
         },
       ],
       filename: '/some/dir/Foo.react.js',
@@ -211,13 +218,12 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'variableName\' must match the exported and transformed name \'variable_name\'.',
+          message:
+            "Filename 'variableName' must match the exported and transformed name 'variable_name'.",
         },
       ],
       filename: 'variableName.js',
-      options: [
-        'snake',
-      ],
+      options: ['snake'],
     },
     {
       code: camelCaseEs6,
@@ -225,13 +231,12 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'variableName\' must match the exported and transformed name \'variable-name\'.',
+          message:
+            "Filename 'variableName' must match the exported and transformed name 'variable-name'.",
         },
       ],
       filename: 'variableName.js',
-      options: [
-        'kebab',
-      ],
+      options: ['kebab'],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -243,13 +248,12 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'variableName\' must match the exported and transformed name \'VariableName\'.',
+          message:
+            "Filename 'variableName' must match the exported and transformed name 'VariableName'.",
         },
       ],
       filename: 'variableName.js',
-      options: [
-        'pascal',
-      ],
+      options: ['pascal'],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -261,16 +265,12 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'variableName\' must match any of the exported and transformed names \'VariableName\', \'variable_name\'.',
+          message:
+            "Filename 'variableName' must match any of the exported and transformed names 'VariableName', 'variable_name'.",
         },
       ],
       filename: 'variableName.js',
-      options: [
-        [
-          'pascal',
-          'snake',
-        ],
-      ],
+      options: [['pascal', 'snake']],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -282,14 +282,11 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'Foo.bar\' must match the exported name \'Foo\'.',
+          message: "Filename 'Foo.bar' must match the exported name 'Foo'.",
         },
       ],
       filename: '/some/dir/Foo.bar.js',
-      options: [
-        null,
-        '\\.react$',
-      ],
+      options: [null, '\\.react$'],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -304,14 +301,12 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'The directory \'Foo.react\' must be named \'Foo\', after the exported value of its index file.',
+          message:
+            "The directory 'Foo.react' must be named 'Foo', after the exported value of its index file.",
         },
       ],
       filename: '/some/dir/Foo.react/index.js',
-      options: [
-        null,
-        '\\.react$',
-      ],
+      options: [null, '\\.react$'],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -326,15 +321,11 @@ export default {
         {
           column: 1,
           line: 1,
-          message: 'Filename \'bar\' must match the exported name \'foo\'.',
+          message: "Filename 'bar' must match the exported name 'foo'.",
         },
       ],
       filename: '/some/dir/bar.js',
-      options: [
-        null,
-        null,
-        true,
-      ],
+      options: [null, null, true],
     },
   ],
 
@@ -474,37 +465,27 @@ export default {
     {
       code: camelCaseCommonJS,
       filename: 'variable_name.js',
-      options: [
-        'snake',
-      ],
+      options: ['snake'],
     },
     {
       code: camelCaseCommonJS,
       filename: 'variable_name/index.js',
-      options: [
-        'snake',
-      ],
+      options: ['snake'],
     },
     {
       code: camelCaseCommonJS,
       filename: 'variable-name.js',
-      options: [
-        'kebab',
-      ],
+      options: ['kebab'],
     },
     {
       code: snakeCaseCommonJS,
       filename: 'variableName.js',
-      options: [
-        'camel',
-      ],
+      options: ['camel'],
     },
     {
       code: camelCaseEs6,
       filename: 'variable_name.js',
-      options: [
-        'snake',
-      ],
+      options: ['snake'],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -513,9 +494,7 @@ export default {
     {
       code: camelCaseEs6,
       filename: 'variable-name.js',
-      options: [
-        'kebab',
-      ],
+      options: ['kebab'],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -524,9 +503,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'variableName.js',
-      options: [
-        'camel',
-      ],
+      options: ['camel'],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -535,9 +512,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'VariableName.js',
-      options: [
-        'pascal',
-      ],
+      options: ['pascal'],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -546,12 +521,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'variableName.js',
-      options: [
-        [
-          'pascal',
-          'camel',
-        ],
-      ],
+      options: [['pascal', 'camel']],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -560,12 +530,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'VariableName.js',
-      options: [
-        [
-          'pascal',
-          'camel',
-        ],
-      ],
+      options: [['pascal', 'camel']],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -574,10 +539,7 @@ export default {
     {
       code: exportedJsxClassCode,
       filename: '/some/dir/Foo.react.js',
-      options: [
-        null,
-        '\\.react$',
-      ],
+      options: [null, '\\.react$'],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -588,10 +550,7 @@ export default {
     {
       code: exportedEs6JsxClassCode,
       filename: '/some/dir/Foo.react.js',
-      options: [
-        null,
-        '\\.react$',
-      ],
+      options: [null, '\\.react$'],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -603,11 +562,7 @@ export default {
     {
       code: exportedCalledFunctionCode,
       filename: '/some/dir/foo.js',
-      options: [
-        null,
-        null,
-        true,
-      ],
+      options: [null, null, true],
     },
   ],
 };

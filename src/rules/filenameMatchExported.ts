@@ -5,12 +5,7 @@
  */
 
 import path from 'node:path';
-import {
-  camelCase,
-  kebabCase,
-  upperFirst,
-  snakeCase,
-} from 'lodash';
+import { camelCase, kebabCase, upperFirst, snakeCase } from 'lodash';
 import {
   createRule,
   isIgnoredFilename,
@@ -22,7 +17,7 @@ import {
 const transformMap = {
   camel: camelCase,
   kebab: kebabCase,
-  pascal (name) {
+  pascal(name) {
     return upperFirst(camelCase(name));
   },
   snake: snakeCase,
@@ -40,9 +35,7 @@ const getStringToCheckAgainstExport = (parsed, replacePattern?: RegExp) => {
 };
 
 const getTransformsFromOptions = (option) => {
-  const usedTransforms = option?.push ? option : [
-    option,
-  ];
+  const usedTransforms = option?.push ? option : [option];
 
   return usedTransforms.map((name) => {
     return transformMap[name];
@@ -73,27 +66,41 @@ const getWhatToMatchMessage = (transforms) => {
 
 const create = (context) => {
   return {
-    Program (node) {
+    Program(node) {
       const transforms = getTransformsFromOptions(context.options[0]);
-      const replacePattern = context.options[1] ? new RegExp(context.options[1], 'u') : undefined;
+      const replacePattern = context.options[1]
+        ? new RegExp(context.options[1], 'u')
+        : undefined;
       const filename = context.getFilename();
       const absoluteFilename = path.resolve(filename);
       const parsed = parseFilename(absoluteFilename);
       const shouldIgnore = isIgnoredFilename(filename);
       const exportedName = getExportedName(node, context.options);
       const isExporting = Boolean(exportedName);
-      const expectedExport = getStringToCheckAgainstExport(parsed, replacePattern);
+      const expectedExport = getStringToCheckAgainstExport(
+        parsed,
+        replacePattern,
+      );
       const transformedNames = transform(exportedName, transforms);
-      const everythingIsIndex = exportedName === 'index' && parsed.name === 'index';
-      const matchesExported = anyMatch(expectedExport, transformedNames) || everythingIsIndex;
-      const reportIf = function (condition, messageForNormalFile, messageForIndexFile) {
-        const message = !messageForIndexFile || !isIndexFile(parsed) ? messageForNormalFile : messageForIndexFile;
+      const everythingIsIndex =
+        exportedName === 'index' && parsed.name === 'index';
+      const matchesExported =
+        anyMatch(expectedExport, transformedNames) || everythingIsIndex;
+      const reportIf = function (
+        condition,
+        messageForNormalFile,
+        messageForIndexFile,
+      ) {
+        const message =
+          !messageForIndexFile || !isIndexFile(parsed)
+            ? messageForNormalFile
+            : messageForIndexFile;
 
         if (condition) {
           context.report({
             data: {
               expectedExport,
-              exportName: transformedNames.join('\', \''),
+              exportName: transformedNames.join("', '"),
               extension: parsed.ext,
               name: parsed.base,
               whatToMatch: getWhatToMatchMessage(transforms),
@@ -110,8 +117,8 @@ const create = (context) => {
 
       reportIf(
         isExporting && !matchesExported,
-        'Filename \'{{expectedExport}}\' must match {{whatToMatch}} \'{{exportName}}\'.',
-        'The directory \'{{expectedExport}}\' must be named \'{{exportName}}\', after the exported value of its index file.',
+        "Filename '{{expectedExport}}' must match {{whatToMatch}} '{{exportName}}'.",
+        "The directory '{{expectedExport}}' must be named '{{exportName}}', after the exported value of its index file.",
       );
     },
   };

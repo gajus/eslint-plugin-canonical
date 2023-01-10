@@ -13,15 +13,17 @@ import {
 } from '../utilities';
 
 // eslint-disable-next-line unicorn/no-unsafe-regex
-const defaultRegexp = /^[\da-z]+(?:[A-Z][\da-z]+)*$/ug;
+const defaultRegexp = /^[\da-z]+(?:[A-Z][\da-z]+)*$/gu;
 
 export default createRule({
   create: (context) => {
-    const conventionRegexp = context.options[0] ? new RegExp(context.options[0], 'u') : defaultRegexp;
+    const conventionRegexp = context.options[0]
+      ? new RegExp(context.options[0], 'u')
+      : defaultRegexp;
     const ignoreExporting = context.options[1] ? context.options[1] : false;
 
     return {
-      Program (node) {
+      Program(node) {
         conventionRegexp.lastIndex = 0;
 
         const filename = context.getFilename();
@@ -60,7 +62,7 @@ export default createRule({
       recommended: 'warn',
     },
     messages: {
-      notMatch: 'Filename \'{{name}}\' does not match the naming convention.',
+      notMatch: "Filename '{{name}}' does not match the naming convention.",
     },
     schema: [
       {
@@ -82,5 +84,4 @@ export default createRule({
     type: 'suggestion',
   },
   name: 'filename-match-regex',
-
 });

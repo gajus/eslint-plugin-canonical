@@ -1,9 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {
-  getRules,
-  isFile,
-} from './utilities';
+import { getRules, isFile } from './utilities';
 
 const windows = <T>(array: T[], size): T[][] => {
   const output: T[][] = [];
@@ -19,22 +16,30 @@ const windows = <T>(array: T[], size): T[][] => {
 
 const getDocumentIndexRules = () => {
   // eslint-disable-next-line node/no-sync
-  const content = fs.readFileSync(path.resolve(__dirname, '../../.README/README.md'), 'utf8');
+  const content = fs.readFileSync(
+    path.resolve(__dirname, '../../.README/README.md'),
+    'utf8',
+  );
 
-  const rules = content.split('\n').map((line) => {
-    const match = /^\{"gitdown": "include", "file": "([^"]+)"\}$/u.exec(line);
+  const rules = content
+    .split('\n')
+    .map((line) => {
+      const match = /^\{"gitdown": "include", "file": "([^"]+)"\}$/u.exec(line);
 
-    if (match === null) {
-      return null;
-    }
+      if (match === null) {
+        return null;
+      }
 
-    return match[1].replace('./rules/', '').replace('.md', '');
-  }).filter((rule) => {
-    return rule !== null;
-  });
+      return match[1].replace('./rules/', '').replace('.md', '');
+    })
+    .filter((rule) => {
+      return rule !== null;
+    });
 
   if (rules.length === 0) {
-    throw new Error('Docs checker is broken - it could not extract rules from docs index file.');
+    throw new Error(
+      'Docs checker is broken - it could not extract rules from docs index file.',
+    );
   }
 
   return rules;
@@ -63,20 +68,27 @@ const hasCorrectAssertions = (documentPath, name) => {
 const checkDocumentation = (rulesNames) => {
   const documentIndexRules = getDocumentIndexRules();
 
-  const sorted = windows(documentIndexRules, 2)
-    .every((chunk) => {
-      return chunk[0] && chunk[1] && chunk[0] < chunk[1];
-    });
+  const sorted = windows(documentIndexRules, 2).every((chunk) => {
+    return chunk[0] && chunk[1] && chunk[0] < chunk[1];
+  });
 
   if (!sorted) {
-    throw new Error('Rules are not alphabetically sorted in `.README/README.md` file.');
+    throw new Error(
+      'Rules are not alphabetically sorted in `.README/README.md` file.',
+    );
   }
 
   const invalid = rulesNames.filter((names) => {
-    const documentPath = path.resolve(__dirname, '../../.README/rules', names[1] + '.md');
+    const documentPath = path.resolve(
+      __dirname,
+      '../../.README/rules',
+      names[1] + '.md',
+    );
     const documentExists = isFile(documentPath);
     const inIndex = documentIndexRules.includes(names[1]);
-    const hasAssertions = documentExists ? hasCorrectAssertions(documentPath, names[0]) : false;
+    const hasAssertions = documentExists
+      ? hasCorrectAssertions(documentPath, names[0])
+      : false;
 
     return !(documentExists && inIndex && hasAssertions);
   });
@@ -85,12 +97,15 @@ const checkDocumentation = (rulesNames) => {
     const invalidList = invalid
       .map((names) => {
         return names[0];
-      }).join(', ');
+      })
+      .join(', ');
 
     throw new Error(
-      'Docs checker encountered an error in: ' + invalidList + '. ' +
-      'Make sure that for every rule you created documentation file with assertions placeholder in camelCase ' +
-      'and included the file path in `.README/README.md` file.',
+      'Docs checker encountered an error in: ' +
+        invalidList +
+        '. ' +
+        'Make sure that for every rule you created documentation file with assertions placeholder in camelCase ' +
+        'and included the file path in `.README/README.md` file.',
     );
   }
 };

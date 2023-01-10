@@ -1,4 +1,4 @@
-const testCode = 'var foo = \'bar\';';
+const testCode = "var foo = 'bar';";
 
 export default {
   invalid: [
@@ -8,7 +8,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: '\'index.js\' files are not allowed.',
+          message: "'index.js' files are not allowed.",
         },
       ],
       filename: 'index.js',
@@ -19,7 +19,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: '\'index.js\' files are not allowed.',
+          message: "'index.js' files are not allowed.",
         },
       ],
       filename: '/some/dir/index.js',

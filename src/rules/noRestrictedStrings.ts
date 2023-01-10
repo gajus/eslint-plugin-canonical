@@ -1,12 +1,8 @@
-import {
-  createRule,
-} from '../utilities';
+import { createRule } from '../utilities';
 
 export default createRule({
   create: (context) => {
-    const {
-      options,
-    } = context;
+    const { options } = context;
 
     const disallowedStrings = options[0] ?? [];
 
@@ -48,17 +44,16 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [
-    [] as string[],
-  ],
+  defaultOptions: [[] as string[]],
   meta: {
     docs: {
       description: 'Disallowed string.',
       recommended: false,
     },
     messages: {
-      disallowedString: 'Disallowed string: \'{{disallowedString}}\'.',
-      disallowedStringInTemplate: 'Disallowed string in template: \'{{disallowedString}}\'.',
+      disallowedString: "Disallowed string: '{{disallowedString}}'.",
+      disallowedStringInTemplate:
+        "Disallowed string in template: '{{disallowedString}}'.",
     },
     schema: {
       items: {

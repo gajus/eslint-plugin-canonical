@@ -1,8 +1,6 @@
-import {
-  createRule,
-} from '../utilities';
+import { createRule } from '../utilities';
 
-const removeTypeSpecifier = function *(fixer, sourceCode, node) {
+const removeTypeSpecifier = function* (fixer, sourceCode, node) {
   const importKeyword = sourceCode.getFirstToken(node);
 
   const typeIdentifier = sourceCode.getTokenAfter(importKeyword);
@@ -37,7 +35,7 @@ export default createRule({
         }
 
         context.report({
-          *fix (fixer) {
+          *fix(fixer) {
             // @ts-expect-error TODO
             yield* removeTypeSpecifier(fixer, sourceCode, node);
 

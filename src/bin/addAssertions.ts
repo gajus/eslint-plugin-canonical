@@ -34,7 +34,9 @@ const formatCodeSnippet = (setup) => {
 };
 
 const getAssertions = () => {
-  const assertionFiles = glob.sync(path.resolve(__dirname, '../../tests/rules/assertions/*.ts'));
+  const assertionFiles = glob.sync(
+    path.resolve(__dirname, '../../tests/rules/assertions/*.ts'),
+  );
 
   const assertionNames = _.map(assertionFiles, (filePath) => {
     return path.basename(filePath, '.ts');
@@ -60,29 +62,38 @@ const updateDocuments = (assertions) => {
   // eslint-disable-next-line node/no-sync
   documentBody = fs.readFileSync(readmeDocumentPath, 'utf8');
 
-  documentBody = documentBody.replaceAll(/<!-- assertions ([a-z]+?) -->/ugi, (assertionsBlock) => {
-    let exampleBody;
+  documentBody = documentBody.replaceAll(
+    /<!-- assertions ([a-z]+?) -->/giu,
+    (assertionsBlock) => {
+      let exampleBody;
 
-    const ruleName = assertionsBlock.match(/assertions ([a-z]+)/ui)[1];
+      const ruleName = assertionsBlock.match(/assertions ([a-z]+)/iu)[1];
 
-    const ruleAssertions = assertions[ruleName];
+      const ruleAssertions = assertions[ruleName];
 
-    if (!ruleAssertions) {
-      throw new Error('No assertions available for rule "' + ruleName + '".');
-    }
+      if (!ruleAssertions) {
+        throw new Error('No assertions available for rule "' + ruleName + '".');
+      }
 
-    exampleBody = '';
+      exampleBody = '';
 
-    if (ruleAssertions.invalid.length) {
-      exampleBody += 'The following patterns are considered problems:\n\n```js\n' + ruleAssertions.invalid.join('\n\n') + '\n```\n\n';
-    }
+      if (ruleAssertions.invalid.length) {
+        exampleBody +=
+          'The following patterns are considered problems:\n\n```js\n' +
+          ruleAssertions.invalid.join('\n\n') +
+          '\n```\n\n';
+      }
 
-    if (ruleAssertions.valid.length) {
-      exampleBody += 'The following patterns are not considered problems:\n\n```js\n' + ruleAssertions.valid.join('\n\n') + '\n```\n\n';
-    }
+      if (ruleAssertions.valid.length) {
+        exampleBody +=
+          'The following patterns are not considered problems:\n\n```js\n' +
+          ruleAssertions.valid.join('\n\n') +
+          '\n```\n\n';
+      }
 
-    return exampleBody;
-  });
+      return exampleBody;
+    },
+  );
 
   // eslint-disable-next-line node/no-sync
   fs.writeFileSync(readmeDocumentPath, documentBody);

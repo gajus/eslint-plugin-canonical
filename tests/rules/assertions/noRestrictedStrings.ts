@@ -4,30 +4,22 @@ export default {
       code: 'var foo = "bar"',
       errors: [
         {
-          message: 'Disallowed string: \'bar\'.',
+          message: "Disallowed string: 'bar'.",
           type: 'Literal',
         },
       ],
-      options: [
-        [
-          'bar',
-        ],
-      ],
+      options: [['bar']],
     },
     {
       // eslint-disable-next-line no-template-curly-in-string
       code: 'const foo = `bar ${baz}`;',
       errors: [
         {
-          message: 'Disallowed string in template: \'bar\'.',
+          message: "Disallowed string in template: 'bar'.",
           type: 'TemplateElement',
         },
       ],
-      options: [
-        [
-          'bar',
-        ],
-      ],
+      options: [['bar']],
     },
   ],
   valid: [

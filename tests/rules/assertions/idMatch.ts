@@ -15,9 +15,7 @@ export default {
   invalid: [
     {
       code: 'var __foo = "Matthieu"',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[a-z]+$',
         {
@@ -27,36 +25,25 @@ export default {
     },
     {
       code: 'first_name = "Matthieu"',
-      errors: [
-        error,
-      ],
-      options: [
-        '^[a-z]+$',
-      ],
+      errors: [error],
+      options: ['^[a-z]+$'],
     },
     {
       code: 'first_name = "Matthieu"',
-      errors: [
-        error,
-      ],
-      options: [
-        '^z',
-      ],
+      errors: [error],
+      options: ['^z'],
     },
     {
       code: 'Last_Name = "Larcher"',
-      errors: [
-        error,
-      ],
-      options: [
-        '^[a-z]+(_[A-Z][a-z])*$',
-      ],
+      errors: [error],
+      options: ['^[a-z]+(_[A-Z][a-z])*$'],
     },
     {
       code: 'var obj = {key: no_under}',
       errors: [
         {
-          message: 'Identifier \'no_under\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_under' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -69,18 +56,12 @@ export default {
     },
     {
       code: 'function no_under21(){}',
-      errors: [
-        error,
-      ],
-      options: [
-        '^[^_]+$',
-      ],
+      errors: [error],
+      options: ['^[^_]+$'],
     },
     {
       code: 'obj.no_under22 = function(){};',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -90,9 +71,7 @@ export default {
     },
     {
       code: 'no_under23.foo = function(){};',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -102,9 +81,7 @@ export default {
     },
     {
       code: '[no_under24.baz]',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -114,9 +91,7 @@ export default {
     },
     {
       code: 'if (foo.bar_baz === boom.bam_pow) { [no_under25.baz] }',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -126,9 +101,7 @@ export default {
     },
     {
       code: 'foo.no_under26 = boom.bam_pow',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -138,9 +111,7 @@ export default {
     },
     {
       code: 'var foo = { no_under27: boom.bam_pow }',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -150,9 +121,7 @@ export default {
     },
     {
       code: 'foo.qux.no_under28 = { bar: boom.bam_pow }',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -162,9 +131,7 @@ export default {
     },
     {
       code: 'var o = {no_under29: 1}',
-      errors: [
-        error,
-      ],
+      errors: [error],
       options: [
         '^[^_]+$',
         {
@@ -194,7 +161,8 @@ export default {
       code: 'var { category_id: category_alias } = query;',
       errors: [
         {
-          message: 'Identifier \'category_alias\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'category_alias' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -212,7 +180,8 @@ export default {
       code: 'var { category_id: category_alias } = query;',
       errors: [
         {
-          message: 'Identifier \'category_alias\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'category_alias' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -231,7 +200,8 @@ export default {
       code: 'var { category_id: categoryId, ...other_props } = query;',
       errors: [
         {
-          message: 'Identifier \'other_props\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'other_props' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -250,7 +220,8 @@ export default {
       code: 'var { category_id } = query;',
       errors: [
         {
-          message: 'Identifier \'category_id\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'category_id' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -268,7 +239,8 @@ export default {
       code: 'var { category_id = 1 } = query;',
       errors: [
         {
-          message: 'Identifier \'category_id\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'category_id' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -286,7 +258,8 @@ export default {
       code: 'import no_camelcased from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -305,7 +278,8 @@ export default {
       code: 'import * as no_camelcased from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -324,13 +298,12 @@ export default {
       code: 'export * as no_camelcased from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
       parserOptions: {
         ecmaVersion: 2_020,
         sourceType: 'module',
@@ -340,7 +313,8 @@ export default {
       code: 'import { no_camelcased as no_camel_cased } from "external module";',
       errors: [
         {
-          message: 'Identifier \'no_camel_cased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camel_cased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -359,7 +333,8 @@ export default {
       code: 'import { camelCased as no_camel_cased } from "external module";',
       errors: [
         {
-          message: 'Identifier \'no_camel_cased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camel_cased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -378,7 +353,8 @@ export default {
       code: 'import { camelCased, no_camelcased } from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -397,7 +373,8 @@ export default {
       code: 'import { no_camelcased as camelCased, another_no_camelcased } from "external-module";',
       errors: [
         {
-          message: 'Identifier \'another_no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'another_no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -416,7 +393,8 @@ export default {
       code: 'import camelCased, { no_camelcased } from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -435,7 +413,8 @@ export default {
       code: 'import no_camelcased, { another_no_camelcased as camelCased } from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -454,7 +433,8 @@ export default {
       code: 'function foo({ no_camelcased }) {};',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -469,10 +449,11 @@ export default {
       },
     },
     {
-      code: 'function foo({ no_camelcased = \'default value\' }) {};',
+      code: "function foo({ no_camelcased = 'default value' }) {};",
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -490,11 +471,13 @@ export default {
       code: 'const no_camelcased = 0; function foo({ camelcased_value = no_camelcased }) {}',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
         {
-          message: 'Identifier \'camelcased_value\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'camelcased_value' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -512,7 +495,8 @@ export default {
       code: 'const { bar: no_camelcased } = foo;',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -530,7 +514,8 @@ export default {
       code: 'function foo({ value_1: my_default }) {}',
       errors: [
         {
-          message: 'Identifier \'my_default\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'my_default' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -548,7 +533,8 @@ export default {
       code: 'function foo({ isCamelcased: no_camelcased }) {};',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -566,7 +552,7 @@ export default {
       code: 'var { foo: bar_baz = 1 } = quz;',
       errors: [
         {
-          message: 'Identifier \'bar_baz\' does not match the pattern \'^[^_]+$\'.',
+          message: "Identifier 'bar_baz' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -584,7 +570,8 @@ export default {
       code: 'const { no_camelcased = false } = bar;',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -604,13 +591,11 @@ export default {
       code: 'class x { _foo() {} }',
       errors: [
         {
-          message: 'Identifier \'_foo\' does not match the pattern \'^[^_]+$\'.',
+          message: "Identifier '_foo' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
       parserOptions: {
         ecmaVersion: 2_022,
       },
@@ -633,7 +618,7 @@ export default {
       code: 'class x { _foo = 1; }',
       errors: [
         {
-          message: 'Identifier \'_foo\' does not match the pattern \'^[^_]+$\'.',
+          message: "Identifier '_foo' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -668,7 +653,8 @@ export default {
       code: 'import { no_camelcased } from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -683,7 +669,6 @@ export default {
         sourceType: 'module',
       },
     },
-
   ],
   valid: [
     {
@@ -697,123 +682,83 @@ export default {
     },
     {
       code: 'firstname = "Matthieu"',
-      options: [
-        '^[a-z]+$',
-      ],
+      options: ['^[a-z]+$'],
     },
     {
       code: 'first_name = "Matthieu"',
-      options: [
-        '[a-z]+',
-      ],
+      options: ['[a-z]+'],
     },
     {
       code: 'firstname = "Matthieu"',
-      options: [
-        '^f',
-      ],
+      options: ['^f'],
     },
     {
       code: 'last_Name = "Larcher"',
-      options: [
-        '^[a-z]+(_[A-Z][a-z]+)*$',
-      ],
+      options: ['^[a-z]+(_[A-Z][a-z]+)*$'],
     },
     {
       code: 'param = "none"',
-      options: [
-        '^[a-z]+(_[A-Z][a-z])*$',
-      ],
+      options: ['^[a-z]+(_[A-Z][a-z])*$'],
     },
     {
       code: 'function noUnder(){}',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'no_under()',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'foo.no_under2()',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'var foo = bar.no_under3;',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'var foo = bar.no_under4.something;',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'foo.no_under5.qux = bar.no_under6.something;',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'if (bar.no_under7) {}',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'var obj = { key: foo.no_under8 };',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'var arr = [foo.no_under9];',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: '[foo.no_under10]',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'var arr = [foo.no_under11.qux];',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: '[foo.no_under12.nesting]',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'if (foo.no_under13 === boom.no_under14) { [foo.no_under15] }',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'var myArray = new Array(); var myDate = new Date();',
-      options: [
-        '^[a-z$]+([A-Z][a-z]+)*$',
-      ],
+      options: ['^[a-z$]+([A-Z][a-z]+)*$'],
     },
     {
       code: 'var x = obj._foo;',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
     },
     {
       code: 'var obj = {key: no_under}',
@@ -934,18 +879,14 @@ export default {
     // Class Methods
     {
       code: 'class x { foo() {} }',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
       parserOptions: {
         ecmaVersion: 2_022,
       },
     },
     {
       code: 'class x { #foo() {} }',
-      options: [
-        '^[^_]+$',
-      ],
+      options: ['^[^_]+$'],
       parserOptions: {
         ecmaVersion: 2_022,
       },
@@ -974,7 +915,8 @@ export default {
       code: 'import { no_camelcased } from "external-module";',
       errors: [
         {
-          message: 'Identifier \'no_camelcased\' does not match the pattern \'^[^_]+$\'.',
+          message:
+            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
           type: 'Identifier',
         },
       ],
@@ -989,6 +931,5 @@ export default {
         sourceType: 'module',
       },
     },
-
   ],
 };

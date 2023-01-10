@@ -1,6 +1,4 @@
-import {
-  createRule,
-} from '../utilities';
+import { createRule } from '../utilities';
 
 export default createRule({
   create: (context) => {
@@ -13,8 +11,12 @@ export default createRule({
         });
 
         for (let index = 1; index < importSpecifiers.length; index++) {
-          const lastTokenOfPreviousProperty = sourceCode.getLastToken(importSpecifiers[index - 1]);
-          const firstTokenOfCurrentProperty = sourceCode.getFirstToken(importSpecifiers[index]);
+          const lastTokenOfPreviousProperty = sourceCode.getLastToken(
+            importSpecifiers[index - 1],
+          );
+          const firstTokenOfCurrentProperty = sourceCode.getFirstToken(
+            importSpecifiers[index],
+          );
 
           if (lastTokenOfPreviousProperty === null) {
             continue;
@@ -24,10 +26,15 @@ export default createRule({
             continue;
           }
 
-          if (lastTokenOfPreviousProperty.loc.end.line === firstTokenOfCurrentProperty.loc.start.line) {
+          if (
+            lastTokenOfPreviousProperty.loc.end.line ===
+            firstTokenOfCurrentProperty.loc.start.line
+          ) {
             context.report({
-              fix (fixer) {
-                const comma = sourceCode.getTokenBefore(firstTokenOfCurrentProperty);
+              fix(fixer) {
+                const comma = sourceCode.getTokenBefore(
+                  firstTokenOfCurrentProperty,
+                );
 
                 if (comma === null) {
                   return null;
@@ -39,7 +46,11 @@ export default createRule({
                 ];
 
                 // Don't perform a fix if there are any comments between the comma and the next property.
-                if (sourceCode.text.slice(rangeAfterComma[0], rangeAfterComma[1]).trim()) {
+                if (
+                  sourceCode.text
+                    .slice(rangeAfterComma[0], rangeAfterComma[1])
+                    .trim()
+                ) {
                   return null;
                 }
 

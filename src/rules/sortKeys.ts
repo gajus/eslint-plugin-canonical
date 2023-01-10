@@ -5,13 +5,9 @@
  * @file Rule to require object keys to be sorted
  * @author Toru Nagashima
  */
-import {
-  type RuleFix,
-} from '@typescript-eslint/utils/dist/ts-eslint';
+import { type RuleFix } from '@typescript-eslint/utils/dist/ts-eslint';
 import naturalCompare from 'natural-compare';
-import {
-  createRule,
-} from '../utilities';
+import { createRule } from '../utilities';
 
 /**
  * Gets the property name of a given node.
@@ -96,7 +92,7 @@ const getStaticPropertyName = (node) => {
  * @returns {string|null} The property name or null.
  * @private
  */
-function getPropertyName (node) {
+function getPropertyName(node) {
   const staticName = getStaticPropertyName(node);
 
   if (staticName !== null) {
@@ -115,36 +111,36 @@ function getPropertyName (node) {
  * @private
  */
 const isValidOrders = {
-  asc (a, b) {
+  asc(a, b) {
     return a <= b;
   },
-  ascI (a, b) {
+  ascI(a, b) {
     return a.toLowerCase() <= b.toLowerCase();
   },
-  ascIN (a, b) {
+  ascIN(a, b) {
     return naturalCompare(a.toLowerCase(), b.toLowerCase()) <= 0;
   },
-  ascN (a, b) {
+  ascN(a, b) {
     return naturalCompare(a, b) <= 0;
   },
-  desc (a, b) {
+  desc(a, b) {
     return isValidOrders.asc(b, a);
   },
-  descI (a, b) {
+  descI(a, b) {
     return isValidOrders.ascI(b, a);
   },
-  descIN (a, b) {
+  descIN(a, b) {
     return isValidOrders.ascIN(b, a);
   },
-  descN (a, b) {
+  descN(a, b) {
     return isValidOrders.ascN(b, a);
   },
 };
 
 type Stack = {
-  prevName: string | null,
-  prevNode: unknown,
-  upper: Stack | null,
+  prevName: string | null;
+  prevNode: unknown;
+  upper: Stack | null;
 };
 
 const defaultOptions = {
@@ -154,7 +150,7 @@ const defaultOptions = {
 };
 
 export default createRule({
-  create (context) {
+  create(context) {
     // Parse options.
     const order = context.options[0] || 'asc';
     const options = context.options[1] ?? defaultOptions;
@@ -165,7 +161,8 @@ export default createRule({
 
     const insensitive = options.caseSensitive === false;
     const natural = Boolean(options.natural);
-    const isValidOrder = isValidOrders[order + (insensitive ? 'I' : '') + (natural ? 'N' : '')];
+    const isValidOrder =
+      isValidOrders[order + (insensitive ? 'I' : '') + (natural ? 'N' : '')];
 
     // The stack to save the previous property's name for each object literals.
     let stack: Stack | null = null;
@@ -183,7 +180,7 @@ export default createRule({
     return {
       ExperimentalSpreadProperty: SpreadElement,
 
-      ObjectExpression () {
+      ObjectExpression() {
         stack = {
           prevName: null,
           prevNode: null,
@@ -191,7 +188,7 @@ export default createRule({
         };
       },
 
-      'ObjectExpression:exit' () {
+      'ObjectExpression:exit'() {
         if (!stack) {
           throw new Error('Unexpected state');
         }
@@ -199,7 +196,7 @@ export default createRule({
         stack = stack.upper;
       },
 
-      Property (node) {
+      Property(node) {
         if (node.parent?.type === 'ObjectPattern') {
           return;
         }
@@ -208,13 +205,9 @@ export default createRule({
           throw new Error('Unexpected state');
         }
 
-        const {
-          prevName,
-        } = stack;
+        const { prevName } = stack;
 
-        const {
-          prevNode,
-        } = stack;
+        const { prevNode } = stack;
         const thisName = getPropertyName(node);
 
         if (thisName !== null) {
@@ -235,14 +228,19 @@ export default createRule({
               prevName,
               thisName,
             },
-            fix (fixer) {
+            fix(fixer) {
               const fixes: RuleFix[] = [];
               const sourceCode = context.getSourceCode();
               const moveProperty = (fromNode, toNode) => {
                 const previousText = sourceCode.getText(fromNode);
                 const thisComments = sourceCode.getCommentsBefore(fromNode);
                 for (const thisComment of thisComments) {
-                  fixes.push(fixer.insertTextBefore(toNode, sourceCode.getText(thisComment) + '\n'));
+                  fixes.push(
+                    fixer.insertTextBefore(
+                      toNode,
+                      sourceCode.getText(thisComment) + '\n',
+                    ),
+                  );
                   fixes.push(fixer.remove(thisComment));
                 }
 
@@ -264,10 +262,7 @@ export default createRule({
       SpreadElement,
     };
   },
-  defaultOptions: [
-    'asc',
-    defaultOptions,
-  ],
+  defaultOptions: ['asc', defaultOptions],
   meta: {
     docs: {
       description: 'require object keys to be sorted',
@@ -275,14 +270,11 @@ export default createRule({
     },
     fixable: 'code',
     messages: {
-      sort: 'Expected object keys to be in {{natural}}{{insensitive}}{{order}}ending order. \'{{thisName}}\' should be before \'{{prevName}}\'.',
+      sort: "Expected object keys to be in {{natural}}{{insensitive}}{{order}}ending order. '{{thisName}}' should be before '{{prevName}}'.",
     },
     schema: [
       {
-        enum: [
-          'asc',
-          'desc',
-        ],
+        enum: ['asc', 'desc'],
       },
       {
         additionalProperties: false,

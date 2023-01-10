@@ -1,11 +1,9 @@
-import {
-  createRule,
-} from '../utilities';
+import { createRule } from '../utilities';
 
 export default createRule({
   create: (context) => {
     return {
-      CallExpression (node) {
+      CallExpression(node) {
         // @ts-expect-error TODO
         if (node.callee.name !== 'useEffect') {
           return;

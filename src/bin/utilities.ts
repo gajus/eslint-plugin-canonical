@@ -11,10 +11,7 @@ export const getRules = (): readonly string[] => {
       return path.basename(file, '.js');
     })
     .map((name) => {
-      return [
-        name,
-        _.kebabCase(name),
-      ];
+      return [name, _.kebabCase(name)];
     });
 
   return rulesNames;

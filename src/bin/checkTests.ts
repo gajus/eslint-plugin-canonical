@@ -1,13 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
-import {
-  getRules,
-  isFile,
-} from './utilities';
+import { getRules, isFile } from './utilities';
 
 const getTestIndexRules = () => {
   // eslint-disable-next-line node/no-sync
-  const content = fs.readFileSync(path.resolve(__dirname, '../../tests/rules/index.ts'), 'utf8');
+  const content = fs.readFileSync(
+    path.resolve(__dirname, '../../tests/rules/index.ts'),
+    'utf8',
+  );
 
   const result = {
     inRulesArray: false,
@@ -28,12 +28,12 @@ const getTestIndexRules = () => {
     }
   }
 
-  const {
-    rules,
-  } = result;
+  const { rules } = result;
 
   if (rules.length === 0) {
-    throw new Error('Tests checker is broken - it could not extract rules from test index file.');
+    throw new Error(
+      'Tests checker is broken - it could not extract rules from test index file.',
+    );
   }
 
   return rules;
@@ -48,20 +48,26 @@ const checkTests = (rulesNames: readonly string[]): void => {
   const testIndexRules = getTestIndexRules();
 
   const invalid = rulesNames.filter((names) => {
-    const testExists = isFile(path.resolve(__dirname, '../../tests/rules/assertions', names[0] + '.js'));
+    const testExists = isFile(
+      path.resolve(__dirname, '../../tests/rules/assertions', names[0] + '.js'),
+    );
     const inIndex = testIndexRules.includes(names[1]);
 
     return !(testExists && inIndex);
   });
 
   if (invalid.length > 0) {
-    const invalidList = invalid.map((names) => {
-      return names[0];
-    }).join(', ');
+    const invalidList = invalid
+      .map((names) => {
+        return names[0];
+      })
+      .join(', ');
 
     throw new Error(
-      'Tests checker encountered an error in: ' + invalidList + '. ' +
-      'Make sure that for every rule you created test suite and included the rule name in `tests/rules/index.js` file.',
+      'Tests checker encountered an error in: ' +
+        invalidList +
+        '. ' +
+        'Make sure that for every rule you created test suite and included the rule name in `tests/rules/index.js` file.',
     );
   }
 };
