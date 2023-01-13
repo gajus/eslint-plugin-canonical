@@ -159,9 +159,9 @@ export default createRule({
           return;
         }
 
-        // @ts-expect-error TODO
         const isArgumentToParent =
-          node.parent.hasOwnProperty('arguments') &&
+          node.parent?.hasOwnProperty('arguments') &&
+          'arguments' in node.parent &&
           node.parent.arguments.includes(node);
         const usageType = isArgumentToParent ? node.type : node.parent?.type;
 
