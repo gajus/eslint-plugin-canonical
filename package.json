@@ -5,6 +5,7 @@
     "url": "http://gajus.com"
   },
   "dependencies": {
+    "@typescript-eslint/types": "^5.48.1",
     "@typescript-eslint/utils": "^5.48.1",
     "is-get-set-prop": "^1.0.0",
     "is-js-type": "^2.0.0",
