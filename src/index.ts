@@ -12,7 +12,7 @@ import preferInlineTypeImport from './rules/preferInlineTypeImport';
 import preferUseMount from './rules/preferUseMount';
 import sortKeys from './rules/sortKeys';
 
-export default {
+export = {
   configs: {
     recommended,
   },
