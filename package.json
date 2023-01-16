@@ -5,6 +5,7 @@
     "url": "http://gajus.com"
   },
   "dependencies": {
+    "@typescript-eslint/utils": "^5.48.1",
     "is-get-set-prop": "^1.0.0",
     "is-js-type": "^2.0.0",
     "is-obj-prop": "^1.0.0",
@@ -19,7 +20,6 @@
     "@semantic-release/github": "^8.0.7",
     "@semantic-release/npm": "^9.0.1",
     "@typescript-eslint/parser": "^5.25.0",
-    "@typescript-eslint/utils": "^5.48.0",
     "ajv": "^8.11.0",
     "eslint": "^8.31.0",
     "eslint-config-canonical": "^38.3.0",
