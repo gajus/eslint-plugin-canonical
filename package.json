@@ -15,6 +15,8 @@
   },
   "description": "Canonical linting rules for ESLint.",
   "devDependencies": {
+    "@rollup/plugin-json": "^6.0.0",
+    "@rollup/plugin-typescript": "^11.0.0",
     "@semantic-release/commit-analyzer": "^9.0.2",
     "@semantic-release/github": "^8.0.7",
     "@semantic-release/npm": "^9.0.1",
@@ -27,6 +29,7 @@
     "glob": "^7.2.0",
     "husky": "^7.0.4",
     "mocha": "^9.2.2",
+    "rollup": "^3.10.0",
     "semantic-release": "^20.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
@@ -44,14 +47,14 @@
     "canonical"
   ],
   "license": "BSD-3-Clause",
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.js",
   "name": "eslint-plugin-canonical",
   "repository": {
     "type": "git",
     "url": "https://github.com/gajus/eslint-plugin-canonical"
   },
   "scripts": {
-    "build": "rm -fr ./dist && tsc",
+    "build": "rm -fr ./dist && rollup -c rollup.config.js",
     "check-documentation": "ts-node ./src/bin/checkDocumentation",
     "check-tests": "ts-node ./src/bin/checkTests",
     "create-readme": "gitdown ./.README/README.md --output-file ./README.md && npm run documentation-add-assertions",
