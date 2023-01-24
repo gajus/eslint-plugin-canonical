@@ -20,6 +20,7 @@ const reportingRules = [
   'import-specifier-newline',
   'no-restricted-strings',
   'no-use-extend-native',
+  'prefer-import-alias',
   'prefer-inline-type-import',
   'prefer-use-mount',
   'sort-keys',
