@@ -26,6 +26,7 @@ export default createRule({
 
           const firstTokenOfFirstProperty =
             sourceCode.getFirstToken(firstToken);
+
           const lastTokenOfLastProperty = sourceCode.getLastToken(lastToken);
 
           if (firstTokenOfFirstProperty === null) {

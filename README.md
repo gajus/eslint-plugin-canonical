@@ -311,6 +311,49 @@ The 1st option is an array of strings that cannot be contained in the codebase.
 
 
 
+<a name="user-content-eslint-plugin-canonical-rules-prefer-import-alias"></a>
+<a name="eslint-plugin-canonical-rules-prefer-import-alias"></a>
+### <code>prefer-import-alias</code>
+
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
+
+Restrict imports to path aliases or relative imports limited by depth.
+
+The same alias can be applied using multiple rules, e.g.
+
+```ts
+'canonical/prefer-import-alias': [
+  2,
+  {
+    aliases: [
+      {
+        alias: '@/',
+        matchParent: path.resolve(__dirname, 'src'),
+        matchPath: '^src\\/',
+      },
+      {
+        alias: '@/',
+        matchPath: '^src\\/',
+        maxRelativeDepth: 2,
+      },
+    ],
+  },
+],
+```
+
+In this example, we are saying:
+
+* rewrite import path to use alias when
+  * import path matches `^src\/`
+  * the grandfather directory is `path.resolve(__dirname, 'src')`
+* rewrite import path to use alias when
+  * import path matches `^src\/`
+  * relative import is greater than 2
+
+The grandfather directory is essentially whichever directory that is accessed by the doubledot (`../`) by the import path.
+
+
+
 <a name="user-content-eslint-plugin-canonical-rules-prefer-inline-type-import"></a>
 <a name="eslint-plugin-canonical-rules-prefer-inline-type-import"></a>
 ### <code>prefer-inline-type-import</code>
