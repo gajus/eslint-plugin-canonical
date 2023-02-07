@@ -305,6 +305,24 @@ Disallow specified strings.
 
 The 1st option is an array of strings that cannot be contained in the codebase.
 
+<a name="user-content-eslint-plugin-canonical-rules-no-unused-exports"></a>
+<a name="eslint-plugin-canonical-rules-no-unused-exports"></a>
+### <code>no-unused-exports</code>
+
+Identifies unused exports.
+
+> **Note** This rule uses [`ts-unused-exports`](https://github.com/pzavolinsky/ts-unused-exports) program behind the scenes.
+
+<a name="user-content-eslint-plugin-canonical-rules-no-unused-exports-options-2"></a>
+<a name="eslint-plugin-canonical-rules-no-unused-exports-options-2"></a>
+#### Options
+
+|Config|Type|Description|
+|---|---|---|
+|`tsConfigPath`|string|Path to [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)]
+
+
+
 <a name="user-content-eslint-plugin-canonical-rules-no-use-extend-native"></a>
 <a name="eslint-plugin-canonical-rules-no-use-extend-native"></a>
 ### <code>no-use-extend-native</code>
@@ -382,8 +400,8 @@ Note: This rule is equivalent to [`sort-keys`](https://eslint.org/docs/rules/sor
 
 This rule requires identifiers in assignments and `function` definitions to match a specified regular expression.
 
-<a name="user-content-eslint-plugin-canonical-rules-sort-keys-options-2"></a>
-<a name="eslint-plugin-canonical-rules-sort-keys-options-2"></a>
+<a name="user-content-eslint-plugin-canonical-rules-sort-keys-options-3"></a>
+<a name="eslint-plugin-canonical-rules-sort-keys-options-3"></a>
 #### Options
 
 The 1st option is "asc" or "desc".

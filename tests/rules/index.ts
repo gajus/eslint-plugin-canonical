@@ -19,6 +19,7 @@ const reportingRules = [
   'id-match',
   'import-specifier-newline',
   'no-restricted-strings',
+  'no-unused-exports',
   'no-use-extend-native',
   'prefer-import-alias',
   'prefer-inline-type-import',
