@@ -309,18 +309,19 @@ The 1st option is an array of strings that cannot be contained in the codebase.
 <a name="eslint-plugin-canonical-rules-no-unused-exports"></a>
 ### <code>no-unused-exports</code>
 
-Identifies unused exports.
+Identifies unused TypeScript exports.
 
-> **Note** This rule uses [`ts-unused-exports`](https://github.com/pzavolinsky/ts-unused-exports) program behind the scenes.
+> **Note** This rule is implemented using [`ts-unused-exports`](https://github.com/pzavolinsky/ts-unused-exports).
 
 <a name="user-content-eslint-plugin-canonical-rules-no-unused-exports-options-2"></a>
 <a name="eslint-plugin-canonical-rules-no-unused-exports-options-2"></a>
 #### Options
 
-|Config|Type|Description|
-|---|---|---|
-|`tsConfigPath`|string|Path to [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)]
-
+|Config|Type|Required|Default|Description|
+|---|---|---|---|---|
+|`tsConfigPath`|string|Required||Path to [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)|
+|`allowUnusedEnums`|boolean||`false`|Allow unused `enum`s.|
+|`allowUnusedTypes`|boolean||`false`|Allow unused `type` and `interface`.|
 
 
 <a name="user-content-eslint-plugin-canonical-rules-no-use-extend-native"></a>

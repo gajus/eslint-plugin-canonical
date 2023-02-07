@@ -2,11 +2,15 @@ import analyzeTsConfig from 'ts-unused-exports';
 import { createRule } from '../utilities';
 
 const defaultOptions = {
+  allowUnusedEnums: false,
+  allowUnusedTypes: false,
   tsConfigPath: '',
 };
 
 type Options = [
   {
+    allowUnusedEnums: boolean;
+    allowUnusedTypes: boolean;
     tsConfigPath: string;
   },
 ];
@@ -17,7 +21,17 @@ export default createRule<Options, MessageIds>({
   create: (context) => {
     const [options] = context.options;
 
-    const result = analyzeTsConfig(options.tsConfigPath);
+    const tsUnusedOptions: string[] = [];
+
+    if (options.allowUnusedEnums) {
+      tsUnusedOptions.push('--allowUnusedEnums');
+    }
+
+    if (options.allowUnusedTypes) {
+      tsUnusedOptions.push('--allowUnusedTypes');
+    }
+
+    const result = analyzeTsConfig(options.tsConfigPath, tsUnusedOptions);
 
     return {
       Program() {
@@ -65,6 +79,12 @@ export default createRule<Options, MessageIds>({
       {
         additionalProperties: false,
         properties: {
+          allowUnusedEnums: {
+            type: 'boolean',
+          },
+          allowUnusedTypes: {
+            type: 'boolean',
+          },
           tsConfigPath: {
             type: 'string',
           },
