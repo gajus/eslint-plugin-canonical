@@ -5,6 +5,7 @@
     "url": "http://gajus.com"
   },
   "dependencies": {
+    "eslint-module-utils": "^2.7.4",
     "is-get-set-prop": "^1.0.0",
     "is-js-type": "^2.0.0",
     "is-obj-prop": "^1.0.0",

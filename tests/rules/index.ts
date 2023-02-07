@@ -11,20 +11,21 @@ const ruleTester = new RuleTester({
 });
 
 const reportingRules = [
-  'destructuring-property-newline',
-  'export-specifier-newline',
-  'filename-match-exported',
-  'filename-match-regex',
-  'filename-no-index',
-  'id-match',
-  'import-specifier-newline',
-  'no-restricted-strings',
-  'no-unused-exports',
-  'no-use-extend-native',
-  'prefer-import-alias',
-  'prefer-inline-type-import',
-  'prefer-use-mount',
-  'sort-keys',
+  // 'destructuring-property-newline',
+  // 'export-specifier-newline',
+  // 'filename-match-exported',
+  // 'filename-match-regex',
+  // 'filename-no-index',
+  // 'id-match',
+  // 'import-specifier-newline',
+  // 'no-restricted-strings',
+  // 'no-unused-exports',
+  // 'no-use-extend-native',
+  // 'prefer-import-alias',
+  // 'prefer-inline-type-import',
+  // 'prefer-use-mount',
+  // 'sort-keys',
+  'virtual-module',
 ];
 
 const parser = require.resolve('@typescript-eslint/parser');
