@@ -73,7 +73,7 @@ ruleTester.run('virtual-module', rule, {
         {
           data: {
             privatePath: '/index.ts',
-            targetModule: '/Bar/Baz',
+            targetModule: '/Bar',
           },
           messageId: 'privateModuleImport',
         },

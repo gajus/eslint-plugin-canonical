@@ -136,7 +136,8 @@ export default createRule<Options, MessageIds>({
             privatePath:
               path.sep + path.relative(targetModuleRoot, resolvedImportPath),
             targetModule:
-              path.sep + path.relative(projectRootDirectory, targetModuleRoot),
+              path.sep +
+              path.relative(projectRootDirectory, targetParentModuleRoot),
           },
           messageId: 'privateModuleImport',
           node,
