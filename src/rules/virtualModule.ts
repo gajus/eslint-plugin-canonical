@@ -1,7 +1,9 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
+import parse from 'eslint-module-utils/parse';
 import resolve from 'eslint-module-utils/resolve';
+import visit from 'eslint-module-utils/visit';
 import { Logger } from '../Logger';
 import { createRule } from '../utilities';
 
@@ -9,7 +11,13 @@ const log = Logger.child({
   rule: 'virtual-module',
 });
 
-type Options = [];
+type Options =
+  | [
+      {
+        includeModules?: string[];
+      },
+    ]
+  | [];
 
 type MessageIds = 'indexImport' | 'parentModuleImport' | 'privateModuleImport';
 
@@ -17,11 +25,15 @@ const findClosestDirectoryWithNeedle = (
   startPath: string,
   needleFileName: string,
   rootPath: string,
+  allowList: string[] | null = null,
 ): string | null => {
   let currentDirectory = path.resolve(startPath, './');
 
   while (currentDirectory.startsWith(rootPath)) {
-    if (existsSync(path.resolve(currentDirectory, needleFileName))) {
+    if (
+      existsSync(path.resolve(currentDirectory, needleFileName)) &&
+      (allowList === null || allowList.includes(currentDirectory))
+    ) {
       return currentDirectory;
     }
 
@@ -45,73 +57,190 @@ const findProjectRoot = (startPath: string): string => {
   return projectRoot;
 };
 
-const findModuleRoot = (startPath: string, rootPath: string): string | null => {
+const findModuleRoot = (
+  startPath: string,
+  rootPath: string,
+  allowList: string[] | null = null,
+): string | null => {
   const moduleRoot = findClosestDirectoryWithNeedle(
     startPath,
     'index.ts',
     rootPath,
+    allowList,
   );
 
   return moduleRoot;
 };
 
+type NamedExport =
+  | {
+      name: string;
+      source: string;
+      type: 'specifier';
+    }
+  | {
+      name: string;
+      type: 'declaration';
+    };
+
+const getAllNamedExports = (filePath: string, context): NamedExport[] => {
+  const content = readFileSync(filePath, 'utf8');
+
+  const { ast, visitorKeys } = parse(filePath, content, context);
+
+  const namedExports: NamedExport[] = [];
+
+  visit(ast, visitorKeys, {
+    ExportNamedDeclaration(node) {
+      for (const declaration of node.declaration?.declarations ?? []) {
+        namedExports.push({
+          name: declaration.id.name,
+          type: 'declaration',
+        });
+      }
+
+      for (const specifier of node.specifiers) {
+        if (specifier.type === 'ExportSpecifier') {
+          namedExports.push({
+            name: specifier.exported.name,
+            source: node.source.value,
+            type: 'specifier',
+          });
+        }
+      }
+    },
+  });
+
+  return namedExports;
+};
+
+/**
+ * This implementation will unlikely work in real-world setup.
+ *
+ * @todo Investigate the proper way of determining import
+ */
+const stripPrivatePath = (
+  importPath: string,
+  privatePath: string,
+): string | null => {
+  const steps = privatePath.split('/').length;
+
+  return importPath
+    .split('/')
+    .slice(0, -1 * steps)
+    .join('/');
+};
+
 export default createRule<Options, MessageIds>({
-  create: (context) => {
+  create: (context, [options]) => {
     const visitDeclaration = (
       node:
         | TSESTree.ExportAllDeclaration
         | TSESTree.ExportNamedDeclaration
         | TSESTree.ImportDeclaration,
     ) => {
+      let includeModules = options?.includeModules ?? null;
+
+      if (includeModules) {
+        includeModules = includeModules.map((modulePath) => {
+          return path.dirname(modulePath);
+        });
+      }
+
       const currentDirectory = path.dirname(context.getFilename());
       const projectRootDirectory = findProjectRoot(currentDirectory);
 
       const importPath = node.source?.value;
 
       if (!importPath) {
-        throw new Error('Import path cannot be resolved.');
+        return;
       }
 
-      const resolvedImportPath = resolve(importPath, context);
+      const resolvedImportPath: string | null = resolve(importPath, context);
 
       if (!resolvedImportPath) {
-        log.error({ importPath }, 'cannot resolve import');
-
-        throw new Error('Cannot resolve import.');
+        log.warn({ importPath }, 'cannot resolve import');
 
         return;
       }
 
-      const targetModuleRoot = findModuleRoot(
+      const targetModuleDirectory = findModuleRoot(
         resolvedImportPath,
         projectRootDirectory,
+        includeModules,
       );
 
-      if (!targetModuleRoot) {
+      if (!targetModuleDirectory) {
         return;
       }
 
-      const currentModuleRoot = findModuleRoot(
-        currentDirectory,
-        projectRootDirectory,
+      const resolvedVirtualModuleEntry = path.resolve(
+        targetModuleDirectory,
+        'index.ts',
       );
 
-      if (currentModuleRoot === targetModuleRoot) {
-        const importPathIsModuleIndex =
-          path.basename(resolvedImportPath) === 'index.ts';
+      const resolvedImportIsVirtualModuleEntry =
+        resolvedImportPath === resolvedVirtualModuleEntry;
 
-        if (importPathIsModuleIndex) {
+      const currentModuleDirectory = findModuleRoot(
+        currentDirectory,
+        projectRootDirectory,
+        includeModules,
+      );
+
+      if (currentModuleDirectory === targetModuleDirectory) {
+        if (resolvedImportIsVirtualModuleEntry) {
           context.report({
+            fix: (fixer) => {
+              // TODO add exports
+              if (node.type === 'ImportDeclaration') {
+                const namedExports = getAllNamedExports(
+                  resolvedVirtualModuleEntry,
+                  context,
+                );
+
+                const newImports: string[] = [];
+
+                for (const specifier of node.specifiers) {
+                  if (specifier.type !== 'ImportSpecifier') {
+                    return null;
+                  }
+
+                  const namedExport = namedExports.find((maybeNamedExport) => {
+                    return maybeNamedExport.name === specifier.imported.name;
+                  });
+
+                  if (!namedExport || namedExport.type !== 'specifier') {
+                    return null;
+                  }
+
+                  newImports.push(
+                    `import { ${specifier.imported.name} } from '${namedExport.source}'`,
+                  );
+                }
+
+                return fixer.replaceText(node, newImports.join('\n'));
+              }
+
+              return null;
+            },
             messageId: 'indexImport',
             node,
           });
-
-          return;
         }
+
+        return;
       }
 
-      if (currentDirectory.startsWith(targetModuleRoot + path.sep)) {
+      if (currentDirectory.startsWith(targetModuleDirectory + path.sep)) {
         context.report({
+          data: {
+            currentModule:
+              path.sep + path.relative(projectRootDirectory, currentDirectory),
+            parentModule:
+              path.sep +
+              path.relative(projectRootDirectory, targetModuleDirectory),
+          },
           messageId: 'parentModuleImport',
           node,
         });
@@ -119,29 +248,87 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const parentModuleRoot = findModuleRoot(
-        path.resolve(targetModuleRoot + path.sep + '..'),
+      const targetParentModuleDirectory = findModuleRoot(
+        path.resolve(targetModuleDirectory + path.sep + '..'),
         projectRootDirectory,
+        includeModules,
       );
 
-      if (parentModuleRoot) {
-        context.report({
-          messageId: 'privateModuleImport',
-          node,
-        });
+      const reportModule = targetParentModuleDirectory ?? targetModuleDirectory;
+
+      if (
+        reportModule === targetModuleDirectory &&
+        resolvedImportIsVirtualModuleEntry
+      ) {
+        log.debug('valid import');
 
         return;
       }
 
-      log.info(
-        {
-          currentDirectory,
-          parentModuleRoot,
-          relative: path.relative(currentDirectory, targetModuleRoot),
-          targetModuleRoot,
+      context.report({
+        data: {
+          privatePath:
+            path.sep + path.relative(targetModuleDirectory, resolvedImportPath),
+          targetModule:
+            path.sep + path.relative(projectRootDirectory, reportModule),
         },
-        'valid import',
-      );
+        fix: (fixer) => {
+          if (node.type === 'ImportDeclaration') {
+            const namedExports = getAllNamedExports(
+              resolvedVirtualModuleEntry,
+              context,
+            );
+
+            const namedExportNames = namedExports.map((namedExport) => {
+              return namedExport.name;
+            });
+
+            for (const specifier of node.specifiers) {
+              if (specifier.type !== 'ImportSpecifier') {
+                return null;
+              }
+
+              if (!namedExportNames.includes(specifier.imported.name)) {
+                return null;
+              }
+            }
+
+            let newImportPath = path.relative(currentDirectory, reportModule);
+
+            const maybeBetterPath = stripPrivatePath(
+              importPath,
+              path.relative(targetModuleDirectory, resolvedImportPath),
+            );
+
+            if (maybeBetterPath) {
+              const resolvedBetterPath: string | null = resolve(
+                maybeBetterPath,
+                context,
+              );
+
+              if (
+                resolvedBetterPath === path.resolve(reportModule, 'index.ts')
+              ) {
+                newImportPath = maybeBetterPath;
+              }
+            }
+
+            if (!newImportPath) {
+              return null;
+            }
+
+            return fixer.replaceText(
+              node,
+              context.getSourceCode().getText(node).split('}')[0] +
+                `} from '${newImportPath}'`,
+            );
+          }
+
+          return null;
+        },
+        messageId: 'privateModuleImport',
+        node,
+      });
     };
 
     return {
@@ -150,7 +337,7 @@ export default createRule<Options, MessageIds>({
       ImportDeclaration: visitDeclaration,
     };
   },
-  defaultOptions: [],
+  defaultOptions: [{ includeModules: undefined }],
   meta: {
     docs: {
       description: '',
@@ -161,11 +348,26 @@ export default createRule<Options, MessageIds>({
       indexImport:
         'Cannot import virtual module index from within the virtual module itself.',
       parentModuleImport:
-        'Cannot import from parent module. {{moduleRoot}} is a virtual module.',
+        'Cannot import a parent virtual module. {{parentModule}} is a parent of {{currentModule}}.',
       privateModuleImport:
-        'Cannot import a private path. {{moduleRoot}} is a virtual module.',
+        'Cannot import a private path. {{privatePath}} belongs to {{targetModule}} virtual module.',
     },
-    schema: [],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          includeModules: {
+            description:
+              'A list of barrel files that identify virtual modules. Provide absolute paths to the index.ts files. If this value is not provided, then all barrel files in the project are assumed to be virtual module boundaries.',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+        },
+        type: 'object',
+      },
+    ],
     type: 'layout',
   },
   name: 'import-specifiers-newline',

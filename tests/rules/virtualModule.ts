@@ -29,6 +29,10 @@ ruleTester.run('virtual-module', rule, {
       code: `import { Bar } from '@/Bar'`,
       errors: [
         {
+          data: {
+            currentModule: '/Bar/Baz',
+            parentModule: '/Bar',
+          },
           messageId: 'parentModuleImport',
         },
       ],
@@ -39,6 +43,10 @@ ruleTester.run('virtual-module', rule, {
       code: `export { Bar } from '@/Bar'`,
       errors: [
         {
+          data: {
+            currentModule: '/Bar/Baz',
+            parentModule: '/Bar',
+          },
           messageId: 'parentModuleImport',
         },
       ],
@@ -49,6 +57,10 @@ ruleTester.run('virtual-module', rule, {
       code: `export * from '@/Bar'`,
       errors: [
         {
+          data: {
+            currentModule: '/Bar/Baz',
+            parentModule: '/Bar',
+          },
           messageId: 'parentModuleImport',
         },
       ],
@@ -59,14 +71,57 @@ ruleTester.run('virtual-module', rule, {
       code: `import { Baz } from '@/Bar/Baz'`,
       errors: [
         {
+          data: {
+            privatePath: '/index.ts',
+            targetModule: '/Bar',
+          },
           messageId: 'privateModuleImport',
         },
       ],
       filename: path.resolve(fixturesPath, './Foo/index.ts'),
       name: '/Foo cannot import /Bar/Baz because /Bar is a module',
+      output: `import { Baz } from '@/Bar'`,
     },
     {
-      code: `import { Bar } from './index'`,
+      code: `import { Baz } from '@/Bar/Baz'`,
+      errors: [
+        {
+          data: {
+            privatePath: '/index.ts',
+            targetModule: '/Bar',
+          },
+          messageId: 'privateModuleImport',
+        },
+      ],
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      name: '/Foo cannot import /Bar/Baz because /Bar is a module (includeModules)',
+      options: [
+        {
+          includeModules: [
+            path.resolve(fixturesPath, './Bar/index.ts'),
+            path.resolve(fixturesPath, './Bar/Baz/index.ts'),
+            path.resolve(fixturesPath, './Foo/index.ts'),
+          ],
+        },
+      ],
+      output: `import { Baz } from '@/Bar'`,
+    },
+    {
+      code: `import { barUtility } from '@/Bar/utilities'`,
+      errors: [
+        {
+          data: {
+            privatePath: '/utilities.ts',
+            targetModule: '/Bar',
+          },
+          messageId: 'privateModuleImport',
+        },
+      ],
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      name: 'does not correct import if export cannot be resolved from the entry',
+    },
+    {
+      code: `import { Baz } from './index'`,
       errors: [
         {
           messageId: 'indexImport',
@@ -74,6 +129,7 @@ ruleTester.run('virtual-module', rule, {
       ],
       filename: path.resolve(fixturesPath, './Bar/utilities.ts'),
       name: 'members of virtual module cannot import module index',
+      output: `import { Baz } from './Baz'`,
     },
   ],
   valid: [
@@ -83,9 +139,31 @@ ruleTester.run('virtual-module', rule, {
       name: '/Foo can import /Bar',
     },
     {
-      code: `import { bar } from './utilities'`,
+      code: `import { barUtility } from './utilities'`,
       filename: path.resolve(fixturesPath, './Bar/index.ts'),
-      name: 'virtual module index can import from within the virtual module',
+      name: 'VM index can import from within the VM',
+    },
+    {
+      code: `import { barRoutine } from './routines'`,
+      filename: path.resolve(fixturesPath, './Bar/index.ts'),
+      name: 'VM index can import from within the VM (JavaScript)',
+    },
+    {
+      code: `import { ESLint } from 'eslint'`,
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      name: 'VM can import another a node_modules package',
+    },
+    {
+      code: `import { Baz } from '@/Bar/Baz'`,
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      options: [
+        {
+          includeModules: [
+            path.resolve(fixturesPath, './Bar/Baz/index.ts'),
+            path.resolve(fixturesPath, './Foo/index.ts'),
+          ],
+        },
+      ],
     },
   ],
 });

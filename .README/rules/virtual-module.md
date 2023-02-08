@@ -1,5 +1,7 @@
 ### `virtual-module`
 
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
+
 Enforces "virtual modules" architecture.
 
 Virtual modules is a convention-driven code architecture enforced using ESLint rules. In the most simple of terms, a virtual module is any directory that has a barrel file (`index.ts`). `index.ts` is the only way that a virtual module can be imported; any files contained inside of the same directory cannot be imported from outside of the virtual module, unless they are explicitly re-exported through `index.ts`.
