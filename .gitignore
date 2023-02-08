@@ -5,6 +5,7 @@
 .*
 !.eslintignore
 !.eslintrc
+!.eslintrc.js
 !.github
 !.gitignore
 !.husky
