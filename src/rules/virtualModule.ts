@@ -87,7 +87,7 @@ const getAllNamedExportNames = (filePath: string, context): string[] => {
 
       for (const specifier of node.specifiers) {
         if (specifier.type === 'ExportSpecifier') {
-          namedExportNames.push(specifier.name);
+          namedExportNames.push(specifier.exported.name);
         }
       }
     },
