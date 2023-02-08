@@ -60,7 +60,7 @@
     "build": "rm -fr ./dist && tsc",
     "check-documentation": "ts-node ./src/bin/checkDocumentation",
     "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
-    "lint": "npm run check-documentation && npm run check-tests && eslint .",
+    "lint": "npm run check-documentation && eslint .",
     "test": "mocha --require ts-node/register/transpile-only './tests/rules/*'"
   },
   "version": "0.0.0-development"
