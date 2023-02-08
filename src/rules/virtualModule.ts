@@ -9,7 +9,13 @@ const log = Logger.child({
   rule: 'virtual-module',
 });
 
-type Options = [];
+type Options =
+  | [
+      {
+        includeModules?: string[];
+      },
+    ]
+  | [];
 
 type MessageIds = 'indexImport' | 'parentModuleImport' | 'privateModuleImport';
 
@@ -17,11 +23,15 @@ const findClosestDirectoryWithNeedle = (
   startPath: string,
   needleFileName: string,
   rootPath: string,
+  allowList: string[] | null = null,
 ): string | null => {
   let currentDirectory = path.resolve(startPath, './');
 
   while (currentDirectory.startsWith(rootPath)) {
-    if (existsSync(path.resolve(currentDirectory, needleFileName))) {
+    if (
+      existsSync(path.resolve(currentDirectory, needleFileName)) &&
+      (allowList === null || allowList.includes(currentDirectory))
+    ) {
       return currentDirectory;
     }
 
@@ -45,24 +55,37 @@ const findProjectRoot = (startPath: string): string => {
   return projectRoot;
 };
 
-const findModuleRoot = (startPath: string, rootPath: string): string | null => {
+const findModuleRoot = (
+  startPath: string,
+  rootPath: string,
+  allowList: string[] | null = null,
+): string | null => {
   const moduleRoot = findClosestDirectoryWithNeedle(
     startPath,
     'index.ts',
     rootPath,
+    allowList,
   );
 
   return moduleRoot;
 };
 
 export default createRule<Options, MessageIds>({
-  create: (context) => {
+  create: (context, [options]) => {
     const visitDeclaration = (
       node:
         | TSESTree.ExportAllDeclaration
         | TSESTree.ExportNamedDeclaration
         | TSESTree.ImportDeclaration,
     ) => {
+      let includeModules = options?.includeModules ?? null;
+
+      if (includeModules) {
+        includeModules = includeModules.map((modulePath) => {
+          return path.dirname(modulePath);
+        });
+      }
+
       const currentDirectory = path.dirname(context.getFilename());
       const projectRootDirectory = findProjectRoot(currentDirectory);
 
@@ -85,6 +108,7 @@ export default createRule<Options, MessageIds>({
       const targetModuleRoot = findModuleRoot(
         resolvedImportPath,
         projectRootDirectory,
+        includeModules,
       );
 
       if (!targetModuleRoot) {
@@ -94,6 +118,7 @@ export default createRule<Options, MessageIds>({
       const currentModuleRoot = findModuleRoot(
         currentDirectory,
         projectRootDirectory,
+        includeModules,
       );
 
       if (currentModuleRoot === targetModuleRoot) {
@@ -128,6 +153,7 @@ export default createRule<Options, MessageIds>({
       const targetParentModuleRoot = findModuleRoot(
         path.resolve(targetModuleRoot + path.sep + '..'),
         projectRootDirectory,
+        includeModules,
       );
 
       if (targetParentModuleRoot) {
@@ -162,7 +188,7 @@ export default createRule<Options, MessageIds>({
       ImportDeclaration: visitDeclaration,
     };
   },
-  defaultOptions: [],
+  defaultOptions: [{ includeModules: undefined }],
   meta: {
     docs: {
       description: '',
@@ -177,7 +203,22 @@ export default createRule<Options, MessageIds>({
       privateModuleImport:
         'Cannot import a private path. {{privatePath}} belongs to {{targetModule}} virtual module.',
     },
-    schema: [],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          includeModules: {
+            description:
+              'A list of barrel files that identify virtual modules. Provide absolute paths to the index.ts files. If this value is not provided, then all barrel files in the project are assumed to be virtual module boundaries.',
+            items: {
+              type: 'string',
+            },
+            type: 'array',
+          },
+        },
+        type: 'object',
+      },
+    ],
     type: 'layout',
   },
   name: 'import-specifiers-newline',

@@ -82,6 +82,29 @@ ruleTester.run('virtual-module', rule, {
       name: '/Foo cannot import /Bar/Baz because /Bar is a module',
     },
     {
+      code: `import { Baz } from '@/Bar/Baz'`,
+      errors: [
+        {
+          data: {
+            privatePath: '/index.ts',
+            targetModule: '/Bar',
+          },
+          messageId: 'privateModuleImport',
+        },
+      ],
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      name: '/Foo cannot import /Bar/Baz because /Bar is a module (includeModules)',
+      options: [
+        {
+          includeModules: [
+            path.resolve(fixturesPath, './Bar/index.ts'),
+            path.resolve(fixturesPath, './Bar/Baz/index.ts'),
+            path.resolve(fixturesPath, './Foo/index.ts'),
+          ],
+        },
+      ],
+    },
+    {
       code: `import { Bar } from './index'`,
       errors: [
         {
@@ -112,6 +135,18 @@ ruleTester.run('virtual-module', rule, {
       code: `import { ESLint } from 'eslint'`,
       filename: path.resolve(fixturesPath, './Foo/index.ts'),
       name: 'VM can import another a node_modules package',
+    },
+    {
+      code: `import { Baz } from '@/Bar/Baz'`,
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      options: [
+        {
+          includeModules: [
+            path.resolve(fixturesPath, './Bar/Baz/index.ts'),
+            path.resolve(fixturesPath, './Foo/index.ts'),
+          ],
+        },
+      ],
     },
   ],
 });
