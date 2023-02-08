@@ -81,7 +81,7 @@ const getAllNamedExportNames = (filePath: string, context): string[] => {
 
   visit(ast, visitorKeys, {
     ExportNamedDeclaration(node) {
-      for (const declaration of node.declaration.declarations) {
+      for (const declaration of node.declaration?.declarations ?? []) {
         namedExportNames.push(declaration.id.name);
       }
 
@@ -148,45 +148,44 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const targetModuleRoot = findModuleRoot(
+      const targetModuleDirectory = findModuleRoot(
         resolvedImportPath,
         projectRootDirectory,
         includeModules,
       );
 
-      if (!targetModuleRoot) {
+      if (!targetModuleDirectory) {
         return;
       }
 
-      const currentModuleRoot = findModuleRoot(
+      const resolvedImportIsVirtualModuleEntry =
+        resolvedImportPath === path.resolve(targetModuleDirectory, 'index.ts');
+
+      const currentModuleDirectory = findModuleRoot(
         currentDirectory,
         projectRootDirectory,
         includeModules,
       );
 
-      if (currentModuleRoot === targetModuleRoot) {
-        const importPathIsModuleIndex =
-          path.basename(resolvedImportPath) === 'index.ts';
-
-        if (importPathIsModuleIndex) {
+      if (currentModuleDirectory === targetModuleDirectory) {
+        if (resolvedImportIsVirtualModuleEntry) {
           context.report({
             messageId: 'indexImport',
             node,
           });
-
-          return;
         }
 
         return;
       }
 
-      if (currentDirectory.startsWith(targetModuleRoot + path.sep)) {
+      if (currentDirectory.startsWith(targetModuleDirectory + path.sep)) {
         context.report({
           data: {
             currentModule:
               path.sep + path.relative(projectRootDirectory, currentDirectory),
             parentModule:
-              path.sep + path.relative(projectRootDirectory, targetModuleRoot),
+              path.sep +
+              path.relative(projectRootDirectory, targetModuleDirectory),
           },
           messageId: 'parentModuleImport',
           node,
@@ -195,90 +194,83 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const targetParentModuleRoot = findModuleRoot(
-        path.resolve(targetModuleRoot + path.sep + '..'),
+      const targetParentModuleDirectory = findModuleRoot(
+        path.resolve(targetModuleDirectory + path.sep + '..'),
         projectRootDirectory,
         includeModules,
       );
 
-      if (targetParentModuleRoot) {
-        context.report({
-          data: {
-            privatePath:
-              path.sep + path.relative(targetModuleRoot, resolvedImportPath),
-            targetModule:
-              path.sep +
-              path.relative(projectRootDirectory, targetParentModuleRoot),
-          },
-          fix: (fixer) => {
-            if (node.type === 'ImportDeclaration') {
-              const namedExports = getAllNamedExportNames(
-                resolvedImportPath,
-                context,
-              );
+      const reportModule = targetParentModuleDirectory ?? targetModuleDirectory;
 
-              for (const specifier of node.specifiers) {
-                if (specifier.type !== 'ImportSpecifier') {
-                  return null;
-                }
-
-                if (!namedExports.includes(specifier.imported.name)) {
-                  return null;
-                }
-              }
-
-              let newImportPath = path.relative(
-                currentDirectory,
-                targetParentModuleRoot,
-              );
-
-              const maybeBetterPath = stripPrivatePath(
-                importPath,
-                path.relative(targetModuleRoot, resolvedImportPath),
-              );
-
-              if (maybeBetterPath) {
-                const resolvedBetterPath: string | null = resolve(
-                  maybeBetterPath,
-                  context,
-                );
-
-                if (
-                  resolvedBetterPath ===
-                  path.resolve(targetParentModuleRoot, 'index.ts')
-                ) {
-                  newImportPath = maybeBetterPath;
-                }
-              }
-
-              if (!newImportPath) {
-                return null;
-              }
-
-              return fixer.replaceText(
-                node,
-                context.getSourceCode().getText(node).split('}')[0] +
-                  `} from '${newImportPath}'`,
-              );
-            }
-
-            return null;
-          },
-          messageId: 'privateModuleImport',
-          node,
-        });
+      if (
+        reportModule === targetModuleDirectory &&
+        resolvedImportIsVirtualModuleEntry
+      ) {
+        log.debug('valid import');
 
         return;
       }
 
-      log.info(
-        {
-          currentDirectory,
-          targetModuleRoot,
-          targetParentModuleRoot,
+      context.report({
+        data: {
+          privatePath:
+            path.sep + path.relative(targetModuleDirectory, resolvedImportPath),
+          targetModule:
+            path.sep + path.relative(projectRootDirectory, reportModule),
         },
-        'valid import',
-      );
+        fix: (fixer) => {
+          if (node.type === 'ImportDeclaration') {
+            const namedExports = getAllNamedExportNames(
+              resolvedImportPath,
+              context,
+            );
+
+            for (const specifier of node.specifiers) {
+              if (specifier.type !== 'ImportSpecifier') {
+                return null;
+              }
+
+              if (!namedExports.includes(specifier.imported.name)) {
+                return null;
+              }
+            }
+
+            let newImportPath = path.relative(currentDirectory, reportModule);
+
+            const maybeBetterPath = stripPrivatePath(
+              importPath,
+              path.relative(targetModuleDirectory, resolvedImportPath),
+            );
+
+            if (maybeBetterPath) {
+              const resolvedBetterPath: string | null = resolve(
+                maybeBetterPath,
+                context,
+              );
+
+              if (
+                resolvedBetterPath === path.resolve(reportModule, 'index.ts')
+              ) {
+                newImportPath = maybeBetterPath;
+              }
+            }
+
+            if (!newImportPath) {
+              return null;
+            }
+
+            return fixer.replaceText(
+              node,
+              context.getSourceCode().getText(node).split('}')[0] +
+                `} from '${newImportPath}'`,
+            );
+          }
+
+          return null;
+        },
+        messageId: 'privateModuleImport',
+        node,
+      });
     };
 
     return {
