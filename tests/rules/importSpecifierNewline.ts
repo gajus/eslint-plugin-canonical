@@ -1,11 +1,18 @@
-export default {
+import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import rule from '../../src/rules/importSpecifierNewline';
+
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('import-specifier-newline', rule, {
   invalid: [
     {
       code: "import {a, b} from 'foo';",
       errors: [
         {
           messageId: 'specifiersOnNewline',
-          type: 'ImportDeclaration',
+          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       output: "import {a,\nb} from 'foo';",
@@ -15,7 +22,7 @@ export default {
       errors: [
         {
           messageId: 'specifiersOnNewline',
-          type: 'ImportDeclaration',
+          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
       output: "import a, {b,\nc} from 'foo';",
@@ -29,4 +36,4 @@ export default {
       code: "import a, {b,\nc} from 'foo'",
     },
   ],
-};
+});

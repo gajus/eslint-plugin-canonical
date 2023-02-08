@@ -231,9 +231,10 @@ export default createRule<Options, MessageIds>({
         if (!isValidOrder(prevName, thisName)) {
           context.report({
             data: {
-              insensitive: insensitive ? 'insensitive ' : '',
-              natural: natural ? 'natural ' : '',
-              order,
+              order:
+                (natural ? 'natural ' : '') +
+                (insensitive ? 'insensitive ' : '') +
+                (order === 'asc' ? 'ascending' : 'descending'),
               prevName,
               thisName,
             },
@@ -279,7 +280,7 @@ export default createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      sort: "Expected object keys to be in {{natural}}{{insensitive}}{{order}}ending order. '{{thisName}}' should be before '{{prevName}}'.",
+      sort: "Expected object keys to be in {{order}} order. '{{thisName}}' should be before '{{prevName}}'.",
     },
     schema: [
       {

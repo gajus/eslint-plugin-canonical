@@ -1,3 +1,6 @@
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/noUseExtendNative';
+
 const valid = [
   'error.plugin',
   'error.plugn()',
@@ -130,13 +133,17 @@ const invalid = [
     code,
     errors: [
       {
-        message: 'Avoid using extended native objects',
+        messageId: 'noExtendNative' as const,
       },
     ],
   };
 });
 
-export default {
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('no-use-extend-native', rule, {
   invalid,
   valid,
-};
+});

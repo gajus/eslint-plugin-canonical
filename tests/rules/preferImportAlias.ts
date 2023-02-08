@@ -1,15 +1,21 @@
 import path from 'node:path';
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/preferImportAlias';
 
 const baseDirectory = path.resolve(
   __dirname,
   '../../fixtures/preferImportAlias',
 );
 
-export default {
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('prefer-import-alias', rule, {
   invalid: [
     {
       code: `import { bar } from './bar';`,
-      errors: 1,
+      errors: [{ messageId: 'mustBeAlias' }],
       filename: path.join(baseDirectory, './a/b/c/foo.ts'),
       options: [
         {
@@ -27,7 +33,7 @@ export default {
     },
     {
       code: `import { baz } from '../baz';`,
-      errors: 1,
+      errors: [{ messageId: 'mustBeAliasOrShallow' }],
       filename: path.join(baseDirectory, './a/b/c/foo.ts'),
       options: [
         {
@@ -45,7 +51,7 @@ export default {
     },
     {
       code: `import { bar } from '../bar';`,
-      errors: 1,
+      errors: [{ messageId: 'mustBeAlias' }],
       filename: path.join(baseDirectory, './a/b/c/foo.ts'),
       options: [
         { aliases: [{ alias: '@/a/', matchPath: '^a\\/' }], baseDirectory },
@@ -88,12 +94,12 @@ export default {
     {
       code: `import { foo } from './foo';`,
       filename: path.join(baseDirectory, './a/b/c/foo.ts'),
-      options: [{ baseDirectory, relativeDepth: 0 }],
+      options: [{ baseDirectory }],
     },
     {
       code: `import { foo } from '../foo';`,
       filename: path.join(baseDirectory, './a/b/c/foo.ts'),
-      options: [{ baseDirectory, relativeDepth: 1 }],
+      options: [{ baseDirectory }],
     },
     {
       code: `import { foo } from '.././foo';`,
@@ -116,4 +122,4 @@ export default {
       options: [{ baseDirectory }],
     },
   ],
-};
+});

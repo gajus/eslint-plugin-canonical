@@ -41,16 +41,18 @@ const defaultOptions = {
   properties: false,
 };
 
-type Options = [
-  string,
-  {
-    classFields: boolean;
-    ignoreDestructuring: boolean;
-    ignoreNamedImports: boolean;
-    onlyDeclarations: boolean;
-    properties: boolean;
-  },
-];
+type Options =
+  | [
+      string,
+      {
+        classFields?: boolean;
+        ignoreDestructuring?: boolean;
+        ignoreNamedImports?: boolean;
+        onlyDeclarations?: boolean;
+        properties?: boolean;
+      },
+    ]
+  | [string];
 
 type MessageIds = 'notMatch' | 'notMatchPrivate';
 

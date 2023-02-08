@@ -1,4 +1,11 @@
-export default {
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/sortKeys';
+
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('sort-keys', rule, {
   invalid: [
     // move comments on the same line as property together with property
     // not implemented yet
@@ -12,7 +19,14 @@ export default {
     {
       code: 'var obj = {\n// comment\n// comment 2\na:1,\n_:2,\nb:3\n}',
       errors: [
-        "Expected object keys to be in ascending order. '_' should be before 'a'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'a',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {\n\n\n_:2,\n// comment\n// comment 2\na:1,\nb:3\n}',
     },
@@ -21,7 +35,14 @@ export default {
     {
       code: 'var obj = {\n/* comment\n comment 2 */\na:1,\n_:2,\nb:3\n}',
       errors: [
-        "Expected object keys to be in ascending order. '_' should be before 'a'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'a',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {\n\n_:2,\n/* comment\n comment 2 */\na:1,\nb:3\n}',
     },
@@ -30,49 +51,98 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // default',
       errors: [
-        "Expected object keys to be in ascending order. '_' should be before 'a'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'a',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {_:2, a:1, b:3} // default',
     },
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {a:1, b:3, c:2}',
     },
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in ascending order. 'a' should be before 'b_'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'b_',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {a:2, b_:1, b:3}',
     },
     {
       code: 'var obj = {b_:1, c:2, C:3}',
       errors: [
-        "Expected object keys to be in ascending order. 'C' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'C',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {b_:1, C:3, c:2}',
     },
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
       errors: [
-        "Expected object keys to be in ascending order. 'A' should be before '_'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: '_',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {$:1, A:3, _:2, a:4}',
     },
     {
       code: "var obj = {1:1, 2:4, A:3, '11':2}",
       errors: [
-        "Expected object keys to be in ascending order. '11' should be before 'A'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'A',
+            thisName: '11',
+          },
+          messageId: 'sort',
+        },
       ],
       output: "var obj = {1:1, 2:4, '11':2, A:3}",
     },
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in ascending order. 'Z' should be before 'À'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'À',
+            thisName: 'Z',
+          },
+          messageId: 'sort',
+        },
       ],
       output: "var obj = {'#':1, 'Z':2, À:3, è:4}",
     },
@@ -81,7 +151,14 @@ export default {
     {
       code: 'var obj = {...z, c:1, b:1}',
       errors: [
-        "Expected object keys to be in ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {...z, b:1, c:1}',
       parserOptions: {
@@ -91,8 +168,22 @@ export default {
     {
       code: 'var obj = {...z, ...c, d:4, b:1, ...y, ...f, e:2, a:1}',
       errors: [
-        "Expected object keys to be in ascending order. 'b' should be before 'd'.",
-        "Expected object keys to be in ascending order. 'a' should be before 'e'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'd',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'e',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {...z, ...c, b:1, d:4, ...y, ...f, a:1, e:2}',
       parserOptions: {
@@ -102,7 +193,14 @@ export default {
     {
       code: 'var obj = {c:1, b:1, ...a}',
       errors: [
-        "Expected object keys to be in ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {b:1, c:1, ...a}',
       parserOptions: {
@@ -112,7 +210,14 @@ export default {
     {
       code: 'var obj = {...z, ...a, c:1, b:1}',
       errors: [
-        "Expected object keys to be in ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {...z, ...a, b:1, c:1}',
       parserOptions: {
@@ -122,7 +227,14 @@ export default {
     {
       code: 'var obj = {...z, b:1, a:1, ...d, ...c}',
       errors: [
-        "Expected object keys to be in ascending order. 'a' should be before 'b'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'b',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {...z, a:1, b:1, ...d, ...c}',
       parserOptions: {
@@ -132,7 +244,14 @@ export default {
     {
       code: 'var obj = {...z, a:2, b:0, ...x, ...c}',
       errors: [
-        "Expected object keys to be in descending order. 'b' should be before 'a'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: 'a',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: 'var obj = {...z, b:0, a:2, ...x, ...c}',
@@ -143,7 +262,14 @@ export default {
     {
       code: 'var obj = {...z, a:2, b:0, ...x}',
       errors: [
-        "Expected object keys to be in descending order. 'b' should be before 'a'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: 'a',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: 'var obj = {...z, b:0, a:2, ...x}',
@@ -154,7 +280,14 @@ export default {
     {
       code: "var obj = {...z, '':1, a:2}",
       errors: [
-        "Expected object keys to be in descending order. 'a' should be before ''.",
+        {
+          data: {
+            order: 'descending',
+            prevName: '',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: "var obj = {...z, a:2, '':1}",
@@ -167,7 +300,14 @@ export default {
     {
       code: "var obj = {a:1, [b+c]:2, '':3}",
       errors: [
-        "Expected object keys to be in ascending order. '' should be before 'a'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'a',
+            thisName: '',
+          },
+          messageId: 'sort',
+        },
       ],
       output: "var obj = {'':3, [b+c]:2, a:1}",
       parserOptions: {
@@ -177,7 +317,14 @@ export default {
     {
       code: "var obj = {'':1, [b+c]:2, a:3}",
       errors: [
-        "Expected object keys to be in descending order. 'a' should be before ''.",
+        {
+          data: {
+            order: 'descending',
+            prevName: '',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: "var obj = {a:3, [b+c]:2, '':1}",
@@ -188,7 +335,14 @@ export default {
     {
       code: "var obj = {b:1, [f()]:2, '':3, a:4}",
       errors: [
-        "Expected object keys to be in descending order. 'a' should be before ''.",
+        {
+          data: {
+            order: 'descending',
+            prevName: '',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: "var obj = {b:1, [f()]:2, a:4, '':3}",
@@ -201,7 +355,14 @@ export default {
     {
       code: 'var obj = {a:1, b:3, [a]: -1, c:2}',
       errors: [
-        "Expected object keys to be in ascending order. 'a' should be before 'b'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'b',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {a:1, [a]: -1, b:3, c:2}',
       parserOptions: {
@@ -213,8 +374,22 @@ export default {
     {
       code: 'var obj = {a:1, c:{y:1, x:1}, b:1}',
       errors: [
-        "Expected object keys to be in ascending order. 'x' should be before 'y'.",
-        "Expected object keys to be in ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'y',
+            thisName: 'x',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       output: 'var obj = {a:1, b:1, c:{y:1, x:1}}',
     },
@@ -223,7 +398,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // asc',
       errors: [
-        "Expected object keys to be in ascending order. '_' should be before 'a'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'a',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['asc'],
       output: 'var obj = {_:2, a:1, b:3} // asc',
@@ -231,7 +413,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['asc'],
       output: 'var obj = {a:1, b:3, c:2}',
@@ -239,7 +428,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in ascending order. 'a' should be before 'b_'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'b_',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['asc'],
       output: 'var obj = {a:2, b_:1, b:3}',
@@ -247,7 +443,14 @@ export default {
     {
       code: 'var obj = {b_:1, c:2, C:3}',
       errors: [
-        "Expected object keys to be in ascending order. 'C' should be before 'c'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'c',
+            thisName: 'C',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['asc'],
       output: 'var obj = {b_:1, C:3, c:2}',
@@ -255,7 +458,14 @@ export default {
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
       errors: [
-        "Expected object keys to be in ascending order. 'A' should be before '_'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: '_',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['asc'],
       output: 'var obj = {$:1, A:3, _:2, a:4}',
@@ -263,7 +473,14 @@ export default {
     {
       code: "var obj = {1:1, 2:4, A:3, '11':2}",
       errors: [
-        "Expected object keys to be in ascending order. '11' should be before 'A'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'A',
+            thisName: '11',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['asc'],
       output: "var obj = {1:1, 2:4, '11':2, A:3}",
@@ -271,7 +488,14 @@ export default {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in ascending order. 'Z' should be before 'À'.",
+        {
+          data: {
+            order: 'ascending',
+            prevName: 'À',
+            thisName: 'Z',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['asc'],
       output: "var obj = {'#':1, 'Z':2, À:3, è:4}",
@@ -288,7 +512,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // asc, insensitive',
       errors: [
-        "Expected object keys to be in insensitive ascending order. '_' should be before 'a'.",
+        {
+          data: {
+            order: 'insensitive ascending',
+            prevName: 'a',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -301,7 +532,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in insensitive ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'insensitive ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -314,7 +552,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in insensitive ascending order. 'a' should be before 'b_'.",
+        {
+          data: {
+            order: 'insensitive ascending',
+            prevName: 'b_',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -327,7 +572,14 @@ export default {
     {
       code: 'var obj = {$:1, A:3, _:2, a:4}',
       errors: [
-        "Expected object keys to be in insensitive ascending order. '_' should be before 'A'.",
+        {
+          data: {
+            order: 'insensitive ascending',
+            prevName: 'A',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -340,7 +592,14 @@ export default {
     {
       code: "var obj = {1:1, 2:4, A:3, '11':2}",
       errors: [
-        "Expected object keys to be in insensitive ascending order. '11' should be before 'A'.",
+        {
+          data: {
+            order: 'insensitive ascending',
+            prevName: 'A',
+            thisName: '11',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -375,7 +634,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // asc, natural',
       errors: [
-        "Expected object keys to be in natural ascending order. '_' should be before 'a'.",
+        {
+          data: {
+            order: 'natural ascending',
+            prevName: 'a',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -388,7 +654,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in natural ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'natural ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -401,7 +674,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in natural ascending order. 'a' should be before 'b_'.",
+        {
+          data: {
+            order: 'natural ascending',
+            prevName: 'b_',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -414,7 +694,14 @@ export default {
     {
       code: 'var obj = {b_:1, c:2, C:3}',
       errors: [
-        "Expected object keys to be in natural ascending order. 'C' should be before 'c'.",
+        {
+          data: {
+            order: 'natural ascending',
+            prevName: 'c',
+            thisName: 'C',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -427,7 +714,14 @@ export default {
     {
       code: 'var obj = {$:1, A:3, _:2, a:4}',
       errors: [
-        "Expected object keys to be in natural ascending order. '_' should be before 'A'.",
+        {
+          data: {
+            order: 'natural ascending',
+            prevName: 'A',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -440,7 +734,14 @@ export default {
     {
       code: "var obj = {1:1, 2:4, A:3, '11':2}",
       errors: [
-        "Expected object keys to be in natural ascending order. '11' should be before 'A'.",
+        {
+          data: {
+            order: 'natural ascending',
+            prevName: 'A',
+            thisName: '11',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -475,7 +776,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // asc, natural, insensitive',
       errors: [
-        "Expected object keys to be in natural insensitive ascending order. '_' should be before 'a'.",
+        {
+          data: {
+            order: 'natural insensitive ascending',
+            prevName: 'a',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -489,7 +797,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in natural insensitive ascending order. 'b' should be before 'c'.",
+        {
+          data: {
+            order: 'natural insensitive ascending',
+            prevName: 'c',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -503,7 +818,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in natural insensitive ascending order. 'a' should be before 'b_'.",
+        {
+          data: {
+            order: 'natural insensitive ascending',
+            prevName: 'b_',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -517,7 +839,14 @@ export default {
     {
       code: 'var obj = {$:1, A:3, _:2, a:4}',
       errors: [
-        "Expected object keys to be in natural insensitive ascending order. '_' should be before 'A'.",
+        {
+          data: {
+            order: 'natural insensitive ascending',
+            prevName: 'A',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -531,7 +860,14 @@ export default {
     {
       code: "var obj = {1:1, '11':2, 2:4, A:3}",
       errors: [
-        "Expected object keys to be in natural insensitive ascending order. '2' should be before '11'.",
+        {
+          data: {
+            order: 'natural insensitive ascending',
+            prevName: '11',
+            thisName: '2',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -545,7 +881,14 @@ export default {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in natural insensitive ascending order. 'Z' should be before 'À'.",
+        {
+          data: {
+            order: 'natural insensitive ascending',
+            prevName: 'À',
+            thisName: 'Z',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -568,7 +911,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // desc',
       errors: [
-        "Expected object keys to be in descending order. 'b' should be before '_'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: '_',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: 'var obj = {a:1, b:3, _:2} // desc',
@@ -576,7 +926,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in descending order. 'c' should be before 'a'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: 'a',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: 'var obj = {c:2, a:1, b:3}',
@@ -584,7 +941,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in descending order. 'b' should be before 'a'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: 'a',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: 'var obj = {b_:1, b:3, a:2}',
@@ -592,7 +956,14 @@ export default {
     {
       code: 'var obj = {b_:1, c:2, C:3}',
       errors: [
-        "Expected object keys to be in descending order. 'c' should be before 'b_'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: 'b_',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: 'var obj = {c:2, b_:1, C:3}',
@@ -601,7 +972,14 @@ export default {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
       errors: [
         "Expected object keys to be in descending order. '_' should be before '$'.",
-        "Expected object keys to be in descending order. 'a' should be before 'A'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: 'A',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: 'var obj = {_:2, $:1, a:4, A:3}',
@@ -609,8 +987,22 @@ export default {
     {
       code: "var obj = {1:1, 2:4, A:3, '11':2}",
       errors: [
-        "Expected object keys to be in descending order. '2' should be before '1'.",
-        "Expected object keys to be in descending order. 'A' should be before '2'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: '1',
+            thisName: '2',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'descending',
+            prevName: '2',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: "var obj = {2:4, 1:1, A:3, '11':2}",
@@ -636,7 +1028,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // desc, insensitive',
       errors: [
-        "Expected object keys to be in insensitive descending order. 'b' should be before '_'.",
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: '_',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -649,7 +1048,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in insensitive descending order. 'c' should be before 'a'.",
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: 'a',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -662,7 +1068,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in insensitive descending order. 'b' should be before 'a'.",
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: 'a',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -675,7 +1088,14 @@ export default {
     {
       code: 'var obj = {b_:1, c:2, C:3}',
       errors: [
-        "Expected object keys to be in insensitive descending order. 'c' should be before 'b_'.",
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: 'b_',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -688,8 +1108,22 @@ export default {
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
       errors: [
-        "Expected object keys to be in insensitive descending order. '_' should be before '$'.",
-        "Expected object keys to be in insensitive descending order. 'A' should be before '_'.",
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: '$',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: '_',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -702,8 +1136,22 @@ export default {
     {
       code: "var obj = {1:1, 2:4, A:3, '11':2}",
       errors: [
-        "Expected object keys to be in insensitive descending order. '2' should be before '1'.",
-        "Expected object keys to be in insensitive descending order. 'A' should be before '2'.",
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: '1',
+            thisName: '2',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: '2',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -716,8 +1164,22 @@ export default {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in insensitive descending order. 'À' should be before '#'.",
-        "Expected object keys to be in insensitive descending order. 'è' should be before 'Z'.",
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: '#',
+            thisName: 'À',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'insensitive descending',
+            prevName: 'Z',
+            thisName: 'è',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -739,7 +1201,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // desc, natural',
       errors: [
-        "Expected object keys to be in natural descending order. 'b' should be before '_'.",
+        {
+          data: {
+            order: 'natural descending',
+            prevName: '_',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -752,7 +1221,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in natural descending order. 'c' should be before 'a'.",
+        {
+          data: {
+            order: 'natural descending',
+            prevName: 'a',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -765,7 +1241,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in natural descending order. 'b' should be before 'a'.",
+        {
+          data: {
+            order: 'natural descending',
+            prevName: 'a',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -778,7 +1261,14 @@ export default {
     {
       code: 'var obj = {b_:1, c:2, C:3}',
       errors: [
-        "Expected object keys to be in natural descending order. 'c' should be before 'b_'.",
+        {
+          data: {
+            order: 'natural descending',
+            prevName: 'b_',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -791,9 +1281,30 @@ export default {
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
       errors: [
-        "Expected object keys to be in natural descending order. '_' should be before '$'.",
-        "Expected object keys to be in natural descending order. 'A' should be before '_'.",
-        "Expected object keys to be in natural descending order. 'a' should be before 'A'.",
+        {
+          data: {
+            order: 'natural descending',
+            prevName: '$',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural descending',
+            prevName: '_',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural descending',
+            prevName: 'A',
+            thisName: 'a',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -806,8 +1317,22 @@ export default {
     {
       code: "var obj = {1:1, 2:4, A:3, '11':2}",
       errors: [
-        "Expected object keys to be in natural descending order. '2' should be before '1'.",
-        "Expected object keys to be in natural descending order. 'A' should be before '2'.",
+        {
+          data: {
+            order: 'natural descending',
+            prevName: '1',
+            thisName: '2',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural descending',
+            prevName: '2',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -820,8 +1345,22 @@ export default {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in natural descending order. 'À' should be before '#'.",
-        "Expected object keys to be in natural descending order. 'è' should be before 'Z'.",
+        {
+          data: {
+            order: 'natural descending',
+            prevName: '#',
+            thisName: 'À',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural descending',
+            prevName: 'Z',
+            thisName: 'è',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -843,7 +1382,14 @@ export default {
     {
       code: 'var obj = {a:1, _:2, b:3} // desc, natural, insensitive',
       errors: [
-        "Expected object keys to be in natural insensitive descending order. 'b' should be before '_'.",
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: '_',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -857,7 +1403,14 @@ export default {
     {
       code: 'var obj = {a:1, c:2, b:3}',
       errors: [
-        "Expected object keys to be in natural insensitive descending order. 'c' should be before 'a'.",
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: 'a',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -871,7 +1424,14 @@ export default {
     {
       code: 'var obj = {b_:1, a:2, b:3}',
       errors: [
-        "Expected object keys to be in natural insensitive descending order. 'b' should be before 'a'.",
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: 'a',
+            thisName: 'b',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -885,7 +1445,14 @@ export default {
     {
       code: 'var obj = {b_:1, c:2, C:3}',
       errors: [
-        "Expected object keys to be in natural insensitive descending order. 'c' should be before 'b_'.",
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: 'b_',
+            thisName: 'c',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -899,8 +1466,22 @@ export default {
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
       errors: [
-        "Expected object keys to be in natural insensitive descending order. '_' should be before '$'.",
-        "Expected object keys to be in natural insensitive descending order. 'A' should be before '_'.",
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: '$',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: '_',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -914,9 +1495,30 @@ export default {
     {
       code: "var obj = {1:1, 2:4, '11':2, A:3}",
       errors: [
-        "Expected object keys to be in natural insensitive descending order. '2' should be before '1'.",
-        "Expected object keys to be in natural insensitive descending order. '11' should be before '2'.",
-        "Expected object keys to be in natural insensitive descending order. 'A' should be before '11'.",
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: '1',
+            thisName: '2',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: '2',
+            thisName: '11',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: '11',
+            thisName: 'A',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -930,8 +1532,22 @@ export default {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in natural insensitive descending order. 'À' should be before '#'.",
-        "Expected object keys to be in natural insensitive descending order. 'è' should be before 'Z'.",
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: '#',
+            thisName: 'À',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'natural insensitive descending',
+            prevName: 'Z',
+            thisName: 'è',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'desc',
@@ -1642,4 +2258,4 @@ export default {
     // desc, natural, insensitive, minKeys should ignore unsorted keys when number of keys is less than minKeys
     // { code: "var obj = {a:1, _:2, b:3}", options: ["desc", { natural: true, caseSensitive: false, minKeys: 4 }] }
   ],
-};
+});

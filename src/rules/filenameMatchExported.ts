@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 /**
  * @file Rule to ensure that filenames match the exports of the file
  * @author Stefan Lau
@@ -66,21 +68,21 @@ const getWhatToMatchMessage = (transforms) => {
 
 type Options = [
   {
-    matchCallExpression: boolean;
-    suffix: string | null;
-    transforms: string[] | string | null;
+    matchCallExpression?: boolean;
+    suffix?: string | null;
+    transforms?: string[] | string | null;
   },
 ];
 
 type MessageIds = 'indexFile' | 'regularFile';
 
 export default createRule<Options, MessageIds>({
-  create: (context, options) => {
+  create: (context, [options]) => {
     return {
       Program(node) {
-        const transforms = getTransformsFromOptions(options[0].transforms);
-        const replacePattern = options[0].suffix
-          ? new RegExp(options[0].suffix, 'u')
+        const transforms = getTransformsFromOptions(options.transforms);
+        const replacePattern = options.suffix
+          ? new RegExp(options.suffix, 'u')
           : undefined;
         const filename = context.getFilename();
         const absoluteFilename = path.resolve(filename);
@@ -88,7 +90,7 @@ export default createRule<Options, MessageIds>({
         const shouldIgnore = isIgnoredFilename(filename);
         const exportedName = getExportedName(
           node,
-          options[0].matchCallExpression,
+          Boolean(options.matchCallExpression),
         );
         const isExporting = Boolean(exportedName);
         const expectedExport = getStringToCheckAgainstExport(

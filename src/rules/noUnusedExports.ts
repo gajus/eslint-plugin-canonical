@@ -9,8 +9,8 @@ const defaultOptions = {
 
 type Options = [
   {
-    allowUnusedEnums: boolean;
-    allowUnusedTypes: boolean;
+    allowUnusedEnums?: boolean;
+    allowUnusedTypes?: boolean;
     tsConfigPath: string;
   },
 ];

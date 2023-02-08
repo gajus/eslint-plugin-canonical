@@ -17,8 +17,8 @@ const defaultRegexp = /^[\da-z]+(?:[A-Z][\da-z]+)*$/gu;
 
 type Options = [
   {
-    ignoreExporting: boolean;
-    regex: string | null;
+    ignoreExporting?: boolean;
+    regex?: string | null;
   },
 ];
 

@@ -1,5 +1,8 @@
 /* eslint-disable canonical/id-match */
 
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/filenameMatchExported';
+
 const testCode = "var foo = 'bar';";
 const testCallCode = 'export default foo();';
 const exportedVariableCode = 'module.exports = exported;';
@@ -24,7 +27,11 @@ const snakeCaseCommonJS = 'module.exports = variable_name;';
 const camelCaseEs6 = 'export default variableName;';
 const snakeCaseEs6 = 'export default variable_name;';
 
-export default {
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('filename-match-exported', rule, {
   invalid: [
     {
       code: exportedVariableCode,
@@ -32,7 +39,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'fooBar' must match the exported name 'exported'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/fooBar.js',
@@ -43,7 +50,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'foo' must match the exported name 'Foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/foo.js',
@@ -57,7 +64,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'foo' must match the exported name 'Foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/foo.js',
@@ -74,7 +81,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'bar' must match the exported name 'foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/bar.js',
@@ -85,7 +92,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'bar' must match the exported name 'foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/bar.js',
@@ -101,7 +108,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'fooBar' must match the exported name 'exported'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/fooBar.js',
@@ -116,7 +123,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'bar' must match the exported name 'Foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/bar.js',
@@ -131,7 +138,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'bar' must match the exported name 'Foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/bar.js',
@@ -149,8 +156,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "The directory 'fooBar' must be named 'foo', after the exported value of its index file.",
+          messageId: 'indexFile',
         },
       ],
       filename: '/some/dir/fooBar/index.js',
@@ -166,8 +172,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "The directory 'fooBar' must be named 'foo', after the exported value of its index file.",
+          messageId: 'indexFile',
         },
       ],
       filename: '/some/dir/fooBar/index.js',
@@ -185,8 +190,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "The directory 'eslint-plugin-canonical' must be named 'exported', after the exported value of its index file.",
+          messageId: 'indexFile',
         },
       ],
       filename: 'index.js',
@@ -201,7 +205,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'Foo.react' must match the exported name 'Foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/Foo.react.js',
@@ -218,8 +222,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "Filename 'variableName' must match the exported and transformed name 'variable_name'.",
+          messageId: 'regularFile',
         },
       ],
       filename: 'variableName.js',
@@ -231,8 +234,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "Filename 'variableName' must match the exported and transformed name 'variable-name'.",
+          messageId: 'regularFile',
         },
       ],
       filename: 'variableName.js',
@@ -248,8 +250,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "Filename 'variableName' must match the exported and transformed name 'VariableName'.",
+          messageId: 'regularFile',
         },
       ],
       filename: 'variableName.js',
@@ -265,8 +266,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "Filename 'variableName' must match any of the exported and transformed names 'VariableName', 'variable_name'.",
+          messageId: 'regularFile',
         },
       ],
       filename: 'variableName.js',
@@ -282,7 +282,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'Foo.bar' must match the exported name 'Foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/Foo.bar.js',
@@ -301,8 +301,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "The directory 'Foo.react' must be named 'Foo', after the exported value of its index file.",
+          messageId: 'indexFile',
         },
       ],
       filename: '/some/dir/Foo.react/index.js',
@@ -321,7 +320,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'bar' must match the exported name 'foo'.",
+          messageId: 'regularFile',
         },
       ],
       filename: '/some/dir/bar.js',
@@ -564,4 +563,4 @@ export default {
       options: [{ matchCallExpression: true }],
     },
   ],
-};
+});

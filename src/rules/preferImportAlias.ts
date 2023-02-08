@@ -15,12 +15,12 @@ type AliasInput = {
   alias: string;
   matchParent?: string;
   matchPath: string;
-  maxRelativeDepth: number;
+  maxRelativeDepth?: number;
 };
 
 type Options = [
   {
-    aliases: AliasInput[];
+    aliases?: AliasInput[];
     baseDirectory: string;
   },
 ];

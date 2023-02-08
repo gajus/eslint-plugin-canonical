@@ -1,4 +1,11 @@
-export default {
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/destructuringPropertyNewline';
+
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('destructuring-property-newline', rule, {
   invalid: [
     {
       code: 'const {a,b} = obj;',
@@ -84,4 +91,4 @@ export default {
       code: 'const [a,,b] = obj;',
     },
   ],
-};
+});
