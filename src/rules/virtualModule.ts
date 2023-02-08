@@ -125,13 +125,19 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const parentModuleRoot = findModuleRoot(
+      const targetParentModuleRoot = findModuleRoot(
         path.resolve(targetModuleRoot + path.sep + '..'),
         projectRootDirectory,
       );
 
-      if (parentModuleRoot) {
+      if (targetParentModuleRoot) {
         context.report({
+          data: {
+            privatePath:
+              path.sep + path.relative(targetModuleRoot, resolvedImportPath),
+            targetModule:
+              path.sep + path.relative(projectRootDirectory, targetModuleRoot),
+          },
           messageId: 'privateModuleImport',
           node,
         });
@@ -142,9 +148,8 @@ export default createRule<Options, MessageIds>({
       log.info(
         {
           currentDirectory,
-          parentModuleRoot,
-          relative: path.relative(currentDirectory, targetModuleRoot),
           targetModuleRoot,
+          targetParentModuleRoot,
         },
         'valid import',
       );
@@ -169,7 +174,7 @@ export default createRule<Options, MessageIds>({
       parentModuleImport:
         'Cannot import a parent virtual module. {{parentModule}} is a parent of {{currentModule}}.',
       privateModuleImport:
-        'Cannot import a private path. {{moduleRoot}} is a virtual module.',
+        'Cannot import a private path. {{privatePath}} belongs to {{targetModule}} virtual module.',
     },
     schema: [],
     type: 'layout',

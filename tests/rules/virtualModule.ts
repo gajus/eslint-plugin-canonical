@@ -71,6 +71,10 @@ ruleTester.run('virtual-module', rule, {
       code: `import { Baz } from '@/Bar/Baz'`,
       errors: [
         {
+          data: {
+            privatePath: '/index.ts',
+            targetModule: '/Bar/Baz',
+          },
           messageId: 'privateModuleImport',
         },
       ],
