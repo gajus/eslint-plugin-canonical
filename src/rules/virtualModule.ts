@@ -158,8 +158,13 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
+      const resolvedVirtualModuleEntry = path.resolve(
+        targetModuleDirectory,
+        'index.ts',
+      );
+
       const resolvedImportIsVirtualModuleEntry =
-        resolvedImportPath === path.resolve(targetModuleDirectory, 'index.ts');
+        resolvedImportPath === resolvedVirtualModuleEntry;
 
       const currentModuleDirectory = findModuleRoot(
         currentDirectory,
@@ -221,7 +226,7 @@ export default createRule<Options, MessageIds>({
         fix: (fixer) => {
           if (node.type === 'ImportDeclaration') {
             const namedExports = getAllNamedExportNames(
-              resolvedImportPath,
+              resolvedVirtualModuleEntry,
               context,
             );
 

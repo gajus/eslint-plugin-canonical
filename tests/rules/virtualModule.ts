@@ -107,6 +107,20 @@ ruleTester.run('virtual-module', rule, {
       output: `import { Baz } from '@/Bar'`,
     },
     {
+      code: `import { barUtility } from '@/Bar/utilities'`,
+      errors: [
+        {
+          data: {
+            privatePath: '/utilities.ts',
+            targetModule: '/Bar',
+          },
+          messageId: 'privateModuleImport',
+        },
+      ],
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      name: 'does not correct import if export cannot be resolved from the entry',
+    },
+    {
       code: `import { Bar } from './index'`,
       errors: [
         {
