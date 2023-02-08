@@ -141,9 +141,7 @@ export default createRule<Options, MessageIds>({
       const resolvedImportPath: string | null = resolve(importPath, context);
 
       if (!resolvedImportPath) {
-        log.error({ importPath }, 'cannot resolve import');
-
-        throw new Error('Cannot resolve import.');
+        log.warn({ importPath }, 'cannot resolve import');
 
         return;
       }
