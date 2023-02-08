@@ -97,7 +97,17 @@ ruleTester.run('virtual-module', rule, {
     {
       code: `import { bar } from './utilities'`,
       filename: path.resolve(fixturesPath, './Bar/index.ts'),
-      name: 'virtual module index can import from within the virtual module',
+      name: 'VM index can import from within the VM',
+    },
+    {
+      code: `import { bar } from './routines'`,
+      filename: path.resolve(fixturesPath, './Bar/index.ts'),
+      name: 'VM index can import from within the VM (JavaScript)',
+    },
+    {
+      code: `import { ESLint } from 'eslint'`,
+      filename: path.resolve(fixturesPath, './Foo/index.ts'),
+      name: 'VM can import another a node_modules package',
     },
   ],
 });
