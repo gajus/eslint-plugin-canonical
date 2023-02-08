@@ -152,8 +152,8 @@ const defaultOptions = {
 type Options = [
   'asc' | 'desc',
   {
-    caseSensitive: boolean;
-    natural: boolean;
+    caseSensitive?: boolean;
+    natural?: boolean;
   },
 ];
 
