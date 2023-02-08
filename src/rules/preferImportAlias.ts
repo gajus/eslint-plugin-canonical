@@ -15,12 +15,12 @@ type AliasInput = {
   alias: string;
   matchParent?: string;
   matchPath: string;
-  maxRelativeDepth: number;
+  maxRelativeDepth?: number;
 };
 
 type Options = [
   {
-    aliases: AliasInput[];
+    aliases?: AliasInput[];
     baseDirectory: string;
   },
 ];
@@ -28,9 +28,7 @@ type Options = [
 type MessageIds = 'mustBeAlias' | 'mustBeAliasOrShallow';
 
 export default createRule<Options, MessageIds>({
-  create: (context) => {
-    const options = context.options[0] ?? {};
-
+  create: (context, [options]) => {
     const { aliases: temporaryAliases = [], baseDirectory = CWD } = options;
 
     const aliases = temporaryAliases.map((temporaryAlias) => {

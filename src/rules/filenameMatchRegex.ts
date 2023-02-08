@@ -15,12 +15,21 @@ import {
 // eslint-disable-next-line unicorn/no-unsafe-regex
 const defaultRegexp = /^[\da-z]+(?:[A-Z][\da-z]+)*$/gu;
 
-export default createRule({
-  create: (context) => {
-    const conventionRegexp = context.options[0]
-      ? new RegExp(context.options[0], 'u')
+type Options = [
+  {
+    ignoreExporting?: boolean;
+    regex?: string | null;
+  },
+];
+
+type MessageIds = 'notMatch';
+
+export default createRule<Options, MessageIds>({
+  create: (context, [options]) => {
+    const conventionRegexp = options.regex
+      ? new RegExp(options.regex, 'u')
       : defaultRegexp;
-    const ignoreExporting = context.options[1] ? context.options[1] : false;
+    const ignoreExporting = options.ignoreExporting;
 
     return {
       Program(node) {
@@ -36,7 +45,7 @@ export default createRule({
           return;
         }
 
-        const isExporting = Boolean(getExportedName(node));
+        const isExporting = Boolean(getExportedName(node, false));
 
         if (ignoreExporting && isExporting) {
           return;
@@ -54,7 +63,12 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [],
+  defaultOptions: [
+    {
+      ignoreExporting: false,
+      regex: null,
+    },
+  ],
   meta: {
     docs: {
       description:
@@ -66,19 +80,22 @@ export default createRule({
     },
     schema: [
       {
-        default: null,
-        oneOf: [
-          {
-            type: 'string',
+        properties: {
+          ignoreExporting: {
+            type: 'boolean',
           },
-          {
-            type: 'null',
+          regex: {
+            oneOf: [
+              {
+                type: 'string',
+              },
+              {
+                type: 'null',
+              },
+            ],
           },
-        ],
-      },
-      {
-        default: false,
-        type: 'boolean',
+        },
+        type: 'object',
       },
     ],
     type: 'suggestion',

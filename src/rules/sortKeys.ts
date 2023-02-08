@@ -149,11 +149,20 @@ const defaultOptions = {
   natural: false,
 };
 
-export default createRule({
-  create(context) {
-    // Parse options.
-    const order = context.options[0] || 'asc';
-    const options = context.options[1] ?? defaultOptions;
+type Options = [
+  'asc' | 'desc',
+  {
+    caseSensitive: boolean;
+    natural: boolean;
+  },
+];
+
+type MessageIds = 'sort';
+
+export default createRule<Options, MessageIds>({
+  create(context, userOptions) {
+    const order = userOptions[0];
+    const options = userOptions[1];
 
     if (typeof options === 'string') {
       throw new TypeError('Unexpected state');
@@ -222,9 +231,10 @@ export default createRule({
         if (!isValidOrder(prevName, thisName)) {
           context.report({
             data: {
-              insensitive: insensitive ? 'insensitive ' : '',
-              natural: natural ? 'natural ' : '',
-              order,
+              order:
+                (natural ? 'natural ' : '') +
+                (insensitive ? 'insensitive ' : '') +
+                (order === 'asc' ? 'ascending' : 'descending'),
               prevName,
               thisName,
             },
@@ -270,7 +280,7 @@ export default createRule({
     },
     fixable: 'code',
     messages: {
-      sort: "Expected object keys to be in {{natural}}{{insensitive}}{{order}}ending order. '{{thisName}}' should be before '{{prevName}}'.",
+      sort: "Expected object keys to be in {{order}} order. '{{thisName}}' should be before '{{prevName}}'.",
     },
     schema: [
       {

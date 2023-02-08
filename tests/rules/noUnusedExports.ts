@@ -1,15 +1,21 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/noUnusedExports';
 
-const fixturesPath = path.resolve(__dirname, '../../fixtures/noUnusedExports');
+const fixturesPath = path.resolve(__dirname, '../fixtures/noUnusedExports');
 
-export default {
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('no-unused-exports', rule, {
   invalid: [
     {
       code: readFileSync(path.resolve(fixturesPath, 'unusedFoo.ts'), 'utf8'),
       errors: [
         {
-          message: "Export 'FOO' is unused.",
+          messageId: 'unusedExport',
         },
       ],
       filename: path.resolve(fixturesPath, 'unusedFoo.ts'),
@@ -31,4 +37,4 @@ export default {
       ],
     },
   ],
-};
+});

@@ -1,8 +1,15 @@
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/filenameMatchRegex';
+
 const exportingCode = 'module.exports = foo';
 const exportedFunctionCall = 'module.exports = foo()';
 const testCode = "var foo = 'bar';";
 
-export default {
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('filename-match-regex', rule, {
   invalid: [
     {
       code: testCode,
@@ -10,8 +17,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "Filename 'foo_bar.js' does not match the naming convention.",
+          messageId: 'notMatch',
         },
       ],
       filename: '/some/dir/foo_bar.js',
@@ -22,7 +28,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'fooBAR.js' does not match the naming convention.",
+          messageId: 'notMatch',
         },
       ],
       filename: '/some/dir/fooBAR.js',
@@ -33,8 +39,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message:
-            "Filename 'fooBar$.js' does not match the naming convention.",
+          messageId: 'notMatch',
         },
       ],
       filename: 'fooBar$.js',
@@ -45,11 +50,11 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "Filename 'fooBar.js' does not match the naming convention.",
+          messageId: 'notMatch',
         },
       ],
       filename: 'fooBar.js',
-      options: ['^[a-z_]$'],
+      options: [{ regex: '^[a-z_]$' }],
     },
   ],
 
@@ -69,12 +74,12 @@ export default {
     {
       code: testCode,
       filename: 'foo_bar.js',
-      options: ['^[a-z_]+$'],
+      options: [{ regex: '^[a-z_]+$' }],
     },
     {
       code: testCode,
       filename: '/foo/dir/foo_bar.js',
-      options: ['^[a-z_]+$'],
+      options: [{ regex: '^[a-z_]+$' }],
     },
     {
       code: testCode,
@@ -83,17 +88,17 @@ export default {
     {
       code: exportingCode,
       filename: 'foo_bar.js',
-      options: [null, true],
+      options: [{ ignoreExporting: true }],
     },
     {
       code: exportingCode,
       filename: 'fooBar.js',
-      options: ['^[a-z_]$', true],
+      options: [{ ignoreExporting: true, regex: '^[a-z_]$' }],
     },
     {
       code: exportedFunctionCall,
       filename: 'foo_bar.js',
-      options: ['^[a-z_]+$', true],
+      options: [{ ignoreExporting: true, regex: '^[a-z_]+$' }],
     },
   ],
-};
+});

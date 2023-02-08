@@ -15,7 +15,11 @@ const removeTypeSpecifier = function* (fixer, sourceCode, node) {
   }
 };
 
-export default createRule({
+type Options = [];
+
+type MessageIds = 'noTypeImport';
+
+export default createRule<Options, MessageIds>({
   create: (context) => {
     const sourceCode = context.getSourceCode();
     return {

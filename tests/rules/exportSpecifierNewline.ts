@@ -1,13 +1,22 @@
-export default {
+import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import rule from '../../src/rules/exportSpecifierNewline';
+
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('export-specifier-newline', rule, {
   invalid: [
     {
       code: 'const a = 1; const b = 2; const c = 3; export { a, b, c };',
       errors: [
         {
-          type: 'ExportNamedDeclaration',
+          messageId: 'specifiersOnNewline',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
         {
-          type: 'ExportNamedDeclaration',
+          messageId: 'specifiersOnNewline',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       output: 'const a = 1; const b = 2; const c = 3; export { a,\nb,\nc };',
@@ -16,10 +25,12 @@ export default {
       code: 'const a = 1; const b = 2; const c = 3; export { a, b, c, };',
       errors: [
         {
-          type: 'ExportNamedDeclaration',
+          messageId: 'specifiersOnNewline',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
         {
-          type: 'ExportNamedDeclaration',
+          messageId: 'specifiersOnNewline',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       output: 'const a = 1; const b = 2; const c = 3; export { a,\nb,\nc, };',
@@ -28,7 +39,8 @@ export default {
       code: 'const a = 1; const b = 2; export { a as default, b }',
       errors: [
         {
-          type: 'ExportNamedDeclaration',
+          messageId: 'specifiersOnNewline',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
       output: 'const a = 1; const b = 2; export { a as default,\nb }',
@@ -45,4 +57,4 @@ export default {
       code: "export * from 'foo'",
     },
   ],
-};
+});

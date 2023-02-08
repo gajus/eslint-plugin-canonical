@@ -1,6 +1,6 @@
 import { type TSESTree } from '@typescript-eslint/utils';
 
-const getNodeName = (node, options = []) => {
+const getNodeName = (node, matchCallExpression) => {
   if (node.type === 'Identifier') {
     return node.name;
   }
@@ -10,7 +10,7 @@ const getNodeName = (node, options = []) => {
   }
 
   if (
-    options[2] &&
+    matchCallExpression &&
     node.type === 'CallExpression' &&
     node.callee.type === 'Identifier'
   ) {
@@ -22,12 +22,12 @@ const getNodeName = (node, options = []) => {
 
 export const getExportedName = (
   programNode: TSESTree.Program,
-  options?: [],
+  matchCallExpression: boolean,
 ) => {
   for (const node of programNode.body) {
     // export default ...
     if (node.type === 'ExportDefaultDeclaration') {
-      return getNodeName(node.declaration, options);
+      return getNodeName(node.declaration, matchCallExpression);
     }
 
     // module.exports = ...
@@ -40,7 +40,7 @@ export const getExportedName = (
       node.expression.left.property.type === 'Identifier' &&
       node.expression.left.property.name === 'exports'
     ) {
-      return getNodeName(node.expression.right, options);
+      return getNodeName(node.expression.right, matchCallExpression);
     }
   }
 

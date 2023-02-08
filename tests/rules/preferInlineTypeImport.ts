@@ -1,4 +1,11 @@
-export default {
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/preferInlineTypeImport';
+
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('prefer-inline-type-import', rule, {
   invalid: [
     {
       code: "import type {foo} from 'bar'",
@@ -30,4 +37,4 @@ export default {
       code: "import type * as Foo from 'bar'",
     },
   ],
-};
+});

@@ -6,12 +6,19 @@
  * Related discussion about not adding this option to ESLint https://github.com/eslint/eslint/issues/14005
  */
 
+import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import rule from '../../src/rules/idMatch';
+
 const error = {
-  messageId: 'notMatch',
-  type: 'Identifier',
+  messageId: 'notMatch' as const,
+  type: AST_NODE_TYPES.Identifier,
 };
 
-export default {
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('id-match', rule, {
   invalid: [
     {
       code: 'var __foo = "Matthieu"',
@@ -42,9 +49,8 @@ export default {
       code: 'var obj = {key: no_under}',
       errors: [
         {
-          message:
-            "Identifier 'no_under' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -161,9 +167,8 @@ export default {
       code: 'var { category_id: category_alias } = query;',
       errors: [
         {
-          message:
-            "Identifier 'category_alias' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -180,9 +185,8 @@ export default {
       code: 'var { category_id: category_alias } = query;',
       errors: [
         {
-          message:
-            "Identifier 'category_alias' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -200,9 +204,8 @@ export default {
       code: 'var { category_id: categoryId, ...other_props } = query;',
       errors: [
         {
-          message:
-            "Identifier 'other_props' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -220,9 +223,8 @@ export default {
       code: 'var { category_id } = query;',
       errors: [
         {
-          message:
-            "Identifier 'category_id' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -239,9 +241,8 @@ export default {
       code: 'var { category_id = 1 } = query;',
       errors: [
         {
-          message:
-            "Identifier 'category_id' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -258,9 +259,8 @@ export default {
       code: 'import no_camelcased from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -278,9 +278,8 @@ export default {
       code: 'import * as no_camelcased from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -298,9 +297,8 @@ export default {
       code: 'export * as no_camelcased from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: ['^[^_]+$'],
@@ -313,9 +311,8 @@ export default {
       code: 'import { no_camelcased as no_camel_cased } from "external module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camel_cased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -333,9 +330,8 @@ export default {
       code: 'import { camelCased as no_camel_cased } from "external module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camel_cased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -353,9 +349,8 @@ export default {
       code: 'import { camelCased, no_camelcased } from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -373,9 +368,8 @@ export default {
       code: 'import { no_camelcased as camelCased, another_no_camelcased } from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'another_no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -393,9 +387,8 @@ export default {
       code: 'import camelCased, { no_camelcased } from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -413,9 +406,8 @@ export default {
       code: 'import no_camelcased, { another_no_camelcased as camelCased } from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -433,9 +425,8 @@ export default {
       code: 'function foo({ no_camelcased }) {};',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -452,9 +443,8 @@ export default {
       code: "function foo({ no_camelcased = 'default value' }) {};",
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -471,14 +461,12 @@ export default {
       code: 'const no_camelcased = 0; function foo({ camelcased_value = no_camelcased }) {}',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
         {
-          message:
-            "Identifier 'camelcased_value' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -495,9 +483,8 @@ export default {
       code: 'const { bar: no_camelcased } = foo;',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -514,9 +501,8 @@ export default {
       code: 'function foo({ value_1: my_default }) {}',
       errors: [
         {
-          message:
-            "Identifier 'my_default' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -533,9 +519,8 @@ export default {
       code: 'function foo({ isCamelcased: no_camelcased }) {};',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -552,8 +537,8 @@ export default {
       code: 'var { foo: bar_baz = 1 } = quz;',
       errors: [
         {
-          message: "Identifier 'bar_baz' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -570,9 +555,8 @@ export default {
       code: 'const { no_camelcased = false } = bar;',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -591,8 +575,8 @@ export default {
       code: 'class x { _foo() {} }',
       errors: [
         {
-          message: "Identifier '_foo' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: ['^[^_]+$'],
@@ -618,8 +602,8 @@ export default {
       code: 'class x { _foo = 1; }',
       errors: [
         {
-          message: "Identifier '_foo' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -653,9 +637,8 @@ export default {
       code: 'import { no_camelcased } from "external-module";',
       errors: [
         {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
+          messageId: 'notMatch',
+          type: AST_NODE_TYPES.Identifier,
         },
       ],
       options: [
@@ -913,13 +896,6 @@ export default {
 
     {
       code: 'import { no_camelcased } from "external-module";',
-      errors: [
-        {
-          message:
-            "Identifier 'no_camelcased' does not match the pattern '^[^_]+$'.",
-          type: 'Identifier',
-        },
-      ],
       options: [
         '^[^_]+$',
         {
@@ -932,4 +908,4 @@ export default {
       },
     },
   ],
-};
+});

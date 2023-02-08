@@ -1,6 +1,10 @@
 import { createRule } from '../utilities';
 
-export default createRule({
+type Options = [];
+
+type MessageIds = 'noEffectWithoutDependencies';
+
+export default createRule<Options, MessageIds>({
   create: (context) => {
     return {
       CallExpression(node) {

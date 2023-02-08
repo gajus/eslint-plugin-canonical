@@ -145,7 +145,11 @@ const isInvalid = (jsType, propertyName, usageType) => {
   );
 };
 
-export default createRule({
+type Options = [];
+
+type MessageIds = 'noExtendNative';
+
+export default createRule<Options, MessageIds>({
   create(context) {
     return {
       MemberExpression(node) {

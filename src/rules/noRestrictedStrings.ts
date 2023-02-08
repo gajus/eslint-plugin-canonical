@@ -1,11 +1,11 @@
 import { createRule } from '../utilities';
 
-export default createRule({
-  create: (context) => {
-    const { options } = context;
+type Options = [string[]];
 
-    const disallowedStrings = options[0] ?? [];
+type MessageIds = 'disallowedString' | 'disallowedStringInTemplate';
 
+export default createRule<Options, MessageIds>({
+  create: (context, [disallowedStrings]) => {
     return {
       Literal: (node) => {
         if (
@@ -44,7 +44,7 @@ export default createRule({
       },
     };
   },
-  defaultOptions: [[] as string[]],
+  defaultOptions: [[]],
   meta: {
     docs: {
       description: 'Disallowed string.',

@@ -1,6 +1,13 @@
+import { ESLintUtils } from '@typescript-eslint/utils';
+import rule from '../../src/rules/filenameNoIndex';
+
 const testCode = "var foo = 'bar';";
 
-export default {
+const ruleTester = new ESLintUtils.RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('filename-no-index', rule, {
   invalid: [
     {
       code: testCode,
@@ -8,7 +15,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "'index.js' files are not allowed.",
+          messageId: 'noIndex',
         },
       ],
       filename: 'index.js',
@@ -19,7 +26,7 @@ export default {
         {
           column: 1,
           line: 1,
-          message: "'index.js' files are not allowed.",
+          messageId: 'noIndex',
         },
       ],
       filename: '/some/dir/index.js',
@@ -44,4 +51,4 @@ export default {
       filename: '/some/dir/foo.js',
     },
   ],
-};
+});

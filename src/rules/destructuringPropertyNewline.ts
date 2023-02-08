@@ -1,9 +1,15 @@
 import { createRule } from '../utilities';
 
-export default createRule({
-  create(context) {
-    const allowAllPropertiesOnSameLine =
-      context.options[0]?.allowAllPropertiesOnSameLine;
+type Options = [
+  {
+    allowAllPropertiesOnSameLine: boolean;
+  },
+];
+
+type MessageIds = 'propertiesOnNewline' | 'propertiesOnNewlineAll';
+
+export default createRule<Options, MessageIds>({
+  create(context, [{ allowAllPropertiesOnSameLine }]) {
     const messageId = allowAllPropertiesOnSameLine
       ? 'propertiesOnNewlineAll'
       : 'propertiesOnNewline';

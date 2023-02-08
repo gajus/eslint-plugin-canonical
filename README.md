@@ -156,7 +156,7 @@ export default { foo: "bar" };
 If your filename policy doesn't quite match with your variable naming policy, you can add one or multiple transforms:
 
 ```json
-"canonical/filename-match-exported": [ 2, "kebab" ]
+"canonical/filename-match-exported": [ 2, { "transforms": "kebab" } ]
 ```
 
 Now, in your code:
@@ -168,21 +168,21 @@ export default function variableName;
 
 Available transforms:
 
-* snake
-* kebab
-* camel
-* pascal
+* `snake`
+* `kebab`
+* `camel`
+* `pascal`
 
 For multiple transforms simply specify an array like this (null in this case stands for no transform):
 
 ```json
-"canonical/filename-match-exported": [2, [ null, "kebab", "snake" ] ]
+"canonical/filename-match-exported": [2, { "transforms": [ null, "kebab", "snake" ] } ]
 ```
 
 If you prefer to use suffixes for your files (e.g. `Foo.react.js` for a React component file), you can use a second configuration parameter. It allows you to remove parts of a filename matching a regex pattern before transforming and matching against the export.
 
 ```json
-"canonical/filename-match-exported": [ 2, null, "\\.react$" ]
+"canonical/filename-match-exported": [ 2, { "suffix": "\\.react$" } ]
 ```
 
 Now, in your code:
@@ -195,7 +195,7 @@ export default function variableName;
 If you also want to match exported function calls you can use the third option (a boolean flag).
 
 ```json
-"canonical/filename-match-exported": [ 2, null, null, true ]
+"canonical/filename-match-exported": [ 2, { "matchCallExpression": true } ]
 ```
 
 Now, in your code:

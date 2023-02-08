@@ -63,7 +63,7 @@
     "create-readme": "gitdown ./.README/README.md --output-file ./README.md && npm run documentation-add-assertions",
     "documentation-add-assertions": "tsx ./src/bin/addAssertions",
     "lint": "npm run check-documentation && npm run check-tests && eslint .",
-    "test": "mocha --require ts-node/register/transpile-only ./tests/rules/index.ts"
+    "test": "mocha --require ts-node/register/transpile-only './tests/rules/*'"
   },
   "version": "0.0.0-development"
 }
