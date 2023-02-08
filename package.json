@@ -5,12 +5,15 @@
     "url": "http://gajus.com"
   },
   "dependencies": {
+    "eslint-import-resolver-typescript": "^3.5.3",
+    "eslint-module-utils": "^2.7.4",
     "is-get-set-prop": "^1.0.0",
     "is-js-type": "^2.0.0",
     "is-obj-prop": "^1.0.0",
     "is-proto-prop": "^2.0.0",
     "lodash": "^4.17.21",
     "natural-compare": "^1.4.0",
+    "roarr": "^7.14.2",
     "ts-unused-exports": "^9.0.3",
     "xregexp": "^5.1.1"
   },
@@ -56,10 +59,8 @@
   "scripts": {
     "build": "rm -fr ./dist && tsc",
     "check-documentation": "ts-node ./src/bin/checkDocumentation",
-    "check-tests": "ts-node ./src/bin/checkTests",
-    "create-readme": "gitdown ./.README/README.md --output-file ./README.md && npm run documentation-add-assertions",
-    "documentation-add-assertions": "tsx ./src/bin/addAssertions",
-    "lint": "npm run check-documentation && npm run check-tests && eslint .",
+    "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
+    "lint": "npm run check-documentation && eslint .",
     "test": "mocha --require ts-node/register/transpile-only './tests/rules/*'"
   },
   "version": "0.0.0-development"

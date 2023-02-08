@@ -98,6 +98,7 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 {"gitdown": "include", "file": "./rules/prefer-inline-type-import.md"}
 {"gitdown": "include", "file": "./rules/prefer-use-mount.md"}
 {"gitdown": "include", "file": "./rules/sort-keys.md"}
+{"gitdown": "include", "file": "./rules/virtual-module.md"}
 
 ## FAQ
 
