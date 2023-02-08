@@ -612,7 +612,14 @@ ruleTester.run('sort-keys', rule, {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in insensitive ascending order. 'Z' should be before 'À'.",
+        {
+          data: {
+            order: 'insensitive ascending',
+            prevName: 'À',
+            thisName: 'Z',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -754,7 +761,14 @@ ruleTester.run('sort-keys', rule, {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in natural ascending order. 'Z' should be before 'À'.",
+        {
+          data: {
+            order: 'natural ascending',
+            prevName: 'À',
+            thisName: 'Z',
+          },
+          messageId: 'sort',
+        },
       ],
       options: [
         'asc',
@@ -971,7 +985,14 @@ ruleTester.run('sort-keys', rule, {
     {
       code: 'var obj = {$:1, _:2, A:3, a:4}',
       errors: [
-        "Expected object keys to be in descending order. '_' should be before '$'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: '$',
+            thisName: '_',
+          },
+          messageId: 'sort',
+        },
         {
           data: {
             order: 'descending',
@@ -1010,8 +1031,22 @@ ruleTester.run('sort-keys', rule, {
     {
       code: "var obj = {'#':1, À:3, 'Z':2, è:4}",
       errors: [
-        "Expected object keys to be in descending order. 'À' should be before '#'.",
-        "Expected object keys to be in descending order. 'è' should be before 'Z'.",
+        {
+          data: {
+            order: 'descending',
+            prevName: '#',
+            thisName: 'À',
+          },
+          messageId: 'sort',
+        },
+        {
+          data: {
+            order: 'descending',
+            prevName: 'Z',
+            thisName: 'è',
+          },
+          messageId: 'sort',
+        },
       ],
       options: ['desc'],
       output: "var obj = {À:3, '#':1, è:4, 'Z':2}",
