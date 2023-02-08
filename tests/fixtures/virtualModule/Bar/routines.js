@@ -1,1 +1,1 @@
-export const bar = () => {};
+export const barRoutine = () => {};

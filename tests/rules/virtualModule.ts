@@ -122,12 +122,12 @@ ruleTester.run('virtual-module', rule, {
       name: '/Foo can import /Bar',
     },
     {
-      code: `import { bar } from './utilities'`,
+      code: `import { barUtility } from './utilities'`,
       filename: path.resolve(fixturesPath, './Bar/index.ts'),
       name: 'VM index can import from within the VM',
     },
     {
-      code: `import { bar } from './routines'`,
+      code: `import { barRoutine } from './routines'`,
       filename: path.resolve(fixturesPath, './Bar/index.ts'),
       name: 'VM index can import from within the VM (JavaScript)',
     },
