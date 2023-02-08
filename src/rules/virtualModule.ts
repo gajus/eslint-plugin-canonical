@@ -133,6 +133,8 @@ export default createRule<Options, MessageIds>({
 
           return;
         }
+
+        return;
       }
 
       if (currentDirectory.startsWith(targetModuleRoot + path.sep)) {
