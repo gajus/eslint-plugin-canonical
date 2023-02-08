@@ -69,7 +69,7 @@ export default createRule<Options, MessageIds>({
       const importPath = node.source?.value;
 
       if (!importPath) {
-        throw new Error('Import path cannot be resolved.');
+        return;
       }
 
       const resolvedImportPath = resolve(importPath, context);
