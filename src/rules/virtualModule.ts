@@ -72,28 +72,46 @@ const findModuleRoot = (
   return moduleRoot;
 };
 
-const getAllNamedExportNames = (filePath: string, context): string[] => {
+type NamedExport =
+  | {
+      name: string;
+      source: string;
+      type: 'specifier';
+    }
+  | {
+      name: string;
+      type: 'declaration';
+    };
+
+const getAllNamedExports = (filePath: string, context): NamedExport[] => {
   const content = readFileSync(filePath, 'utf8');
 
   const { ast, visitorKeys } = parse(filePath, content, context);
 
-  const namedExportNames: string[] = [];
+  const namedExports: NamedExport[] = [];
 
   visit(ast, visitorKeys, {
     ExportNamedDeclaration(node) {
       for (const declaration of node.declaration?.declarations ?? []) {
-        namedExportNames.push(declaration.id.name);
+        namedExports.push({
+          name: declaration.id.name,
+          type: 'declaration',
+        });
       }
 
       for (const specifier of node.specifiers) {
         if (specifier.type === 'ExportSpecifier') {
-          namedExportNames.push(specifier.exported.name);
+          namedExports.push({
+            name: specifier.exported.name,
+            source: node.source.value,
+            type: 'specifier',
+          });
         }
       }
     },
   });
 
-  return namedExportNames;
+  return namedExports;
 };
 
 /**
@@ -173,6 +191,39 @@ export default createRule<Options, MessageIds>({
       if (currentModuleDirectory === targetModuleDirectory) {
         if (resolvedImportIsVirtualModuleEntry) {
           context.report({
+            fix: (fixer) => {
+              // TODO add exports
+              if (node.type === 'ImportDeclaration') {
+                const namedExports = getAllNamedExports(
+                  resolvedVirtualModuleEntry,
+                  context,
+                );
+
+                const newImports: string[] = [];
+
+                for (const specifier of node.specifiers) {
+                  if (specifier.type !== 'ImportSpecifier') {
+                    return null;
+                  }
+
+                  const namedExport = namedExports.find((maybeNamedExport) => {
+                    return maybeNamedExport.name === specifier.imported.name;
+                  });
+
+                  if (!namedExport || namedExport.type !== 'specifier') {
+                    return null;
+                  }
+
+                  newImports.push(
+                    `import { ${specifier.imported.name} } from '${namedExport.source}'`,
+                  );
+                }
+
+                return fixer.replaceText(node, newImports.join('\n'));
+              }
+
+              return null;
+            },
             messageId: 'indexImport',
             node,
           });
@@ -223,17 +274,21 @@ export default createRule<Options, MessageIds>({
         },
         fix: (fixer) => {
           if (node.type === 'ImportDeclaration') {
-            const namedExports = getAllNamedExportNames(
+            const namedExports = getAllNamedExports(
               resolvedVirtualModuleEntry,
               context,
             );
+
+            const namedExportNames = namedExports.map((namedExport) => {
+              return namedExport.name;
+            });
 
             for (const specifier of node.specifiers) {
               if (specifier.type !== 'ImportSpecifier') {
                 return null;
               }
 
-              if (!namedExports.includes(specifier.imported.name)) {
+              if (!namedExportNames.includes(specifier.imported.name)) {
                 return null;
               }
             }

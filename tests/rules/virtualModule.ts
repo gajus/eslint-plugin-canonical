@@ -121,7 +121,7 @@ ruleTester.run('virtual-module', rule, {
       name: 'does not correct import if export cannot be resolved from the entry',
     },
     {
-      code: `import { Bar } from './index'`,
+      code: `import { Baz } from './index'`,
       errors: [
         {
           messageId: 'indexImport',
@@ -129,6 +129,7 @@ ruleTester.run('virtual-module', rule, {
       ],
       filename: path.resolve(fixturesPath, './Bar/utilities.ts'),
       name: 'members of virtual module cannot import module index',
+      output: `import { Baz } from './Baz'`,
     },
   ],
   valid: [
