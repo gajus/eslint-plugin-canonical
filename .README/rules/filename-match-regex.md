@@ -6,7 +6,7 @@ The convention can be configured using a regular expression (the default is `cam
 exporting files can be ignored with a second configuration parameter.
 
 ```json
-"canonical/filename-match-regex": [2, "^[a-z_]+$", true]
+"canonical/filename-match-regex": [2, { "regex": "^[a-z_]+$", "ignoreExporting": true }]
 ```
 
 With these configuration options, `camelCase.js` will be reported as an error while `snake_case.js` will pass.

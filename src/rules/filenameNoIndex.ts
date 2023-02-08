@@ -32,7 +32,11 @@ const create = (context) => {
   };
 };
 
-export default createRule({
+type Options = [];
+
+type MessageIds = 'noIndex';
+
+export default createRule<Options, MessageIds>({
   create,
   defaultOptions: [],
   meta: {

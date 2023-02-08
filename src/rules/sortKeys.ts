@@ -149,11 +149,20 @@ const defaultOptions = {
   natural: false,
 };
 
-export default createRule({
-  create(context) {
-    // Parse options.
-    const order = context.options[0] || 'asc';
-    const options = context.options[1] ?? defaultOptions;
+type Options = [
+  'asc' | 'desc',
+  {
+    caseSensitive: boolean;
+    natural: boolean;
+  },
+];
+
+type MessageIds = 'sort';
+
+export default createRule<Options, MessageIds>({
+  create(context, userOptions) {
+    const order = userOptions[0];
+    const options = userOptions[1];
 
     if (typeof options === 'string') {
       throw new TypeError('Unexpected state');

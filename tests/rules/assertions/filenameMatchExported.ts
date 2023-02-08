@@ -223,7 +223,7 @@ export default {
         },
       ],
       filename: 'variableName.js',
-      options: ['snake'],
+      options: [{ transforms: 'snake' }],
     },
     {
       code: camelCaseEs6,
@@ -236,7 +236,7 @@ export default {
         },
       ],
       filename: 'variableName.js',
-      options: ['kebab'],
+      options: [{ transforms: 'kebab' }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -253,7 +253,7 @@ export default {
         },
       ],
       filename: 'variableName.js',
-      options: ['pascal'],
+      options: [{ transforms: 'pascal' }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -270,7 +270,7 @@ export default {
         },
       ],
       filename: 'variableName.js',
-      options: [['pascal', 'snake']],
+      options: [{ transforms: ['pascal', 'snake'] }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -286,7 +286,7 @@ export default {
         },
       ],
       filename: '/some/dir/Foo.bar.js',
-      options: [null, '\\.react$'],
+      options: [{ suffix: '\\.react$' }],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -306,7 +306,7 @@ export default {
         },
       ],
       filename: '/some/dir/Foo.react/index.js',
-      options: [null, '\\.react$'],
+      options: [{ suffix: '\\.react$' }],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -325,7 +325,7 @@ export default {
         },
       ],
       filename: '/some/dir/bar.js',
-      options: [null, null, true],
+      options: [{ matchCallExpression: true }],
     },
   ],
 
@@ -451,7 +451,6 @@ export default {
         sourceType: 'module',
       },
     },
-
     {
       code: exportedEs6Index,
 
@@ -465,27 +464,27 @@ export default {
     {
       code: camelCaseCommonJS,
       filename: 'variable_name.js',
-      options: ['snake'],
+      options: [{ transforms: 'snake' }],
     },
     {
       code: camelCaseCommonJS,
       filename: 'variable_name/index.js',
-      options: ['snake'],
+      options: [{ transforms: 'snake' }],
     },
     {
       code: camelCaseCommonJS,
       filename: 'variable-name.js',
-      options: ['kebab'],
+      options: [{ transforms: 'kebab' }],
     },
     {
       code: snakeCaseCommonJS,
       filename: 'variableName.js',
-      options: ['camel'],
+      options: [{ transforms: 'camel' }],
     },
     {
       code: camelCaseEs6,
       filename: 'variable_name.js',
-      options: ['snake'],
+      options: [{ transforms: 'snake' }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -494,7 +493,7 @@ export default {
     {
       code: camelCaseEs6,
       filename: 'variable-name.js',
-      options: ['kebab'],
+      options: [{ transforms: 'kebab' }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -503,7 +502,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'variableName.js',
-      options: ['camel'],
+      options: [{ transforms: 'camel' }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -512,7 +511,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'VariableName.js',
-      options: ['pascal'],
+      options: [{ transforms: 'pascal' }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -521,7 +520,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'variableName.js',
-      options: [['pascal', 'camel']],
+      options: [{ transforms: ['pascal', 'camel'] }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -530,7 +529,7 @@ export default {
     {
       code: snakeCaseEs6,
       filename: 'VariableName.js',
-      options: [['pascal', 'camel']],
+      options: [{ transforms: ['pascal', 'camel'] }],
       parserOptions: {
         ecmaVersion: 6,
         sourceType: 'module',
@@ -539,7 +538,7 @@ export default {
     {
       code: exportedJsxClassCode,
       filename: '/some/dir/Foo.react.js',
-      options: [null, '\\.react$'],
+      options: [{ suffix: '\\.react$' }],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -550,7 +549,7 @@ export default {
     {
       code: exportedEs6JsxClassCode,
       filename: '/some/dir/Foo.react.js',
-      options: [null, '\\.react$'],
+      options: [{ suffix: '\\.react$' }],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
@@ -562,7 +561,7 @@ export default {
     {
       code: exportedCalledFunctionCode,
       filename: '/some/dir/foo.js',
-      options: [null, null, true],
+      options: [{ matchCallExpression: true }],
     },
   ],
 };

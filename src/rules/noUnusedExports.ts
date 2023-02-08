@@ -18,9 +18,7 @@ type Options = [
 type MessageIds = 'unusedExport';
 
 export default createRule<Options, MessageIds>({
-  create: (context) => {
-    const [options] = context.options;
-
+  create: (context, [options]) => {
     const tsUnusedOptions: string[] = [];
 
     if (options.allowUnusedEnums) {

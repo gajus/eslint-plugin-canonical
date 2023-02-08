@@ -64,108 +64,114 @@ const getWhatToMatchMessage = (transforms) => {
   return 'the exported and transformed name';
 };
 
-const create = (context) => {
-  return {
-    Program(node) {
-      const transforms = getTransformsFromOptions(context.options[0]);
-      const replacePattern = context.options[1]
-        ? new RegExp(context.options[1], 'u')
-        : undefined;
-      const filename = context.getFilename();
-      const absoluteFilename = path.resolve(filename);
-      const parsed = parseFilename(absoluteFilename);
-      const shouldIgnore = isIgnoredFilename(filename);
-      const exportedName = getExportedName(node, context.options);
-      const isExporting = Boolean(exportedName);
-      const expectedExport = getStringToCheckAgainstExport(
-        parsed,
-        replacePattern,
-      );
-      const transformedNames = transform(exportedName, transforms);
-      const everythingIsIndex =
-        exportedName === 'index' && parsed.name === 'index';
-      const matchesExported =
-        anyMatch(expectedExport, transformedNames) || everythingIsIndex;
-      const reportIf = function (
-        condition,
-        messageForNormalFile,
-        messageForIndexFile,
-      ) {
-        const message =
-          !messageForIndexFile || !isIndexFile(parsed)
-            ? messageForNormalFile
-            : messageForIndexFile;
+type Options = [
+  {
+    matchCallExpression: boolean;
+    suffix: string | null;
+    transforms: string[] | string | null;
+  },
+];
 
-        if (condition) {
-          context.report({
-            data: {
-              expectedExport,
-              exportName: transformedNames.join("', '"),
-              extension: parsed.ext,
-              name: parsed.base,
-              whatToMatch: getWhatToMatchMessage(transforms),
-            },
-            message,
-            node,
-          });
+type MessageIds = 'indexFile' | 'regularFile';
+
+export default createRule<Options, MessageIds>({
+  create: (context, options) => {
+    return {
+      Program(node) {
+        const transforms = getTransformsFromOptions(options[0].transforms);
+        const replacePattern = options[0].suffix
+          ? new RegExp(options[0].suffix, 'u')
+          : undefined;
+        const filename = context.getFilename();
+        const absoluteFilename = path.resolve(filename);
+        const parsed = parseFilename(absoluteFilename);
+        const shouldIgnore = isIgnoredFilename(filename);
+        const exportedName = getExportedName(
+          node,
+          options[0].matchCallExpression,
+        );
+        const isExporting = Boolean(exportedName);
+        const expectedExport = getStringToCheckAgainstExport(
+          parsed,
+          replacePattern,
+        );
+        const transformedNames = transform(exportedName, transforms);
+        const everythingIsIndex =
+          exportedName === 'index' && parsed.name === 'index';
+        const matchesExported =
+          anyMatch(expectedExport, transformedNames) || everythingIsIndex;
+
+        if (shouldIgnore || !isExporting || matchesExported) {
+          return;
         }
-      };
 
-      if (shouldIgnore) {
-        return;
-      }
-
-      reportIf(
-        isExporting && !matchesExported,
-        "Filename '{{expectedExport}}' must match {{whatToMatch}} '{{exportName}}'.",
-        "The directory '{{expectedExport}}' must be named '{{exportName}}', after the exported value of its index file.",
-      );
+        context.report({
+          data: {
+            expectedExport,
+            exportName: transformedNames.join("', '"),
+            extension: parsed.ext,
+            name: parsed.base,
+            whatToMatch: getWhatToMatchMessage(transforms),
+          },
+          messageId: isIndexFile(parsed) ? 'indexFile' : 'regularFile',
+          node,
+        });
+      },
+    };
+  },
+  defaultOptions: [
+    {
+      matchCallExpression: false,
+      suffix: null,
+      transforms: null,
     },
-  };
-};
-
-export default createRule({
-  create,
-  defaultOptions: [],
+  ],
   meta: {
     docs: {
       description:
         'Match the file name against the default exported value in the module.',
       recommended: 'warn',
     },
-    messages: {},
+    messages: {
+      indexFile:
+        "The directory '{{expectedExport}}' must be named '{{exportName}}', after the exported value of its index file.",
+      regularFile:
+        "Filename '{{expectedExport}}' must match {{whatToMatch}} '{{exportName}}'.",
+    },
     schema: [
       {
-        anyOf: [
-          {
-            items: {
-              type: 'string',
-            },
-            type: 'array',
+        properties: {
+          matchCallExpression: {
+            type: 'boolean',
           },
-          {
-            type: 'string',
+          suffix: {
+            oneOf: [
+              {
+                type: 'string',
+              },
+              {
+                type: 'null',
+              },
+            ],
           },
-          {
-            type: 'null',
+          transforms: {
+            oneOf: [
+              {
+                items: {
+                  type: 'string',
+                },
+                type: 'array',
+              },
+              {
+                type: 'string',
+              },
+              {
+                type: 'null',
+              },
+            ],
           },
-        ],
-        default: null,
-      },
-      {
-        default: null,
-        oneOf: [
-          {
-            type: 'string',
-          },
-          {
-            type: 'null',
-          },
-        ],
-      },
-      {
-        default: false,
-        type: 'boolean',
+        },
+        type: 'object',
       },
     ],
     type: 'suggestion',

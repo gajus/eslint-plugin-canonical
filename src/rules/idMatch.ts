@@ -41,21 +41,24 @@ const defaultOptions = {
   properties: false,
 };
 
-export default createRule({
-  create: (context) => {
-    const [inputPattern, options] = context.options;
+type Options = [
+  string,
+  {
+    classFields: boolean;
+    ignoreDestructuring: boolean;
+    ignoreNamedImports: boolean;
+    onlyDeclarations: boolean;
+    properties: boolean;
+  },
+];
 
+type MessageIds = 'notMatch' | 'notMatchPrivate';
+
+export default createRule<Options, MessageIds>({
+  create: (context, [inputPattern, options]) => {
     const pattern = inputPattern ?? '^.+$';
 
-    if (typeof pattern !== 'string') {
-      throw new TypeError('Unexpected configuration (a)');
-    }
-
     const regexp = new RegExp(pattern, 'u');
-
-    if (typeof options !== 'object' && options !== undefined) {
-      throw new TypeError('Unexpected configuration (b)');
-    }
 
     const checkProperties = Boolean(options?.properties);
     const checkClassFields = Boolean(options?.classFields);
