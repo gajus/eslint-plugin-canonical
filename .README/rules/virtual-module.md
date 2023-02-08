@@ -2,7 +2,15 @@
 
 Enforces "virtual modules" architecture.
 
-Virtual modules is a convention-driven code architecture enforced using ESLint rules. In the most simple of terms, a virtual module is any directory that has `index.ts`. Think of virtual modules as a lighter version of NPM packages.
+Virtual modules is a convention-driven code architecture enforced using ESLint rules. In the most simple of terms, a virtual module is any directory that has a barrel file (`index.ts`). `index.ts` is the only way that a virtual module can be imported; any files contained inside of the same directory cannot be imported from outside of the virtual module, unless they are explicitly re-exported through `index.ts`.
+
+Using the virtual module pattern:
+
+* You separate the module public interface from their implementation details.
+* You ensure that there is only 1 way to import every module across the project.
+* You ensure that there are no cycling dependencies within the project.
+
+#### Virtual Modules Architecture
 
 The basic idea behind a virtual module is that every directory in your project that has `index.ts` becomes a "virtual module". That virtual module (and sub-folders) can only be imported through `index.ts`, i.e. `index.ts` needs to explicitly export everything that is part of the public interface. This pattern ensures that there is only one way to import all modules across the entire project, and that virtual module implementation details are not public unless they are explicitly re-exported through `index.ts`.
 
@@ -43,8 +51,6 @@ In this example, `Foo` and `Bar` are virtual modules.
 * `Foo` can import from `Bar` and vice-versa.
 
 However, unless `/components/Foo/index.ts` explicitly exports from `./utilities.ts`, then `Bar` cannot access `Foo` utilities, i.e. `./utilities.ts` is an implementation detail of `Foo` not meant for consumption by the rest of the application.
-
-This project architecture allows to split more complicated fragments of your codebase (e.g. React modules) into separate files (e.g. types, styles, utilities) without exposing the implementation details to the rest of the project. Thus the name "virtual module".
 
 Other notes:
 

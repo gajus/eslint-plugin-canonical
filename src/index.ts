@@ -13,6 +13,7 @@ import preferImportAlias from './rules/preferImportAlias';
 import preferInlineTypeImport from './rules/preferInlineTypeImport';
 import preferUseMount from './rules/preferUseMount';
 import sortKeys from './rules/sortKeys';
+import virtualModule from './rules/virtualModule';
 
 export = {
   configs: {
@@ -33,6 +34,7 @@ export = {
     'prefer-inline-type-import': preferInlineTypeImport,
     'prefer-use-mount': preferUseMount,
     'sort-keys': sortKeys,
+    'virtual-module': virtualModule,
   },
   rulesConfig: {
     'destructuring-property-newline': 0,

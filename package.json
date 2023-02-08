@@ -5,6 +5,7 @@
     "url": "http://gajus.com"
   },
   "dependencies": {
+    "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-module-utils": "^2.7.4",
     "is-get-set-prop": "^1.0.0",
     "is-js-type": "^2.0.0",
@@ -12,6 +13,7 @@
     "is-proto-prop": "^2.0.0",
     "lodash": "^4.17.21",
     "natural-compare": "^1.4.0",
+    "roarr": "^7.14.2",
     "ts-unused-exports": "^9.0.3",
     "xregexp": "^5.1.1"
   },
