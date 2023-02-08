@@ -112,6 +112,12 @@ export default createRule<Options, MessageIds>({
 
       if (currentDirectory.startsWith(targetModuleRoot + path.sep)) {
         context.report({
+          data: {
+            currentModule:
+              path.sep + path.relative(projectRootDirectory, currentDirectory),
+            parentModule:
+              path.sep + path.relative(projectRootDirectory, targetModuleRoot),
+          },
           messageId: 'parentModuleImport',
           node,
         });
@@ -161,7 +167,7 @@ export default createRule<Options, MessageIds>({
       indexImport:
         'Cannot import virtual module index from within the virtual module itself.',
       parentModuleImport:
-        'Cannot import from parent module. {{moduleRoot}} is a virtual module.',
+        'Cannot import a parent virtual module. {{parentModule}} is a parent of {{currentModule}}.',
       privateModuleImport:
         'Cannot import a private path. {{moduleRoot}} is a virtual module.',
     },

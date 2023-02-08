@@ -29,6 +29,10 @@ ruleTester.run('virtual-module', rule, {
       code: `import { Bar } from '@/Bar'`,
       errors: [
         {
+          data: {
+            currentModule: '/Bar/Baz',
+            parentModule: '/Bar',
+          },
           messageId: 'parentModuleImport',
         },
       ],
@@ -39,6 +43,10 @@ ruleTester.run('virtual-module', rule, {
       code: `export { Bar } from '@/Bar'`,
       errors: [
         {
+          data: {
+            currentModule: '/Bar/Baz',
+            parentModule: '/Bar',
+          },
           messageId: 'parentModuleImport',
         },
       ],
@@ -49,6 +57,10 @@ ruleTester.run('virtual-module', rule, {
       code: `export * from '@/Bar'`,
       errors: [
         {
+          data: {
+            currentModule: '/Bar/Baz',
+            parentModule: '/Bar',
+          },
           messageId: 'parentModuleImport',
         },
       ],
