@@ -80,6 +80,7 @@ ruleTester.run('virtual-module', rule, {
       ],
       filename: path.resolve(fixturesPath, './Foo/index.ts'),
       name: '/Foo cannot import /Bar/Baz because /Bar is a module',
+      output: `import { Baz } from '@/Bar'`,
     },
     {
       code: `import { Baz } from '@/Bar/Baz'`,
@@ -103,6 +104,7 @@ ruleTester.run('virtual-module', rule, {
           ],
         },
       ],
+      output: `import { Baz } from '@/Bar'`,
     },
     {
       code: `import { Bar } from './index'`,

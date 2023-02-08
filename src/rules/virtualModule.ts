@@ -1,7 +1,9 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
+import parse from 'eslint-module-utils/parse';
 import resolve from 'eslint-module-utils/resolve';
+import visit from 'eslint-module-utils/visit';
 import { Logger } from '../Logger';
 import { createRule } from '../utilities';
 
@@ -70,6 +72,47 @@ const findModuleRoot = (
   return moduleRoot;
 };
 
+const getAllNamedExportNames = (filePath: string, context): string[] => {
+  const content = readFileSync(filePath, 'utf8');
+
+  const { ast, visitorKeys } = parse(filePath, content, context);
+
+  const namedExportNames: string[] = [];
+
+  visit(ast, visitorKeys, {
+    ExportNamedDeclaration(node) {
+      for (const declaration of node.declaration.declarations) {
+        namedExportNames.push(declaration.id.name);
+      }
+
+      for (const specifier of node.specifiers) {
+        if (specifier.type === 'ExportSpecifier') {
+          namedExportNames.push(specifier.name);
+        }
+      }
+    },
+  });
+
+  return namedExportNames;
+};
+
+/**
+ * This implementation will unlikely work in real-world setup.
+ *
+ * @todo Investigate the proper way of determining import
+ */
+const stripPrivatePath = (
+  importPath: string,
+  privatePath: string,
+): string | null => {
+  const steps = privatePath.split('/').length;
+
+  return importPath
+    .split('/')
+    .slice(0, -1 * steps)
+    .join('/');
+};
+
 export default createRule<Options, MessageIds>({
   create: (context, [options]) => {
     const visitDeclaration = (
@@ -95,7 +138,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const resolvedImportPath = resolve(importPath, context);
+      const resolvedImportPath: string | null = resolve(importPath, context);
 
       if (!resolvedImportPath) {
         log.error({ importPath }, 'cannot resolve import');
@@ -166,6 +209,60 @@ export default createRule<Options, MessageIds>({
             targetModule:
               path.sep +
               path.relative(projectRootDirectory, targetParentModuleRoot),
+          },
+          fix: (fixer) => {
+            if (node.type === 'ImportDeclaration') {
+              const namedExports = getAllNamedExportNames(
+                resolvedImportPath,
+                context,
+              );
+
+              for (const specifier of node.specifiers) {
+                if (specifier.type !== 'ImportSpecifier') {
+                  return null;
+                }
+
+                if (!namedExports.includes(specifier.imported.name)) {
+                  return null;
+                }
+              }
+
+              let newImportPath = path.relative(
+                currentDirectory,
+                targetParentModuleRoot,
+              );
+
+              const maybeBetterPath = stripPrivatePath(
+                importPath,
+                path.relative(targetModuleRoot, resolvedImportPath),
+              );
+
+              if (maybeBetterPath) {
+                const resolvedBetterPath: string | null = resolve(
+                  maybeBetterPath,
+                  context,
+                );
+
+                if (
+                  resolvedBetterPath ===
+                  path.resolve(targetParentModuleRoot, 'index.ts')
+                ) {
+                  newImportPath = maybeBetterPath;
+                }
+              }
+
+              if (!newImportPath) {
+                return null;
+              }
+
+              return fixer.replaceText(
+                node,
+                context.getSourceCode().getText(node).split('}')[0] +
+                  `} from '${newImportPath}'`,
+              );
+            }
+
+            return null;
           },
           messageId: 'privateModuleImport',
           node,
