@@ -35,7 +35,7 @@ const formatCodeSnippet = (setup) => {
 
 const getAssertions = () => {
   const assertionFiles = glob.sync(
-    path.resolve(__dirname, '../../tests/rules/assertions/*.ts'),
+    path.resolve(__dirname, '../../tests/rules/*.ts'),
   );
 
   const assertionNames = _.map(assertionFiles, (filePath) => {

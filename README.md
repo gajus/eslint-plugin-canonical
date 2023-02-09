@@ -217,7 +217,7 @@ The convention can be configured using a regular expression (the default is `cam
 exporting files can be ignored with a second configuration parameter.
 
 ```json
-"canonical/filename-match-regex": [2, "^[a-z_]+$", true]
+"canonical/filename-match-regex": [2, { "regex": "^[a-z_]+$", "ignoreExporting": true }]
 ```
 
 With these configuration options, `camelCase.js` will be reported as an error while `snake_case.js` will pass.
@@ -421,6 +421,8 @@ The 2nd option is an object which has 3 properties.
 <a name="user-content-eslint-plugin-canonical-rules-virtual-module"></a>
 <a name="eslint-plugin-canonical-rules-virtual-module"></a>
 ### <code>virtual-module</code>
+
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
 
 Enforces "virtual modules" architecture.
 
