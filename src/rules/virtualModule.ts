@@ -260,8 +260,6 @@ export default createRule<Options, MessageIds>({
         reportModule === targetModuleDirectory &&
         resolvedImportIsVirtualModuleEntry
       ) {
-        log.debug('valid import');
-
         return;
       }
 
