@@ -218,12 +218,14 @@ export default createRule<Options, MessageIds>({
               report(node);
             }
 
-            if (!('key' in parent) || !('name' in parent.key)) {
+            if (!('key' in parent)) {
               throw new Error('OK');
             }
 
             const assignmentKeyEqualsValue =
-              'name' in parent.value && parent.key.name === parent.value.name;
+              'name' in parent.value &&
+              'name' in parent.key &&
+              parent.key.name === parent.value.name;
 
             // Prevent checking right-hand side of destructured object
             if (!assignmentKeyEqualsValue && parent.key === node) {

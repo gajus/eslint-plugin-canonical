@@ -907,5 +907,15 @@ ruleTester.run('id-match', rule, {
         sourceType: 'module',
       },
     },
+    {
+      code: `
+        const {
+          index,
+          '0': n0,
+          '1': n1,
+        } = exampleCode;
+      `,
+      options: ['^[a-zA-Z\\d]+$'],
+    },
   ],
 });
