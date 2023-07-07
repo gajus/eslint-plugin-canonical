@@ -125,7 +125,13 @@ const createTSConfigFinder = () => {
       return cache[fileName];
     }
 
-    const tsconfig: TSConfig = JSON.parse(readFileSync(fileName, 'utf8'));
+    let tsconfig: TSConfig;
+
+    try {
+      tsconfig = JSON.parse(readFileSync(fileName, 'utf8'));
+    } catch (error) {
+      throw new Error(`Failed to parse TSConfig ${fileName}`);
+    }
 
     cache[fileName] = tsconfig;
 
@@ -151,6 +157,13 @@ export default createRule<Options, MessageIds>({
       }
 
       if (importPath.startsWith('.')) {
+        // This would mean that the import path resolves to a non-JavaScript file, e.g. CSS import.
+        if (
+          isExistingFile(resolve(dirname(context.getFilename()), importPath))
+        ) {
+          return;
+        }
+
         context.report({
           fix(fixer) {
             return fixRelativeImport(fixer, node, context.getFilename());
@@ -196,6 +209,11 @@ export default createRule<Options, MessageIds>({
       );
 
       if (!resolvedImportPath) {
+        return;
+      }
+
+      // This would mean that the import path resolves to a non-JavaScript file, e.g. CSS import.
+      if (!endsWith(resolvedImportPath, extensions)) {
         return;
       }
 

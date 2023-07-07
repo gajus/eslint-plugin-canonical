@@ -21,6 +21,7 @@ const invalidTest = (name: string, only: boolean = false) => {
       },
     ],
     filename: path.resolve(fixturesPath, `requireExtension/${name}/subject.ts`),
+    only,
     output: readFileSync(
       path.resolve(fixturesPath, `requireExtension/${name}/subject-fixed.ts`),
       'utf8',
@@ -38,7 +39,7 @@ const invalidTest = (name: string, only: boolean = false) => {
   } as const;
 };
 
-const validTest = (name: string) => {
+const validTest = (name: string, only: boolean = false) => {
   return {
     code: readFileSync(
       path.resolve(
@@ -48,12 +49,14 @@ const validTest = (name: string) => {
       ),
       'utf8',
     ),
+    filename: path.resolve(fixturesPath, `requireExtension/${name}/subject.ts`),
+    only,
     settings: {
       'import/resolver': {
         typescript: {
           project: path.resolve(
             fixturesPath,
-            `requireExtension/${name}/subject.ts`,
+            `requireExtension/${name}/tsconfig.json`,
           ),
         },
       },
@@ -63,15 +66,17 @@ const validTest = (name: string) => {
 
 ruleTester.run('require-extension', rule, {
   invalid: [
-    invalidTest('relativeImport'),
-    invalidTest('relativeImportWithIndex'),
     invalidTest('pathsImport'),
     invalidTest('pathsImportWithIndex'),
     invalidTest('pathsImportWithIndex'),
+    invalidTest('relativeImport'),
+    invalidTest('relativeImportWithIndex'),
     invalidTest('relativeNamedExport'),
   ],
   valid: [
-    validTest('relativeImportWithExtension'),
+    validTest('pathsImportIgnoreUnknownExtensions'),
     validTest('pathsImportWithExtension'),
+    validTest('relativeImportIgnoreUnknownExtensions'),
+    validTest('relativeImportWithExtension'),
   ],
 });
