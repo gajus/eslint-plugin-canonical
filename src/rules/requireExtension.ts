@@ -107,6 +107,24 @@ const endsWith = (subject: string, needles: string[]) => {
   });
 };
 
+const createTSConfigFinder = () => {
+  const cache: Record<string, TSConfig | null> = {};
+
+  return (fileName: string) => {
+    if (cache[fileName] !== undefined) {
+      return cache[fileName];
+    }
+
+    const tsconfig: TSConfig = JSON.parse(readFileSync(fileName, 'utf8'));
+
+    cache[fileName] = tsconfig;
+
+    return tsconfig;
+  };
+};
+
+const findTSConfig = createTSConfigFinder();
+
 export default createRule<Options, MessageIds>({
   create: (context) => {
     return {
@@ -139,7 +157,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const tsconfig: TSConfig = JSON.parse(readFileSync(project, 'utf8'));
+        const tsconfig = findTSConfig(project);
 
         const paths = tsconfig?.compilerOptions?.paths;
 
