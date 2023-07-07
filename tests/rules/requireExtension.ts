@@ -13,7 +13,10 @@ ruleTester.run('require-extension', rule, {
   invalid: [
     {
       code: readFileSync(
-        path.resolve(fixturesPath, 'requireExtensionRelativeImport/subject.ts'),
+        path.resolve(
+          fixturesPath,
+          'requireExtension/relativeImport/subject.ts',
+        ),
         'utf8',
       ),
       errors: [
@@ -23,12 +26,12 @@ ruleTester.run('require-extension', rule, {
       ],
       filename: path.resolve(
         fixturesPath,
-        'requireExtensionRelativeImport/subject.ts',
+        'requireExtension/relativeImport/subject.ts',
       ),
       output: readFileSync(
         path.resolve(
           fixturesPath,
-          'requireExtensionRelativeImport/subject-fixed.ts',
+          'requireExtension/relativeImport/subject-fixed.ts',
         ),
         'utf8',
       ),
