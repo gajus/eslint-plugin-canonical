@@ -12,6 +12,7 @@ import noUseExtendNative from './rules/noUseExtendNative';
 import preferImportAlias from './rules/preferImportAlias';
 import preferInlineTypeImport from './rules/preferInlineTypeImport';
 import preferUseMount from './rules/preferUseMount';
+import requireExtension from './rules/requireExtension';
 import sortKeys from './rules/sortKeys';
 import virtualModule from './rules/virtualModule';
 
@@ -33,6 +34,7 @@ export = {
     'prefer-import-alias': preferImportAlias,
     'prefer-inline-type-import': preferInlineTypeImport,
     'prefer-use-mount': preferUseMount,
+    'require-extension': requireExtension,
     'sort-keys': sortKeys,
     'virtual-module': virtualModule,
   },
@@ -48,6 +50,7 @@ export = {
     'no-use-extend-native': 0,
     'prefer-inline-type-import': 0,
     'prefer-use-mount': 0,
+    'require-extension': 0,
     'sort-keys': 0,
   },
 };
