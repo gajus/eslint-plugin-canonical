@@ -9,155 +9,68 @@ const ruleTester = new ESLintUtils.RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
+const invalidTest = (name: string) => {
+  return {
+    code: readFileSync(
+      path.resolve(fixturesPath, `requireExtension/${name}/subject.ts`),
+      'utf8',
+    ),
+    errors: [
+      {
+        messageId: 'extensionMissing',
+      },
+    ],
+    filename: path.resolve(fixturesPath, `requireExtension/${name}/subject.ts`),
+    output: readFileSync(
+      path.resolve(fixturesPath, `requireExtension/${name}/subject-fixed.ts`),
+      'utf8',
+    ),
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: path.resolve(
+            fixturesPath,
+            `requireExtension/${name}/tsconfig.json`,
+          ),
+        },
+      },
+    },
+  } as const;
+};
+
+const validTest = (name: string) => {
+  return {
+    code: readFileSync(
+      path.resolve(
+        fixturesPath,
+
+        `requireExtension/${name}/subject.ts`,
+      ),
+      'utf8',
+    ),
+    settings: {
+      'import/resolver': {
+        typescript: {
+          project: path.resolve(
+            fixturesPath,
+            `requireExtension/${name}/subject.ts`,
+          ),
+        },
+      },
+    },
+  } as const;
+};
+
 ruleTester.run('require-extension', rule, {
   invalid: [
-    {
-      code: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/relativeImport/subject.ts',
-        ),
-        'utf8',
-      ),
-      errors: [
-        {
-          messageId: 'extensionMissing',
-        },
-      ],
-      filename: path.resolve(
-        fixturesPath,
-        'requireExtension/relativeImport/subject.ts',
-      ),
-      output: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/relativeImport/subject-fixed.ts',
-        ),
-        'utf8',
-      ),
-    },
-    {
-      code: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/relativeImportWithIndex/subject.ts',
-        ),
-        'utf8',
-      ),
-      errors: [
-        {
-          messageId: 'extensionMissing',
-        },
-      ],
-      filename: path.resolve(
-        fixturesPath,
-        'requireExtension/relativeImportWithIndex/subject.ts',
-      ),
-      output: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/relativeImportWithIndex/subject-fixed.ts',
-        ),
-        'utf8',
-      ),
-    },
-    {
-      code: readFileSync(
-        path.resolve(fixturesPath, 'requireExtension/pathsImport/subject.ts'),
-        'utf8',
-      ),
-      errors: [
-        {
-          messageId: 'extensionMissing',
-        },
-      ],
-      filename: path.resolve(
-        fixturesPath,
-        'requireExtension/pathsImport/subject.ts',
-      ),
-      output: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/pathsImport/subject-fixed.ts',
-        ),
-        'utf8',
-      ),
-      settings: {
-        'import/resolver': {
-          typescript: {
-            project: path.resolve(
-              fixturesPath,
-              'requireExtension/pathsImport/tsconfig.json',
-            ),
-          },
-        },
-      },
-    },
-    {
-      code: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/pathsImportWithIndex/subject.ts',
-        ),
-        'utf8',
-      ),
-      errors: [
-        {
-          messageId: 'extensionMissing',
-        },
-      ],
-      filename: path.resolve(
-        fixturesPath,
-        'requireExtension/pathsImportWithIndex/subject.ts',
-      ),
-      output: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/pathsImportWithIndex/subject-fixed.ts',
-        ),
-        'utf8',
-      ),
-      settings: {
-        'import/resolver': {
-          typescript: {
-            project: path.resolve(
-              fixturesPath,
-              'requireExtension/pathsImportWithIndex/tsconfig.json',
-            ),
-          },
-        },
-      },
-    },
+    invalidTest('relativeImport'),
+    invalidTest('relativeImportWithIndex'),
+    invalidTest('pathsImport'),
+    invalidTest('pathsImportWithIndex'),
+    invalidTest('pathsImportWithIndex'),
   ],
   valid: [
-    {
-      code: readFileSync(
-        path.resolve(
-          fixturesPath,
-          'requireExtension/relativeImportWithExtension/subject.ts',
-        ),
-        'utf8',
-      ),
-    },
-    {
-      code: readFileSync(
-        path.resolve(
-          fixturesPath,
-
-          'requireExtension/pathsImportWithExtension/subject.ts',
-        ),
-        'utf8',
-      ),
-      settings: {
-        'import/resolver': {
-          typescript: {
-            project: path.resolve(
-              fixturesPath,
-              'requireExtension/pathsImportWithExtension/tsconfig.json',
-            ),
-          },
-        },
-      },
-    },
+    validTest('relativeImportWithExtension'),
+    validTest('pathsImportWithExtension'),
   ],
 });

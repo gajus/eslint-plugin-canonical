@@ -205,12 +205,12 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [],
   meta: {
     docs: {
-      description: '',
+      description: 'Require file extension in import and export statements',
       recommended: 'error',
     },
     fixable: 'code',
     messages: {
-      extensionMissing: 'Must include file extension "{{extension}}"',
+      extensionMissing: 'Must include file extension',
     },
     schema: [],
     type: 'layout',
