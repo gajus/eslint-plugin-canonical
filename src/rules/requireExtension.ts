@@ -1,8 +1,16 @@
+import { type TSESTree } from '@typescript-eslint/utils';
+import { type RuleFixer } from '@typescript-eslint/utils/dist/ts-eslint';
 import { createRule } from '../utilities';
 
 type Options = [];
 
 type MessageIds = 'extensionMissing';
+
+const fix = (fixer: RuleFixer, node: TSESTree.ImportDeclaration) => {
+  const importPath = node.source.value;
+
+  return fixer.replaceTextRange(node.source.range, `'${importPath}.js'`);
+};
 
 export default createRule<Options, MessageIds>({
   create: (context) => {
@@ -22,10 +30,7 @@ export default createRule<Options, MessageIds>({
 
         context.report({
           fix(fixer) {
-            return fixer.replaceTextRange(
-              node.source.range,
-              `'${importPath}.js'`,
-            );
+            return fix(fixer, node);
           },
           messageId: 'extensionMissing',
           node,
