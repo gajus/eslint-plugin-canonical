@@ -31,6 +31,7 @@
     "canonical/import-specifier-newline": 1,
     "canonical/no-restricted-strings": 0,
     "canonical/no-use-extend-native": 2,
+    "canonical/require-extension": 0,
     "canonical/sort-keys": [
       2,
       "asc",
