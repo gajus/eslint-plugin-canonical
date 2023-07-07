@@ -11,16 +11,22 @@ type Options = [];
 
 type MessageIds = 'extensionMissing';
 
+type Node = TSESTree.ExportNamedDeclaration | TSESTree.ImportDeclaration;
+
 const isExistingFile = (fileName: string) => {
   return existsSync(fileName) && lstatSync(fileName).isFile();
 };
 
 const fixRelativeImport = (
   fixer: RuleFixer,
-  node: TSESTree.ImportDeclaration,
+  node: Node,
   fileName: string,
   overrideExtension: boolean = true,
 ) => {
+  if (!node.source) {
+    throw new Error('Node has no source');
+  }
+
   const importPath = resolve(dirname(fileName), node.source.value);
 
   for (const extension of extensions) {
@@ -48,12 +54,16 @@ const fixRelativeImport = (
 
 const fixPathImport = (
   fixer: RuleFixer,
-  node: TSESTree.ImportDeclaration,
+  node: Node,
   fileName: string,
   aliasPath: string,
   resolvedImportPath: string,
   overrideExtension: boolean = true,
 ) => {
+  if (!node.source) {
+    throw new Error('Node has no source');
+  }
+
   const importPath = node.source.value.replace(aliasPath, '');
 
   for (const extension of extensions) {
@@ -127,79 +137,86 @@ const findTSConfig = createTSConfigFinder();
 
 export default createRule<Options, MessageIds>({
   create: (context) => {
-    return {
-      ImportDeclaration: (node) => {
-        const importPath = node.source.value;
+    const rule = (node: Node) => {
+      if (!node.source) {
+        throw new Error('Node has no source');
+      }
 
-        const importPathHasExtension = endsWith(importPath, extensions);
+      const importPath = node.source.value;
 
-        if (importPathHasExtension) {
-          return;
-        }
+      const importPathHasExtension = endsWith(importPath, extensions);
 
-        if (importPath.startsWith('.')) {
-          context.report({
-            fix(fixer) {
-              return fixRelativeImport(fixer, node, context.getFilename());
-            },
-            messageId: 'extensionMissing',
-            node,
-          });
+      if (importPathHasExtension) {
+        return;
+      }
 
-          return;
-        }
-
-        // @ts-expect-error we know this setting exists
-        const project = (context.settings['import/resolver']?.typescript
-          ?.project ?? null) as string | null;
-
-        if (typeof project !== 'string') {
-          return;
-        }
-
-        const tsconfig = findTSConfig(project);
-
-        const paths = tsconfig?.compilerOptions?.paths;
-
-        if (!paths) {
-          return;
-        }
-
-        const aliasPath = findAliasPath(paths, importPath);
-
-        if (!aliasPath) {
-          return;
-        }
-
-        const aliasPathWithoutWildcard = aliasPath.slice(0, -1);
-
-        if (!aliasPathWithoutWildcard) {
-          throw new Error('Path without wildcard is empty');
-        }
-
-        const resolvedImportPath: string | null = resolveImport(
-          importPath,
-          context,
-        );
-
-        if (!resolvedImportPath) {
-          return;
-        }
-
+      if (importPath.startsWith('.')) {
         context.report({
           fix(fixer) {
-            return fixPathImport(
-              fixer,
-              node,
-              context.getFilename(),
-              aliasPathWithoutWildcard,
-              resolvedImportPath,
-            );
+            return fixRelativeImport(fixer, node, context.getFilename());
           },
           messageId: 'extensionMissing',
           node,
         });
-      },
+
+        return;
+      }
+
+      // @ts-expect-error we know this setting exists
+      const project = (context.settings['import/resolver']?.typescript
+        ?.project ?? null) as string | null;
+
+      if (typeof project !== 'string') {
+        return;
+      }
+
+      const tsconfig = findTSConfig(project);
+
+      const paths = tsconfig?.compilerOptions?.paths;
+
+      if (!paths) {
+        return;
+      }
+
+      const aliasPath = findAliasPath(paths, importPath);
+
+      if (!aliasPath) {
+        return;
+      }
+
+      const aliasPathWithoutWildcard = aliasPath.slice(0, -1);
+
+      if (!aliasPathWithoutWildcard) {
+        throw new Error('Path without wildcard is empty');
+      }
+
+      const resolvedImportPath: string | null = resolveImport(
+        importPath,
+        context,
+      );
+
+      if (!resolvedImportPath) {
+        return;
+      }
+
+      context.report({
+        fix(fixer) {
+          return fixPathImport(
+            fixer,
+            node,
+            context.getFilename(),
+            aliasPathWithoutWildcard,
+            resolvedImportPath,
+          );
+        },
+        messageId: 'extensionMissing',
+        node,
+      });
+    };
+
+    return {
+      ExportNamedDeclaration: rule,
+      ImportDeclaration: rule,
     };
   },
   defaultOptions: [],

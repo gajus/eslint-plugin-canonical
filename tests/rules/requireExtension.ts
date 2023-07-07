@@ -9,7 +9,7 @@ const ruleTester = new ESLintUtils.RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const invalidTest = (name: string) => {
+const invalidTest = (name: string, only: boolean = false) => {
   return {
     code: readFileSync(
       path.resolve(fixturesPath, `requireExtension/${name}/subject.ts`),
@@ -68,6 +68,7 @@ ruleTester.run('require-extension', rule, {
     invalidTest('pathsImport'),
     invalidTest('pathsImportWithIndex'),
     invalidTest('pathsImportWithIndex'),
+    invalidTest('relativeNamedExport'),
   ],
   valid: [
     validTest('relativeImportWithExtension'),
