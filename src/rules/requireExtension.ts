@@ -188,6 +188,14 @@ const handleAliasPath = (
     return true;
   }
 
+  // {
+  //   importPath: '@fastify/cors',
+  //   resolvedImportPath: '/Users/gajus/Developer/.../node_modules/.pnpm/@fastify+cors@8.3.0/node_modules/@fastify/cors/types/index.d.ts'
+  // }
+  if (endsWith(resolvedImportPath, ['.d.ts'])) {
+    return true;
+  }
+
   context.report({
     fix(fixer) {
       return fixPathImport(
