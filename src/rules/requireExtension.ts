@@ -59,7 +59,6 @@ const fixPathImport = (
   fixer: RuleFixer,
   node: Node,
   fileName: string,
-  aliasPath: string,
   resolvedImportPath: string,
   overrideExtension: boolean = true,
 ) => {
@@ -67,10 +66,12 @@ const fixPathImport = (
     throw new Error('Node has no source');
   }
 
-  const importPath = node.source.value.replace(aliasPath, '');
+  const importPath = node.source.value;
+
+  const lastSegment = importPath.split('/').pop();
 
   for (const extension of extensions) {
-    if (resolvedImportPath.endsWith(importPath + extension)) {
+    if (resolvedImportPath.endsWith(lastSegment + extension)) {
       return fixer.replaceTextRange(
         node.source.range,
         `'${node.source.value + (overrideExtension ? '.js' : extension)}'`,
@@ -79,7 +80,7 @@ const fixPathImport = (
   }
 
   for (const extension of extensions) {
-    if (resolvedImportPath.endsWith(importPath + '/index' + extension)) {
+    if (resolvedImportPath.endsWith(lastSegment + '/index' + extension)) {
       return fixer.replaceTextRange(
         node.source.range,
         `'${
@@ -100,18 +101,6 @@ type TSConfig = {
   compilerOptions: {
     paths?: AliasPaths;
   };
-};
-
-const findAliasPath = (aliasPaths: AliasPaths, importPath: string) => {
-  return Object.keys(aliasPaths).find((path) => {
-    if (!path.endsWith('*')) {
-      return false;
-    }
-
-    const pathWithoutWildcard = path.slice(0, -1);
-
-    return importPath.startsWith(pathWithoutWildcard);
-  });
 };
 
 const endsWith = (subject: string, needles: string[]) => {
@@ -184,22 +173,8 @@ const handleAliasPath = (
 
   const tsconfig = findTSConfig(project);
 
-  const paths = tsconfig?.compilerOptions?.paths;
-
-  if (!paths) {
+  if (!tsconfig) {
     return false;
-  }
-
-  const aliasPath = findAliasPath(paths, importPath);
-
-  if (!aliasPath) {
-    return false;
-  }
-
-  const aliasPathWithoutWildcard = aliasPath.slice(0, -1);
-
-  if (!aliasPathWithoutWildcard) {
-    throw new Error('Path without wildcard is empty');
   }
 
   const resolvedImportPath: string | null = resolveImport(importPath, context);
@@ -219,7 +194,6 @@ const handleAliasPath = (
         fixer,
         node,
         context.getFilename(),
-        aliasPathWithoutWildcard,
         resolvedImportPath,
       );
     },
