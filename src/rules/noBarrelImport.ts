@@ -1,10 +1,6 @@
-import { readFileSync } from 'node:fs';
-import { relative, dirname } from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
-import parse from 'eslint-module-utils/parse';
-import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
-import { default as ExportMap } from './ExportMap';
+import ExportMap from './ExportMap';
 
 type Options = [];
 

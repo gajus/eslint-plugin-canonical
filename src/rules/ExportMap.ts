@@ -19,6 +19,13 @@ const log = () => {};
 const exportCache = new Map()
 
 export default class ExportMap {
+  public path: string;
+  public namespace: Map<string, unknown>;
+  public imports: Map<string, unknown>;
+  public dependencies: Set<string>;
+  public reexports: Map<string, unknown>;
+  public errors: Error[];
+
   constructor(path) {
     this.path = path
     this.namespace = new Map()
@@ -189,6 +196,290 @@ export default class ExportMap {
                         .join(', ')}`,
     })
   }
+
+  static get = (source, context) => {
+    const path = resolve(source, context)
+  
+    if (path == null) return null
+  
+    return ExportMap.for(childContext(path, context))
+  }
+  
+  static for = (context) => {
+    const { path } = context
+  
+    const cacheKey = hashObject(context).digest('hex')
+    let exportMap = exportCache.get(cacheKey)
+  
+    // return cached ignore
+    if (exportMap === null) return null
+  
+    const stats = fs.statSync(path)
+  
+    if (exportMap != null) {
+      // date equality check
+      if (exportMap.mtime - stats.mtime === 0) {
+        return exportMap
+      }
+      // future: check content equality?
+    }
+  
+    // check valid extensions first
+    if (!hasValidExtension(path, context)) {
+      exportCache.set(cacheKey, null)
+      return null
+    }
+  
+    // check for and cache ignore
+    if (isIgnored(path, context)) {
+      log('ignored path due to ignore settings:', path)
+      exportCache.set(cacheKey, null)
+      return null
+    }
+  
+    const content = fs.readFileSync(path, { encoding: 'utf8' })
+  
+    // check for and cache unambigious modules
+    if (!unambiguous.test(content)) {
+      log('ignored path due to unambiguous regex:', path)
+      exportCache.set(cacheKey, null)
+      return null
+    }
+  
+    log('cache miss', cacheKey, 'for path', path)
+    exportMap = ExportMap.parse(path, content, context)
+  
+    // ambiguous modules return null
+    if (exportMap == null) return null
+  
+    exportMap.mtime = stats.mtime
+  
+    exportCache.set(cacheKey, exportMap)
+    return exportMap
+  }
+  
+  
+  static parse = (path, content, context) => {
+    var m = new ExportMap(path)
+  
+    try {
+      var ast = parse(path, content, context)
+    } catch (err) {
+      log('parse error:', path, err)
+      m.errors.push(err)
+      return m // can't continue
+    }
+  
+    if (!unambiguous.isModule(ast)) return null
+  
+    const docstyle = (context.settings && context.settings['import/docstyle']) || ['jsdoc']
+    const docStyleParsers = {}
+    docstyle.forEach(style => {
+      docStyleParsers[style] = availableDocStyleParsers[style]
+    })
+  
+    // attempt to collect module doc
+    if (ast.comments) {
+      ast.comments.some(c => {
+        if (c.type !== 'Block') return false
+        try {
+          const doc = doctrine.parse(c.value, { unwrap: true })
+          if (doc.tags.some(t => t.title === 'module')) {
+            m.doc = doc
+            return true
+          }
+        } catch (err) { /* ignore */ }
+        return false
+      })
+    }
+  
+    const namespaces = new Map()
+  
+    function remotePath(value) {
+      return resolve.relative(value, path, context.settings)
+    }
+  
+    function resolveImport(value) {
+      const rp = remotePath(value)
+      if (rp == null) return null
+      return ExportMap.for(childContext(rp, context))
+    }
+  
+    function getNamespace(identifier) {
+      if (!namespaces.has(identifier.name)) return
+  
+      return function () {
+        return resolveImport(namespaces.get(identifier.name))
+      }
+    }
+  
+    function addNamespace(object, identifier) {
+      const nsfn = getNamespace(identifier)
+      if (nsfn) {
+        Object.defineProperty(object, 'namespace', { get: nsfn })
+      }
+  
+      return object
+    }
+  
+    function captureDependency(declaration) {
+      if (declaration.source == null) return null
+      if (declaration.importKind === 'type') return null // skip Flow type imports
+      const importedSpecifiers = new Set()
+      const supportedTypes = new Set(['ImportDefaultSpecifier', 'ImportNamespaceSpecifier'])
+      let hasImportedType = false
+      if (declaration.specifiers) {
+        declaration.specifiers.forEach(specifier => {
+          const isType = specifier.importKind === 'type'
+          hasImportedType = hasImportedType || isType
+  
+          if (supportedTypes.has(specifier.type) && !isType) {
+            importedSpecifiers.add(specifier.type)
+          }
+          if (specifier.type === 'ImportSpecifier' && !isType) {
+            importedSpecifiers.add(specifier.imported.name)
+          }
+        })
+      }
+  
+      // only Flow types were imported
+      if (hasImportedType && importedSpecifiers.size === 0) return null
+  
+      const p = remotePath(declaration.source.value)
+      if (p == null) return null
+      const existing = m.imports.get(p)
+      if (existing != null) return existing.getter
+  
+      const getter = thunkFor(p, context)
+      m.imports.set(p, {
+        getter,
+        source: {  // capturing actual node reference holds full AST in memory!
+          value: declaration.source.value,
+          loc: declaration.source.loc,
+        },
+        importedSpecifiers,
+      })
+      return getter
+    }
+  
+    const source = makeSourceCode(content, ast)
+  
+    ast.body.forEach(function (n) {
+  
+      if (n.type === 'ExportDefaultDeclaration') {
+        const exportMeta = captureDoc(source, docStyleParsers, n)
+        if (n.declaration.type === 'Identifier') {
+          addNamespace(exportMeta, n.declaration)
+        }
+        m.namespace.set('default', exportMeta)
+        return
+      }
+  
+      if (n.type === 'ExportAllDeclaration') {
+        const getter = captureDependency(n)
+        if (getter) m.dependencies.add(getter)
+        return
+      }
+  
+      // capture namespaces in case of later export
+      if (n.type === 'ImportDeclaration') {
+        captureDependency(n)
+        let ns
+        if (n.specifiers.some(s => s.type === 'ImportNamespaceSpecifier' && (ns = s))) {
+          namespaces.set(ns.local.name, n.source.value)
+        }
+        return
+      }
+  
+      if (n.type === 'ExportNamedDeclaration') {
+        // capture declaration
+        if (n.declaration != null) {
+          switch (n.declaration.type) {
+            case 'FunctionDeclaration':
+            case 'ClassDeclaration':
+            case 'TypeAlias': // flowtype with babel-eslint parser
+            case 'InterfaceDeclaration':
+            case 'DeclareFunction':
+            case 'TSDeclareFunction':
+            case 'TSEnumDeclaration':
+            case 'TSTypeAliasDeclaration':
+            case 'TSInterfaceDeclaration':
+            case 'TSAbstractClassDeclaration':
+            case 'TSModuleDeclaration':
+              m.namespace.set(n.declaration.id.name, captureDoc(source, docStyleParsers, n))
+              break
+            case 'VariableDeclaration':
+              n.declaration.declarations.forEach((d) =>
+                recursivePatternCapture(d.id,
+                  id => m.namespace.set(id.name, captureDoc(source, docStyleParsers, d, n))))
+              break
+          }
+        }
+  
+        const nsource = n.source && n.source.value
+        n.specifiers.forEach((s) => {
+          const exportMeta = {}
+          let local
+  
+          switch (s.type) {
+            case 'ExportDefaultSpecifier':
+              if (!n.source) return
+              local = 'default'
+              break
+            case 'ExportNamespaceSpecifier':
+              m.namespace.set(s.exported.name, Object.defineProperty(exportMeta, 'namespace', {
+                get() { return resolveImport(nsource) },
+              }))
+              return
+            case 'ExportSpecifier':
+              if (!n.source) {
+                m.namespace.set(s.exported.name, addNamespace(exportMeta, s.local))
+                return
+              }
+              // else falls through
+            default:
+              local = s.local.name
+              break
+          }
+  
+          // todo: JSDoc
+          m.reexports.set(s.exported.name, { local, getImport: () => resolveImport(nsource) })
+        })
+      }
+  
+      // This doesn't declare anything, but changes what's being exported.
+      if (n.type === 'TSExportAssignment') {
+        const moduleDecls = ast.body.filter((bodyNode) =>
+          bodyNode.type === 'TSModuleDeclaration' && bodyNode.id.name === n.expression.name
+        )
+        moduleDecls.forEach((moduleDecl) => {
+          if (moduleDecl && moduleDecl.body && moduleDecl.body.body) {
+            moduleDecl.body.body.forEach((moduleBlockNode) => {
+              // Export-assignment exports all members in the namespace, explicitly exported or not.
+              const exportedDecl = moduleBlockNode.type === 'ExportNamedDeclaration' ?
+                moduleBlockNode.declaration :
+                moduleBlockNode
+  
+              if (exportedDecl.type === 'VariableDeclaration') {
+                exportedDecl.declarations.forEach((decl) =>
+                  recursivePatternCapture(decl.id,(id) => m.namespace.set(
+                    id.name,
+                    captureDoc(source, docStyleParsers, decl, exportedDecl, moduleBlockNode))
+                  )
+                )
+              } else {
+                m.namespace.set(
+                  exportedDecl.id.name,
+                  captureDoc(source, docStyleParsers, moduleBlockNode))
+              }
+            })
+          }
+        })
+      }
+    })
+  
+    return m
+  }
 }
 
 /**
@@ -278,292 +569,6 @@ function captureTomDoc(comments) {
       }],
     }
   }
-}
-
-ExportMap.get = function (source, context) {
-  const path = resolve(source, context)
-
-  if (path == null) return null
-
-  // console.log('>>>', childContext(path, context));
-
-  return ExportMap.for(childContext(path, context))
-}
-
-ExportMap.for = function (context) {
-  const { path } = context
-
-  const cacheKey = hashObject(context).digest('hex')
-  let exportMap = exportCache.get(cacheKey)
-
-  // return cached ignore
-  if (exportMap === null) return null
-
-  const stats = fs.statSync(path)
-
-  if (exportMap != null) {
-    // date equality check
-    if (exportMap.mtime - stats.mtime === 0) {
-      return exportMap
-    }
-    // future: check content equality?
-  }
-
-  // check valid extensions first
-  if (!hasValidExtension(path, context)) {
-    exportCache.set(cacheKey, null)
-    return null
-  }
-
-  // check for and cache ignore
-  if (isIgnored(path, context)) {
-    log('ignored path due to ignore settings:', path)
-    exportCache.set(cacheKey, null)
-    return null
-  }
-
-  const content = fs.readFileSync(path, { encoding: 'utf8' })
-
-  // check for and cache unambigious modules
-  if (!unambiguous.test(content)) {
-    log('ignored path due to unambiguous regex:', path)
-    exportCache.set(cacheKey, null)
-    return null
-  }
-
-  log('cache miss', cacheKey, 'for path', path)
-  exportMap = ExportMap.parse(path, content, context)
-
-  // ambiguous modules return null
-  if (exportMap == null) return null
-
-  exportMap.mtime = stats.mtime
-
-  exportCache.set(cacheKey, exportMap)
-  return exportMap
-}
-
-
-ExportMap.parse = function (path, content, context) {
-  var m = new ExportMap(path)
-
-  try {
-    var ast = parse(path, content, context)
-  } catch (err) {
-    log('parse error:', path, err)
-    m.errors.push(err)
-    return m // can't continue
-  }
-
-  if (!unambiguous.isModule(ast)) return null
-
-  const docstyle = (context.settings && context.settings['import/docstyle']) || ['jsdoc']
-  const docStyleParsers = {}
-  docstyle.forEach(style => {
-    docStyleParsers[style] = availableDocStyleParsers[style]
-  })
-
-  // attempt to collect module doc
-  if (ast.comments) {
-    ast.comments.some(c => {
-      if (c.type !== 'Block') return false
-      try {
-        const doc = doctrine.parse(c.value, { unwrap: true })
-        if (doc.tags.some(t => t.title === 'module')) {
-          m.doc = doc
-          return true
-        }
-      } catch (err) { /* ignore */ }
-      return false
-    })
-  }
-
-  const namespaces = new Map()
-
-  function remotePath(value) {
-    return resolve.relative(value, path, context.settings)
-  }
-
-  function resolveImport(value) {
-    const rp = remotePath(value)
-    if (rp == null) return null
-    return ExportMap.for(childContext(rp, context))
-  }
-
-  function getNamespace(identifier) {
-    if (!namespaces.has(identifier.name)) return
-
-    return function () {
-      return resolveImport(namespaces.get(identifier.name))
-    }
-  }
-
-  function addNamespace(object, identifier) {
-    const nsfn = getNamespace(identifier)
-    if (nsfn) {
-      Object.defineProperty(object, 'namespace', { get: nsfn })
-    }
-
-    return object
-  }
-
-  function captureDependency(declaration) {
-    if (declaration.source == null) return null
-    if (declaration.importKind === 'type') return null // skip Flow type imports
-    const importedSpecifiers = new Set()
-    const supportedTypes = new Set(['ImportDefaultSpecifier', 'ImportNamespaceSpecifier'])
-    let hasImportedType = false
-    if (declaration.specifiers) {
-      declaration.specifiers.forEach(specifier => {
-        const isType = specifier.importKind === 'type'
-        hasImportedType = hasImportedType || isType
-
-        if (supportedTypes.has(specifier.type) && !isType) {
-          importedSpecifiers.add(specifier.type)
-        }
-        if (specifier.type === 'ImportSpecifier' && !isType) {
-          importedSpecifiers.add(specifier.imported.name)
-        }
-      })
-    }
-
-    // only Flow types were imported
-    if (hasImportedType && importedSpecifiers.size === 0) return null
-
-    const p = remotePath(declaration.source.value)
-    if (p == null) return null
-    const existing = m.imports.get(p)
-    if (existing != null) return existing.getter
-
-    const getter = thunkFor(p, context)
-    m.imports.set(p, {
-      getter,
-      source: {  // capturing actual node reference holds full AST in memory!
-        value: declaration.source.value,
-        loc: declaration.source.loc,
-      },
-      importedSpecifiers,
-    })
-    return getter
-  }
-
-  const source = makeSourceCode(content, ast)
-
-  ast.body.forEach(function (n) {
-
-    if (n.type === 'ExportDefaultDeclaration') {
-      const exportMeta = captureDoc(source, docStyleParsers, n)
-      if (n.declaration.type === 'Identifier') {
-        addNamespace(exportMeta, n.declaration)
-      }
-      m.namespace.set('default', exportMeta)
-      return
-    }
-
-    if (n.type === 'ExportAllDeclaration') {
-      const getter = captureDependency(n)
-      if (getter) m.dependencies.add(getter)
-      return
-    }
-
-    // capture namespaces in case of later export
-    if (n.type === 'ImportDeclaration') {
-      captureDependency(n)
-      let ns
-      if (n.specifiers.some(s => s.type === 'ImportNamespaceSpecifier' && (ns = s))) {
-        namespaces.set(ns.local.name, n.source.value)
-      }
-      return
-    }
-
-    if (n.type === 'ExportNamedDeclaration') {
-      // capture declaration
-      if (n.declaration != null) {
-        switch (n.declaration.type) {
-          case 'FunctionDeclaration':
-          case 'ClassDeclaration':
-          case 'TypeAlias': // flowtype with babel-eslint parser
-          case 'InterfaceDeclaration':
-          case 'DeclareFunction':
-          case 'TSDeclareFunction':
-          case 'TSEnumDeclaration':
-          case 'TSTypeAliasDeclaration':
-          case 'TSInterfaceDeclaration':
-          case 'TSAbstractClassDeclaration':
-          case 'TSModuleDeclaration':
-            m.namespace.set(n.declaration.id.name, captureDoc(source, docStyleParsers, n))
-            break
-          case 'VariableDeclaration':
-            n.declaration.declarations.forEach((d) =>
-              recursivePatternCapture(d.id,
-                id => m.namespace.set(id.name, captureDoc(source, docStyleParsers, d, n))))
-            break
-        }
-      }
-
-      const nsource = n.source && n.source.value
-      n.specifiers.forEach((s) => {
-        const exportMeta = {}
-        let local
-
-        switch (s.type) {
-          case 'ExportDefaultSpecifier':
-            if (!n.source) return
-            local = 'default'
-            break
-          case 'ExportNamespaceSpecifier':
-            m.namespace.set(s.exported.name, Object.defineProperty(exportMeta, 'namespace', {
-              get() { return resolveImport(nsource) },
-            }))
-            return
-          case 'ExportSpecifier':
-            if (!n.source) {
-              m.namespace.set(s.exported.name, addNamespace(exportMeta, s.local))
-              return
-            }
-            // else falls through
-          default:
-            local = s.local.name
-            break
-        }
-
-        // todo: JSDoc
-        m.reexports.set(s.exported.name, { local, getImport: () => resolveImport(nsource) })
-      })
-    }
-
-    // This doesn't declare anything, but changes what's being exported.
-    if (n.type === 'TSExportAssignment') {
-      const moduleDecls = ast.body.filter((bodyNode) =>
-        bodyNode.type === 'TSModuleDeclaration' && bodyNode.id.name === n.expression.name
-      )
-      moduleDecls.forEach((moduleDecl) => {
-        if (moduleDecl && moduleDecl.body && moduleDecl.body.body) {
-          moduleDecl.body.body.forEach((moduleBlockNode) => {
-            // Export-assignment exports all members in the namespace, explicitly exported or not.
-            const exportedDecl = moduleBlockNode.type === 'ExportNamedDeclaration' ?
-              moduleBlockNode.declaration :
-              moduleBlockNode
-
-            if (exportedDecl.type === 'VariableDeclaration') {
-              exportedDecl.declarations.forEach((decl) =>
-                recursivePatternCapture(decl.id,(id) => m.namespace.set(
-                  id.name,
-                  captureDoc(source, docStyleParsers, decl, exportedDecl, moduleBlockNode))
-                )
-              )
-            } else {
-              m.namespace.set(
-                exportedDecl.id.name,
-                captureDoc(source, docStyleParsers, moduleBlockNode))
-            }
-          })
-        }
-      })
-    }
-  })
-
-  return m
 }
 
 /**

@@ -84,7 +84,7 @@ ruleTester.run('no-barrel-import', rule, {
     invalidTest('barrelImport'),
     invalidTest('barrelImportDeep'),
     invalidTest('barrelImportAliased'),
-    invalidTest('mixedImport'),
+    invalidTest('mixedImport', true),
   ],
   valid: [validTest('directImport')],
 });
