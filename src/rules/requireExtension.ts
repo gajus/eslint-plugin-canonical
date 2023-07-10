@@ -7,7 +7,8 @@ import {
 } from '@typescript-eslint/utils/dist/ts-eslint';
 import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
-import { findClosestDirectoryWithNeedle } from '../utilities/findClosestDirectoryWithNeedle';
+import { findDirectory } from '../utilities/findDirectory';
+import { readPackageJson } from '../utilities/readPackageJson';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
@@ -189,18 +190,12 @@ const handleAliasPath = (
     return true;
   }
 
-  const moduleRoot = findClosestDirectoryWithNeedle(
-    resolvedImportPath,
-    'package.json',
-    '/',
-  );
+  const moduleRoot = findDirectory(resolvedImportPath, 'package.json', '/');
 
   // This would be an import from node_modules or a linked package.
   if (moduleRoot) {
-    const moduleName = (
-      JSON.parse(readFileSync(resolve(moduleRoot, 'package.json'), 'utf8')) as {
-        name: string;
-      }
+    const moduleName = readPackageJson(
+      resolve(moduleRoot, 'package.json'),
     ).name;
 
     if (importPath === moduleName) {

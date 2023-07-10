@@ -6,7 +6,7 @@ import resolve from 'eslint-module-utils/resolve';
 import visit from 'eslint-module-utils/visit';
 import { Logger } from '../Logger';
 import { createRule } from '../utilities';
-import { findClosestDirectoryWithNeedle } from '../utilities/findClosestDirectoryWithNeedle';
+import { findDirectory } from '../utilities/findDirectory';
 
 const log = Logger.child({
   rule: 'virtual-module',
@@ -23,11 +23,7 @@ type Options =
 type MessageIds = 'indexImport' | 'parentModuleImport' | 'privateModuleImport';
 
 const findProjectRoot = (startPath: string): string => {
-  const projectRoot = findClosestDirectoryWithNeedle(
-    startPath,
-    'package.json',
-    '/',
-  );
+  const projectRoot = findDirectory(startPath, 'package.json', '/');
 
   if (!projectRoot) {
     throw new Error('Project root could not be found.');
@@ -41,12 +37,7 @@ const findModuleRoot = (
   rootPath: string,
   allowList: string[] | null = null,
 ): string | null => {
-  const moduleRoot = findClosestDirectoryWithNeedle(
-    startPath,
-    'index.ts',
-    rootPath,
-    allowList,
-  );
+  const moduleRoot = findDirectory(startPath, 'index.ts', rootPath, allowList);
 
   return moduleRoot;
 };
