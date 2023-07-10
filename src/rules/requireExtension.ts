@@ -129,7 +129,7 @@ const createTSConfigFinder = () => {
 
     try {
       tsconfig = JSON.parse(readFileSync(fileName, 'utf8'));
-    } catch (error) {
+    } catch {
       throw new Error(`Failed to parse TSConfig ${fileName}`);
     }
 
@@ -145,7 +145,9 @@ export default createRule<Options, MessageIds>({
   create: (context) => {
     const rule = (node: Node) => {
       if (!node.source) {
-        throw new Error('Node has no source');
+        // export { foo };
+        // export const foo = () => {};
+        return;
       }
 
       const importPath = node.source.value;
