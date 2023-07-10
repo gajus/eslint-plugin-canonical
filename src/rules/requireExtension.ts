@@ -1,7 +1,10 @@
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
-import { type RuleFixer } from '@typescript-eslint/utils/dist/ts-eslint';
+import {
+  type RuleContext,
+  type RuleFixer,
+} from '@typescript-eslint/utils/dist/ts-eslint';
 import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
 
@@ -141,6 +144,92 @@ const createTSConfigFinder = () => {
 
 const findTSConfig = createTSConfigFinder();
 
+const handleRelativePath = (
+  context: RuleContext<'extensionMissing', []>,
+  node: Node,
+  importPath: string,
+) => {
+  if (!importPath.startsWith('.')) {
+    return false;
+  }
+
+  // This would mean that the import path resolves to a non-JavaScript file, e.g. CSS import.
+  if (isExistingFile(resolve(dirname(context.getFilename()), importPath))) {
+    return true;
+  }
+
+  context.report({
+    fix(fixer) {
+      return fixRelativeImport(fixer, node, context.getFilename());
+    },
+    messageId: 'extensionMissing',
+    node,
+  });
+
+  return true;
+};
+
+const handleAliasPath = (
+  context: RuleContext<'extensionMissing', []>,
+  node: Node,
+  importPath: string,
+) => {
+  // @ts-expect-error we know this setting exists
+  const project = (context.settings['import/resolver']?.typescript?.project ??
+    null) as string | null;
+
+  if (typeof project !== 'string') {
+    return false;
+  }
+
+  const tsconfig = findTSConfig(project);
+
+  const paths = tsconfig?.compilerOptions?.paths;
+
+  if (!paths) {
+    return false;
+  }
+
+  const aliasPath = findAliasPath(paths, importPath);
+
+  if (!aliasPath) {
+    return false;
+  }
+
+  const aliasPathWithoutWildcard = aliasPath.slice(0, -1);
+
+  if (!aliasPathWithoutWildcard) {
+    throw new Error('Path without wildcard is empty');
+  }
+
+  const resolvedImportPath: string | null = resolveImport(importPath, context);
+
+  if (!resolvedImportPath) {
+    return false;
+  }
+
+  // This would mean that the import path resolves to a non-JavaScript file, e.g. CSS import.
+  if (!endsWith(resolvedImportPath, extensions)) {
+    return true;
+  }
+
+  context.report({
+    fix(fixer) {
+      return fixPathImport(
+        fixer,
+        node,
+        context.getFilename(),
+        aliasPathWithoutWildcard,
+        resolvedImportPath,
+      );
+    },
+    messageId: 'extensionMissing',
+    node,
+  });
+
+  return true;
+};
+
 export default createRule<Options, MessageIds>({
   create: (context) => {
     const rule = (node: Node) => {
@@ -158,80 +247,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (importPath.startsWith('.')) {
-        // This would mean that the import path resolves to a non-JavaScript file, e.g. CSS import.
-        if (
-          isExistingFile(resolve(dirname(context.getFilename()), importPath))
-        ) {
-          return;
-        }
-
-        context.report({
-          fix(fixer) {
-            return fixRelativeImport(fixer, node, context.getFilename());
-          },
-          messageId: 'extensionMissing',
-          node,
-        });
-
-        return;
-      }
-
-      // @ts-expect-error we know this setting exists
-      const project = (context.settings['import/resolver']?.typescript
-        ?.project ?? null) as string | null;
-
-      if (typeof project !== 'string') {
-        return;
-      }
-
-      const tsconfig = findTSConfig(project);
-
-      const paths = tsconfig?.compilerOptions?.paths;
-
-      if (!paths) {
-        return;
-      }
-
-      const aliasPath = findAliasPath(paths, importPath);
-
-      if (!aliasPath) {
-        return;
-      }
-
-      const aliasPathWithoutWildcard = aliasPath.slice(0, -1);
-
-      if (!aliasPathWithoutWildcard) {
-        throw new Error('Path without wildcard is empty');
-      }
-
-      const resolvedImportPath: string | null = resolveImport(
-        importPath,
-        context,
+      void (
+        handleRelativePath(context, node, importPath) ||
+        handleAliasPath(context, node, importPath)
       );
-
-      if (!resolvedImportPath) {
-        return;
-      }
-
-      // This would mean that the import path resolves to a non-JavaScript file, e.g. CSS import.
-      if (!endsWith(resolvedImportPath, extensions)) {
-        return;
-      }
-
-      context.report({
-        fix(fixer) {
-          return fixPathImport(
-            fixer,
-            node,
-            context.getFilename(),
-            aliasPathWithoutWildcard,
-            resolvedImportPath,
-          );
-        },
-        messageId: 'extensionMissing',
-        node,
-      });
     };
 
     return {
