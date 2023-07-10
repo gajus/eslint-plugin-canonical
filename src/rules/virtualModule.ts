@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
 import parse from 'eslint-module-utils/parse';
@@ -6,6 +6,7 @@ import resolve from 'eslint-module-utils/resolve';
 import visit from 'eslint-module-utils/visit';
 import { Logger } from '../Logger';
 import { createRule } from '../utilities';
+import { findClosestDirectoryWithNeedle } from '../utilities/findClosestDirectoryWithNeedle';
 
 const log = Logger.child({
   rule: 'virtual-module',
@@ -20,28 +21,6 @@ type Options =
   | [];
 
 type MessageIds = 'indexImport' | 'parentModuleImport' | 'privateModuleImport';
-
-const findClosestDirectoryWithNeedle = (
-  startPath: string,
-  needleFileName: string,
-  rootPath: string,
-  allowList: string[] | null = null,
-): string | null => {
-  let currentDirectory = path.resolve(startPath, './');
-
-  while (currentDirectory.startsWith(rootPath)) {
-    if (
-      existsSync(path.resolve(currentDirectory, needleFileName)) &&
-      (allowList === null || allowList.includes(currentDirectory))
-    ) {
-      return currentDirectory;
-    }
-
-    currentDirectory = path.resolve(currentDirectory, '..');
-  }
-
-  return null;
-};
 
 const findProjectRoot = (startPath: string): string => {
   const projectRoot = findClosestDirectoryWithNeedle(

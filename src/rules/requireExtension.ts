@@ -7,6 +7,7 @@ import {
 } from '@typescript-eslint/utils/dist/ts-eslint';
 import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
+import { findClosestDirectoryWithNeedle } from '../utilities/findClosestDirectoryWithNeedle';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
@@ -188,12 +189,23 @@ const handleAliasPath = (
     return true;
   }
 
-  // {
-  //   importPath: '@fastify/cors',
-  //   resolvedImportPath: '/Users/gajus/Developer/.../node_modules/.pnpm/@fastify+cors@8.3.0/node_modules/@fastify/cors/types/index.d.ts'
-  // }
-  if (endsWith(resolvedImportPath, ['.d.ts'])) {
-    return true;
+  const moduleRoot = findClosestDirectoryWithNeedle(
+    resolvedImportPath,
+    'package.json',
+    '/',
+  );
+
+  // This would be an import from node_modules or a linked package.
+  if (moduleRoot) {
+    const moduleName = (
+      JSON.parse(readFileSync(resolve(moduleRoot, 'package.json'), 'utf8')) as {
+        name: string;
+      }
+    ).name;
+
+    if (importPath === moduleName) {
+      return true;
+    }
   }
 
   context.report({
