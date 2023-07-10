@@ -1,5 +1,5 @@
-import {relative, dirname} from 'node:path';
 import { readFileSync } from 'node:fs';
+import { relative, dirname } from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
 import parse from 'eslint-module-utils/parse';
 import resolveImport from 'eslint-module-utils/resolve';
@@ -30,24 +30,35 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const identifierNode = (node.imported) as unknown as TSESTree.Identifier;
+        const importedNode = node.imported as TSESTree.Identifier;
 
-        if (identifierNode.type !== 'Identifier') {
+        if (importedNode.type !== 'Identifier') {
           throw new Error('Expected identifier');
         }
 
-        const reexport = exportMap.reexports.get(identifierNode.name);
+        const localNode = node.local as TSESTree.Identifier;
+
+        if (localNode.type !== 'Identifier') {
+          throw new Error('Expected identifier');
+        }
+
+        const reexport = exportMap.reexports.get(importedNode.name);
 
         // If it is not re-exported, then it must be defined locally.
         if (!reexport) {
           return;
         }
 
-
-
         context.report({
           fix(fixer) {
-            return fixer.replaceTextRange(importDeclarationNode.range, `import { ${identifierNode.name} } from './foo';`);
+            return fixer.replaceTextRange(
+              importDeclarationNode.range,
+              `import { ${
+                importedNode.name === localNode.name
+                  ? importedNode.name
+                  : `${importedNode.name} as ${localNode.name}`
+              } } from './foo';`,
+            );
           },
           messageId: 'noBarrelImport',
           node,
