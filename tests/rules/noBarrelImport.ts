@@ -80,6 +80,6 @@ const validTest = (name: string, only: boolean = false) => {
 };
 
 ruleTester.run('no-barrel-import', rule, {
-  invalid: [invalidTest('barrelImport'), invalidTest('barrelImportDeep')],
+  invalid: [invalidTest('barrelImport'), invalidTest('barrelImportDeep'), invalidTest('barrelImportAliased')],
   valid: [validTest('directImport')],
 });
