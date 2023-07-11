@@ -40,7 +40,6 @@ export default createRule<Options, MessageIds>({
 
         context.report({
           *fix(fixer) {
-            // @ts-expect-error TODO
             yield* removeTypeSpecifier(fixer, sourceCode, node);
 
             for (const specifier of node.specifiers) {
