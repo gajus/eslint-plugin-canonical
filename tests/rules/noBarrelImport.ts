@@ -34,8 +34,6 @@ const invalidTest = (name: string, only: boolean = false) => {
       'utf8',
     ),
     settings: {
-      'import/extensions': ['.ts', '.tsx', '.js', '.jsx'],
-      'import/external-module-folders': ['node_modules', 'node_modules/@types'],
       'import/parsers': {
         '@typescript-eslint/parser': ['.ts', '.tsx'],
       },
@@ -64,8 +62,6 @@ const validTest = (name: string, only: boolean = false) => {
     name,
     only,
     settings: {
-      'import/extensions': ['.ts', '.tsx', '.js', '.jsx'],
-      'import/external-module-folders': ['node_modules', 'node_modules/@types'],
       'import/parsers': {
         '@typescript-eslint/parser': ['.ts', '.tsx'],
       },

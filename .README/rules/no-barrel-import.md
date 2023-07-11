@@ -30,4 +30,22 @@ This rule handles
 * default imports
 * aliased imports
 
+You must configure `import/parsers` and `import/resolver` for this rule to work, e.g.
+
+```ts
+settings: {
+  'import/parsers': {
+    '@typescript-eslint/parser': ['.ts', '.tsx'],
+  },
+  'import/resolver': {
+    typescript: {
+      project: path.resolve(
+        __dirname,
+        'tsconfig.json',
+      ),
+    },
+  },
+},
+```
+
 <!-- assertions noBarrelImport -->
