@@ -1,5 +1,7 @@
 ### `require-extension`
 
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
+
 Adds `.js` extension to all imports and exports.
 
 It resolves the following cases:
