@@ -320,6 +320,12 @@ import { baz as bar } from './baz';
 export const baz = 'BAZ';
 ```
 
+This rule handles
+
+* named imports
+* default imports
+* aliased imports
+
 
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings"></a>

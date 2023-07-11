@@ -24,4 +24,10 @@ import { baz as bar } from './baz';
 export const baz = 'BAZ';
 ```
 
+This rule handles
+
+* named imports
+* default imports
+* aliased imports
+
 <!-- assertions noBarrelImport -->
