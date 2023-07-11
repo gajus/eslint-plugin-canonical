@@ -13,6 +13,7 @@
     "is-proto-prop": "^2.0.0",
     "lodash": "^4.17.21",
     "natural-compare": "^1.4.0",
+    "recast": "^0.23.2",
     "roarr": "^7.14.2",
     "ts-unused-exports": "^9.0.3",
     "xregexp": "^5.1.1"

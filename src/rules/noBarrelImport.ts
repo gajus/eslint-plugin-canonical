@@ -1,4 +1,5 @@
 import { type TSESTree } from '@typescript-eslint/utils';
+import * as recast from 'recast';
 import { createRule } from '../utilities';
 import ExportMap from './ExportMap';
 
@@ -45,20 +46,48 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        context.report({
-          fix(fixer) {
-            return fixer.replaceTextRange(
-              importDeclarationNode.range,
-              `import { ${
-                importedNode.name === localNode.name
-                  ? importedNode.name
-                  : `${importedNode.name} as ${localNode.name}`
-              } } from './foo';`,
-            );
-          },
-          messageId: 'noBarrelImport',
-          node,
-        });
+        const newImport = `import { ${
+          importedNode.name === localNode.name
+            ? importedNode.name
+            : `${importedNode.name} as ${localNode.name}`
+        } } from './foo';`;
+
+        if (importDeclarationNode.specifiers.length === 1) {
+          context.report({
+            fix(fixer) {
+              return fixer.replaceTextRange(
+                importDeclarationNode.range,
+                newImport,
+              );
+            },
+            messageId: 'noBarrelImport',
+            node,
+          });
+        } else {
+          context.report({
+            fix(fixer) {
+              return fixer.replaceTextRange(
+                importDeclarationNode.range,
+                recast.print(
+                  {
+                    ...importDeclarationNode,
+                    // @ts-expect-error TODO
+                    specifiers: importDeclarationNode.specifiers.filter(
+                      (specifier) => specifier !== node,
+                    ),
+                  },
+                  {
+                    quote: 'single',
+                  },
+                ).code +
+                  '\n' +
+                  newImport,
+              );
+            },
+            messageId: 'noBarrelImport',
+            node,
+          });
+        }
       },
     };
   },
