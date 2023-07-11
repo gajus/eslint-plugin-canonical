@@ -5,6 +5,7 @@
     "url": "http://gajus.com"
   },
   "dependencies": {
+    "debug": "^4.3.4",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-module-utils": "^2.7.4",
     "is-get-set-prop": "^1.0.0",
