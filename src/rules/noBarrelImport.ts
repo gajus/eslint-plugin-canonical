@@ -3,7 +3,10 @@ import { type TSESTree } from '@typescript-eslint/utils';
 import { type RuleContext } from '@typescript-eslint/utils/dist/ts-eslint';
 import * as recast from 'recast';
 import { createRule } from '../utilities';
-import ExportMap from './ExportMap';
+import ExportMapAny from './ExportMap';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const ExportMap = ExportMapAny as any;
 
 type Options = [];
 
