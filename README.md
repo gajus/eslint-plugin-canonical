@@ -292,6 +292,13 @@ import {
 
 
 
+<a name="user-content-eslint-plugin-canonical-rules-no-barrel-import"></a>
+<a name="eslint-plugin-canonical-rules-no-barrel-import"></a>
+### <code>no-barrel-import</code>
+
+Requires that resources are imported from the same files in which they are defined.
+
+
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings"></a>
 ### <code>no-restricted-strings</code>
