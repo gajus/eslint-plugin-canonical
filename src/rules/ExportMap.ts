@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 /**
  * Copied from eslint-plugin-import.
  */
