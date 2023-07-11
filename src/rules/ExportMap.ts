@@ -21,6 +21,7 @@ const exportCache = new Map()
 type Reexport = {
   local: string;
   getImport: () => {
+    hasDeep: (name) => boolean;
     path: string
   };
 };
@@ -29,7 +30,7 @@ export default class ExportMap {
   public path: string;
   public namespace: Map<string, unknown>;
   public imports: Map<string, unknown>;
-  public dependencies: Set<string>;
+  public dependencies: Set<() => void>;
   public reexports: Map<string, Reexport>;
   public errors: Error[];
 
@@ -92,15 +93,16 @@ export default class ExportMap {
 
   /**
    * ensure that imported name fully resolves.
-   * @param  {[type]}  name [description]
-   * @return {Boolean}      [description]
    */
-  hasDeep(name) {
-    if (this.namespace.has(name)) return { found: true, path: [this] }
+  hasDeep(name: string) {
+    if (this.namespace.has(name)) {
+      return { found: true, path: [this] }
+    }
 
-    if (this.reexports.has(name)) {
-      const reexports = this.reexports.get(name)
-          , imported = reexports.getImport()
+    const reexports = this.reexports.get(name);
+
+    if (reexports) {
+      const imported = reexports.getImport()
 
       // if import is ignored, return explicit 'null'
       if (imported == null) return { found: true, path: [this] }
@@ -111,6 +113,7 @@ export default class ExportMap {
       }
 
       const deep = imported.hasDeep(reexports.local)
+
       deep.path.unshift(this)
 
       return deep
