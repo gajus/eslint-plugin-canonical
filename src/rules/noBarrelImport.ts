@@ -110,6 +110,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // This is a temporary approach to avoid rewriting imports of packages.
+        // In practice, we want to ensure that we are not importing barrels either. 
+        if (importSource.includes('node_modules')) {
+          return;
+        }
+
         const newImport = `import ${
           node.local.name
         } from '${formatRelativeImport(myPath, importSource)}';`;
@@ -163,6 +169,12 @@ export default createRule<Options, MessageIds>({
         }
 
         if (!isSubPath(myModuleRoot, importSource)) {
+          return;
+        }
+
+        // This is a temporary approach to avoid rewriting imports of packages.
+        // In practice, we want to ensure that we are not importing barrels either. 
+        if (importSource.includes('node_modules')) {
           return;
         }
 
