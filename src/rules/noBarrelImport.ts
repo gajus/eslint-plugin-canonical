@@ -56,7 +56,10 @@ const findImportSource = (
   const moduleExports = ExportMap.get(modulePath, context);
 
   if (moduleExports.namespace.has(local)) {
-    return modulePath;
+    return {
+      local,
+      path: modulePath,
+    };
   }
 
   const reexport = moduleExports.reexports.get(local);
@@ -107,17 +110,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (!isSubPath(myModuleRoot, importSource)) {
+        if (!isSubPath(myModuleRoot, importSource.path)) {
           return;
         }
 
-        // This is a temporary approach to avoid rewriting imports of packages.
-        // In practice, we want to ensure that we are not importing barrels either.
-        if (importSource.includes('node_modules')) {
-          return;
-        }
-
-        const relativeImportPath = formatRelativeImport(myPath, importSource);
+        const relativeImportPath = formatRelativeImport(
+          myPath,
+          importSource.path,
+        );
 
         // This is a temporary approach to avoid rewriting imports of packages.
         // In practice, we want to ensure that we are not importing barrels either.
@@ -175,11 +175,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (!isSubPath(myModuleRoot, importSource)) {
+        if (!isSubPath(myModuleRoot, importSource.path)) {
           return;
         }
 
-        const relativeImportPath = formatRelativeImport(myPath, importSource);
+        const relativeImportPath = formatRelativeImport(
+          myPath,
+          importSource.path,
+        );
 
         // This is a temporary approach to avoid rewriting imports of packages.
         // In practice, we want to ensure that we are not importing barrels either.
@@ -190,9 +193,9 @@ export default createRule<Options, MessageIds>({
         const newImport = `import { ${
           node.importKind === 'type' ? 'type ' : ''
         }${
-          importedNode.name === localNode.name
-            ? importedNode.name
-            : `${importedNode.name} as ${localNode.name}`
+          importSource.local === localNode.name
+            ? importSource.local
+            : `${importSource.local} as ${localNode.name}`
         } } from '${relativeImportPath}';`;
 
         if (importDeclarationNode.specifiers.length === 1) {
