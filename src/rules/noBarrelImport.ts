@@ -3,15 +3,15 @@ import { type TSESTree } from '@typescript-eslint/utils';
 import { type RuleContext } from '@typescript-eslint/utils/dist/ts-eslint';
 import * as recast from 'recast';
 import { createRule } from '../utilities';
-import ExportMapAny from './ExportMap';
 import { findDirectory } from '../utilities/findDirectory';
+import ExportMapAny from './ExportMap';
 
 /**
  * https://stackoverflow.com/a/45242825/368691
  */
 const isSubPath = (parent: string, subject: string) => {
   const rel = relative(parent, subject);
-  
+
   return rel && !rel.startsWith('..') && !isAbsolute(rel);
 };
 
@@ -111,7 +111,7 @@ export default createRule<Options, MessageIds>({
         }
 
         // This is a temporary approach to avoid rewriting imports of packages.
-        // In practice, we want to ensure that we are not importing barrels either. 
+        // In practice, we want to ensure that we are not importing barrels either.
         if (importSource.includes('node_modules')) {
           return;
         }
@@ -119,14 +119,12 @@ export default createRule<Options, MessageIds>({
         const relativeImportPath = formatRelativeImport(myPath, importSource);
 
         // This is a temporary approach to avoid rewriting imports of packages.
-        // In practice, we want to ensure that we are not importing barrels either. 
+        // In practice, we want to ensure that we are not importing barrels either.
         if (relativeImportPath.includes('node_modules')) {
           return;
         }
 
-        const newImport = `import ${
-          node.local.name
-        } from '${relativeImportPath}';`;
+        const newImport = `import ${node.local.name} from '${relativeImportPath}';`;
 
         context.report({
           fix(fixer) {
@@ -183,7 +181,7 @@ export default createRule<Options, MessageIds>({
         const relativeImportPath = formatRelativeImport(myPath, importSource);
 
         // This is a temporary approach to avoid rewriting imports of packages.
-        // In practice, we want to ensure that we are not importing barrels either. 
+        // In practice, we want to ensure that we are not importing barrels either.
         if (relativeImportPath.includes('node_modules')) {
           return;
         }
