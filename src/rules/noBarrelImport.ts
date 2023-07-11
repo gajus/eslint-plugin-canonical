@@ -62,7 +62,8 @@ const findImportSource = (
   const reexport = moduleExports.reexports.get(local);
 
   if (!reexport) {
-    throw new Error('Re-export not found');
+    // throw new Error('Re-export not found');
+    return null;
   }
 
   return findImportSource(context, reexport);
