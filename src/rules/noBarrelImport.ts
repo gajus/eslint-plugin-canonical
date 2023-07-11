@@ -1,3 +1,4 @@
+import { dirname, relative } from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
 import * as recast from 'recast';
 import { createRule } from '../utilities';
@@ -7,6 +8,38 @@ type Options = [];
 
 type MessageIds = 'noBarrelImport';
 
+const formatRelativeImport = (
+  currentFilename: string,
+  importFilename: string,
+) => {
+  let newImport = relative(dirname(currentFilename), importFilename);
+
+  if (!newImport.startsWith('.')) {
+    newImport = './' + newImport;
+  }
+
+  return newImport.replace(/\.tsx?$/u, '');
+};
+
+const findImportSource = (context: any, moduleExport: any) => {
+  const local = moduleExport.local;
+  const modulePath = moduleExport.getImport().path;
+
+  const moduleExports = ExportMap.get(modulePath, context);
+
+  if (moduleExports.namespace.has(local)) {
+    return modulePath;
+  }
+
+  const reexport = moduleExports.reexports.get(local);
+
+  if (!reexport) {
+    throw new Error('Re-export not found');
+  }
+
+  return findImportSource(context, reexport);
+};
+
 export default createRule<Options, MessageIds>({
   create: (context) => {
     const myPath = context.getFilename();
@@ -15,6 +48,42 @@ export default createRule<Options, MessageIds>({
     if (myPath === '<text>') return {};
 
     return {
+      ImportDefaultSpecifier: (node) => {
+        const importDeclarationNode = node.parent as TSESTree.ImportDeclaration;
+
+        const exportMap = ExportMap.get(
+          importDeclarationNode.source.value,
+          context,
+        );
+
+        if (exportMap === null) {
+          return;
+        }
+
+        const reexport = exportMap.reexports.get('default');
+
+        if (!reexport) {
+          return;
+        }
+
+        const newImport = `import ${
+          node.local.name
+        } from '${formatRelativeImport(
+          myPath,
+          findImportSource(context, reexport),
+        )}';`;
+
+        context.report({
+          fix(fixer) {
+            return fixer.replaceTextRange(
+              importDeclarationNode.range,
+              newImport,
+            );
+          },
+          messageId: 'noBarrelImport',
+          node,
+        });
+      },
       ImportSpecifier: (node) => {
         const importDeclarationNode = node.parent as TSESTree.ImportDeclaration;
 
@@ -52,7 +121,10 @@ export default createRule<Options, MessageIds>({
           importedNode.name === localNode.name
             ? importedNode.name
             : `${importedNode.name} as ${localNode.name}`
-        } } from './foo';`;
+        } } from '${formatRelativeImport(
+          myPath,
+          findImportSource(context, reexport),
+        )}';`;
 
         if (importDeclarationNode.specifiers.length === 1) {
           context.report({

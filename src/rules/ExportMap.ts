@@ -18,12 +18,19 @@ const log = () => {};
 
 const exportCache = new Map()
 
+type Reexport = {
+  local: string;
+  getImport: () => {
+    path: string
+  };
+};
+
 export default class ExportMap {
   public path: string;
   public namespace: Map<string, unknown>;
   public imports: Map<string, unknown>;
   public dependencies: Set<string>;
-  public reexports: Map<string, unknown>;
+  public reexports: Map<string, Reexport>;
   public errors: Error[];
 
   constructor(path) {
@@ -616,7 +623,7 @@ export function recursivePatternCapture(pattern, callback) {
 /**
  * don't hold full context object in memory, just grab what we need.
  */
-function childContext(path, context) {
+function childContext(path: string, context) {
   const { settings, parserOptions, parserPath } = context
   return {
     settings,
@@ -630,7 +637,7 @@ function childContext(path, context) {
 /**
  * sometimes legacy support isn't _that_ hard... right?
  */
-function makeSourceCode(text, ast) {
+function makeSourceCode(text: string, ast) {
   if (SourceCode.length > 1) {
     // ESLint 3
     return new SourceCode(text, ast)

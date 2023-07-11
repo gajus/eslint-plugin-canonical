@@ -24,6 +24,7 @@ const invalidTest = (name: string, only: boolean = false) => {
       fixturesPath,
       `noBarrelImport/invalid/${name}/subject.ts`,
     ),
+    name,
     only,
     output: readFileSync(
       path.resolve(
@@ -60,6 +61,7 @@ const validTest = (name: string, only: boolean = false) => {
       fixturesPath,
       `noBarrelImport/valid/${name}/subject.ts`,
     ),
+    name,
     only,
     settings: {
       'import/extensions': ['.ts', '.tsx', '.js', '.jsx'],
@@ -86,6 +88,7 @@ ruleTester.run('no-barrel-import', rule, {
     invalidTest('barrelImportAliased'),
     invalidTest('mixedImport'),
     invalidTest('barrelTypeImport'),
+    invalidTest('barrelImportDefault'),
   ],
-  valid: [validTest('directImport')],
+  valid: [validTest('directImport'), validTest('directImportDefault')],
 });
