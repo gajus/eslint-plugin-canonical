@@ -90,5 +90,9 @@ ruleTester.run('no-barrel-import', rule, {
     invalidTest('barrelTypeImport'),
     invalidTest('barrelImportDefault'),
   ],
-  valid: [validTest('directImport'), validTest('directImportDefault')],
+  valid: [
+    validTest('directImport'),
+    validTest('directImportDefault'),
+    validTest('packageImport', true),
+  ],
 });

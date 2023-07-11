@@ -1,9 +1,19 @@
-import { dirname, relative } from 'node:path';
+import { dirname, relative, isAbsolute } from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
 import { type RuleContext } from '@typescript-eslint/utils/dist/ts-eslint';
 import * as recast from 'recast';
 import { createRule } from '../utilities';
 import ExportMapAny from './ExportMap';
+import { findDirectory } from '../utilities/findDirectory';
+
+/**
+ * https://stackoverflow.com/a/45242825/368691
+ */
+const isSubPath = (parent: string, subject: string) => {
+  const rel = relative(parent, subject);
+  
+  return rel && !rel.startsWith('..') && !isAbsolute(rel);
+};
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ExportMap = ExportMapAny as any;
@@ -65,6 +75,12 @@ export default createRule<Options, MessageIds>({
     // can't cycle-check a non-file
     if (myPath === '<text>') return {};
 
+    const myModuleRoot = findDirectory(dirname(myPath), 'package.json', '/');
+
+    if (!myModuleRoot) {
+      throw new Error('cannot find package.json');
+    }
+
     return {
       ImportDefaultSpecifier: (node) => {
         const importDeclarationNode = node.parent as TSESTree.ImportDeclaration;
@@ -90,12 +106,13 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        if (!isSubPath(myModuleRoot, importSource)) {
+          return;
+        }
+
         const newImport = `import ${
           node.local.name
-        } from '${formatRelativeImport(
-          myPath,
-          importSource,
-        )}';`;
+        } from '${formatRelativeImport(myPath, importSource)}';`;
 
         context.report({
           fix(fixer) {
@@ -145,16 +162,17 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        if (!isSubPath(myModuleRoot, importSource)) {
+          return;
+        }
+
         const newImport = `import { ${
           node.importKind === 'type' ? 'type ' : ''
         }${
           importedNode.name === localNode.name
             ? importedNode.name
             : `${importedNode.name} as ${localNode.name}`
-        } } from '${formatRelativeImport(
-          myPath,
-          importSource,
-        )}';`;
+        } } from '${formatRelativeImport(myPath, importSource)}';`;
 
         if (importDeclarationNode.specifiers.length === 1) {
           context.report({
