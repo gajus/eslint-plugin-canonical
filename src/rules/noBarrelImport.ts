@@ -47,6 +47,8 @@ export default createRule<Options, MessageIds>({
         }
 
         const newImport = `import { ${
+          node.importKind === 'type' ? 'type ' : ''
+        }${
           importedNode.name === localNode.name
             ? importedNode.name
             : `${importedNode.name} as ${localNode.name}`
