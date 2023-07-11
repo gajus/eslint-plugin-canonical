@@ -116,9 +116,17 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const relativeImportPath = formatRelativeImport(myPath, importSource);
+
+        // This is a temporary approach to avoid rewriting imports of packages.
+        // In practice, we want to ensure that we are not importing barrels either. 
+        if (relativeImportPath.includes('node_modules')) {
+          return;
+        }
+
         const newImport = `import ${
           node.local.name
-        } from '${formatRelativeImport(myPath, importSource)}';`;
+        } from '${relativeImportPath}';`;
 
         context.report({
           fix(fixer) {
@@ -172,9 +180,11 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const relativeImportPath = formatRelativeImport(myPath, importSource);
+
         // This is a temporary approach to avoid rewriting imports of packages.
         // In practice, we want to ensure that we are not importing barrels either. 
-        if (importSource.includes('node_modules')) {
+        if (relativeImportPath.includes('node_modules')) {
           return;
         }
 
@@ -184,7 +194,7 @@ export default createRule<Options, MessageIds>({
           importedNode.name === localNode.name
             ? importedNode.name
             : `${importedNode.name} as ${localNode.name}`
-        } } from '${formatRelativeImport(myPath, importSource)}';`;
+        } } from '${relativeImportPath}';`;
 
         if (importDeclarationNode.specifiers.length === 1) {
           context.report({
