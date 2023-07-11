@@ -1,5 +1,6 @@
 import { dirname, relative } from 'node:path';
 import { type TSESTree } from '@typescript-eslint/utils';
+import { type RuleContext } from '@typescript-eslint/utils/dist/ts-eslint';
 import * as recast from 'recast';
 import { createRule } from '../utilities';
 import ExportMap from './ExportMap';
@@ -21,7 +22,17 @@ const formatRelativeImport = (
   return newImport.replace(/\.tsx?$/u, '');
 };
 
-const findImportSource = (context: any, moduleExport: any) => {
+type ModuleExports = {
+  getImport: () => {
+    path: string;
+  };
+  local: string;
+};
+
+const findImportSource = (
+  context: RuleContext<MessageIds, Options>,
+  moduleExport: ModuleExports,
+) => {
   const local = moduleExport.local;
   const modulePath = moduleExport.getImport().path;
 
