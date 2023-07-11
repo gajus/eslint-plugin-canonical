@@ -28,7 +28,7 @@ const formatRelativeImport = (
 type ModuleExports = {
   getImport: () => {
     path: string;
-  };
+  } | null;
   local: string;
 };
 
@@ -37,7 +37,11 @@ const findImportSource = (
   moduleExport: ModuleExports,
 ) => {
   const local = moduleExport.local;
-  const modulePath = moduleExport.getImport().path;
+  const modulePath = moduleExport.getImport()?.path;
+
+  if (!modulePath) {
+    return null;
+  }
 
   const moduleExports = ExportMap.get(modulePath, context);
 
@@ -80,11 +84,17 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const importSource = findImportSource(context, reexport);
+
+        if (!importSource) {
+          return;
+        }
+
         const newImport = `import ${
           node.local.name
         } from '${formatRelativeImport(
           myPath,
-          findImportSource(context, reexport),
+          importSource,
         )}';`;
 
         context.report({
@@ -129,6 +139,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        const importSource = findImportSource(context, reexport);
+
+        if (!importSource) {
+          return;
+        }
+
         const newImport = `import { ${
           node.importKind === 'type' ? 'type ' : ''
         }${
@@ -137,7 +153,7 @@ export default createRule<Options, MessageIds>({
             : `${importedNode.name} as ${localNode.name}`
         } } from '${formatRelativeImport(
           myPath,
-          findImportSource(context, reexport),
+          importSource,
         )}';`;
 
         if (importDeclarationNode.specifiers.length === 1) {
