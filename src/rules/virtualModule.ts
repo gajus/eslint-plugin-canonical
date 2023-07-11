@@ -162,7 +162,6 @@ export default createRule<Options, MessageIds>({
         if (resolvedImportIsVirtualModuleEntry) {
           context.report({
             fix: (fixer) => {
-              // TODO add exports
               if (node.type === 'ImportDeclaration') {
                 const namedExports = getAllNamedExports(
                   resolvedVirtualModuleEntry,

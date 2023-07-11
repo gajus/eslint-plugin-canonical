@@ -1,6 +1,7 @@
 {
   "ignorePatterns": [
-    "package-lock.json"
+    "package-lock.json",
+    "ExportMap.ts"
   ],
   "overrides": [
     {
@@ -11,6 +12,10 @@
         "canonical/typescript-disable-type-checking",
         "canonical/prettier"
       ],
+      "rules": {
+        "unicorn/expiring-todo-comments": 0,
+        "@typescript-eslint/no-for-in-array": 0
+      },
       "files": "*.ts"
     },
     {
