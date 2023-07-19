@@ -12,12 +12,13 @@ import noUnusedExports from './rules/noUnusedExports';
 import noUseExtendNative from './rules/noUseExtendNative';
 import preferImportAlias from './rules/preferImportAlias';
 import preferInlineTypeImport from './rules/preferInlineTypeImport';
+import preferReactLazy from './rules/preferReactLazy';
 import preferUseMount from './rules/preferUseMount';
 import requireExtension from './rules/requireExtension';
 import sortKeys from './rules/sortKeys';
 import virtualModule from './rules/virtualModule';
 
-export default {
+export = {
   configs: {
     recommended,
   },
@@ -35,6 +36,7 @@ export default {
     'no-use-extend-native': noUseExtendNative,
     'prefer-import-alias': preferImportAlias,
     'prefer-inline-type-import': preferInlineTypeImport,
+    'prefer-react-lazy': preferReactLazy,
     'prefer-use-mount': preferUseMount,
     'require-extension': requireExtension,
     'sort-keys': sortKeys,
@@ -52,6 +54,7 @@ export default {
     'no-restricted-strings': 0,
     'no-use-extend-native': 0,
     'prefer-inline-type-import': 0,
+    'prefer-react-lazy': 0,
     'prefer-use-mount': 0,
     'require-extension': 0,
     'sort-keys': 0,
