@@ -68,7 +68,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Identifies unused exports.',
-      recommended: false,
     },
     messages: {
       unusedExport: "Export '{{exportName}}' is unused.",

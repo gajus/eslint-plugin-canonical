@@ -64,7 +64,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Forces every export specifier to be on a new line.',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'whitespace',
     messages: {

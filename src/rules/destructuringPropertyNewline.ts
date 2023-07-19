@@ -196,7 +196,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Like `object-property-newline`, but for destructuring.',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'whitespace',
     messages: {

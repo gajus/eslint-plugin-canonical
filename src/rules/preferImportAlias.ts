@@ -121,7 +121,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Restrict imports to path aliases or relative imports limited by depth.',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

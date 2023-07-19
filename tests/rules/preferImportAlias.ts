@@ -1,13 +1,13 @@
 import path from 'node:path';
-import { ESLintUtils } from '@typescript-eslint/utils';
 import rule from '../../src/rules/preferImportAlias';
+import { RuleTester } from '../RuleTester';
 
 const baseDirectory = path.resolve(
   __dirname,
   '../../fixtures/preferImportAlias',
 );
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

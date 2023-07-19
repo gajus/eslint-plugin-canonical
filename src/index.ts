@@ -17,7 +17,7 @@ import requireExtension from './rules/requireExtension';
 import sortKeys from './rules/sortKeys';
 import virtualModule from './rules/virtualModule';
 
-export = {
+export default {
   configs: {
     recommended,
   },

@@ -1,7 +1,8 @@
-import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/noRestrictedStrings';
+import { RuleTester } from '../RuleTester';
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

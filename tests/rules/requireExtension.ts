@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { ESLintUtils } from '@typescript-eslint/utils';
 import rule from '../../src/rules/requireExtension';
+import { RuleTester } from '../RuleTester';
 
 const fixturesPath = path.resolve(__dirname, '../fixtures');
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

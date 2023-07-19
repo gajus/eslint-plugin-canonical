@@ -6,15 +6,16 @@
  * Related discussion about not adding this option to ESLint https://github.com/eslint/eslint/issues/14005
  */
 
-import { ESLintUtils, AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/idMatch';
+import { RuleTester } from '../RuleTester';
 
 const error = {
   messageId: 'notMatch' as const,
   type: AST_NODE_TYPES.Identifier,
 };
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

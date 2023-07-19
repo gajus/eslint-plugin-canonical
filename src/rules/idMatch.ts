@@ -292,7 +292,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'require identifiers to match a specified regular expression',
-      recommended: false,
     },
     messages: {
       notMatch:

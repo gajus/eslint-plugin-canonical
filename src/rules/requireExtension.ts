@@ -1,10 +1,6 @@
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
-import { type TSESTree } from '@typescript-eslint/utils';
-import {
-  type RuleContext,
-  type RuleFixer,
-} from '@typescript-eslint/utils/dist/ts-eslint';
+import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
 import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
@@ -23,7 +19,7 @@ const isExistingFile = (fileName: string) => {
 };
 
 const fixRelativeImport = (
-  fixer: RuleFixer,
+  fixer: TSESLint.RuleFixer,
   node: Node,
   fileName: string,
   overrideExtension: boolean = true,
@@ -58,7 +54,7 @@ const fixRelativeImport = (
 };
 
 const fixPathImport = (
-  fixer: RuleFixer,
+  fixer: TSESLint.RuleFixer,
   node: Node,
   fileName: string,
   resolvedImportPath: string,
@@ -136,7 +132,7 @@ const createTSConfigFinder = () => {
 const findTSConfig = createTSConfigFinder();
 
 const handleRelativePath = (
-  context: RuleContext<'extensionMissing', []>,
+  context: TSESLint.RuleContext<'extensionMissing', []>,
   node: Node,
   importPath: string,
 ) => {
@@ -161,7 +157,7 @@ const handleRelativePath = (
 };
 
 const handleAliasPath = (
-  context: RuleContext<'extensionMissing', []>,
+  context: TSESLint.RuleContext<'extensionMissing', []>,
   node: Node,
   importPath: string,
 ) => {
@@ -251,7 +247,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Require file extension in import and export statements',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

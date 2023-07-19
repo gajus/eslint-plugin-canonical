@@ -1,6 +1,5 @@
 import { dirname, relative, isAbsolute } from 'node:path';
-import { type TSESTree } from '@typescript-eslint/utils';
-import { type RuleContext } from '@typescript-eslint/utils/dist/ts-eslint';
+import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
 import * as recast from 'recast';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
@@ -43,7 +42,7 @@ type ModuleExports = {
 };
 
 const findImportSource = (
-  context: RuleContext<MessageIds, Options>,
+  context: TSESLint.RuleContext<MessageIds, Options>,
   moduleExport: ModuleExports,
 ) => {
   const local = moduleExport.local;
@@ -241,7 +240,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Require that imports are made directly from the source',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

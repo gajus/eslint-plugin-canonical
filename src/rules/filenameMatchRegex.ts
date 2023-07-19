@@ -73,7 +73,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce a certain file naming convention using a regular expression.',
-      recommended: 'warn',
+      recommended: 'recommended',
     },
     messages: {
       notMatch: "Filename '{{name}}' does not match the naming convention.",

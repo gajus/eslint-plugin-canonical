@@ -48,7 +48,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Disallowed string.',
-      recommended: false,
     },
     messages: {
       disallowedString: "Disallowed string: '{{disallowedString}}'.",

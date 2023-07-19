@@ -1,9 +1,9 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
 import rule from '../../src/rules/filenameNoIndex';
+import { RuleTester } from '../RuleTester';
 
 const testCode = "var foo = 'bar';";
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

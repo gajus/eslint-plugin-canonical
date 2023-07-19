@@ -1,7 +1,7 @@
 /* eslint-disable canonical/id-match */
 
-import { ESLintUtils } from '@typescript-eslint/utils';
 import rule from '../../src/rules/filenameMatchExported';
+import { RuleTester } from '../RuleTester';
 
 const testCode = "var foo = 'bar';";
 const testCallCode = 'export default foo();';
@@ -27,7 +27,7 @@ const snakeCaseCommonJS = 'module.exports = variable_name;';
 const camelCaseEs6 = 'export default variableName;';
 const snakeCaseEs6 = 'export default variable_name;';
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

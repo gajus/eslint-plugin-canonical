@@ -1,5 +1,5 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
 import rule from '../../src/rules/noUseExtendNative';
+import { RuleTester } from '../RuleTester';
 
 const valid = [
   'error.plugin',
@@ -139,7 +139,7 @@ const invalid = [
   };
 });
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

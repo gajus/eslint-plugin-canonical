@@ -34,19 +34,18 @@ const create = (context) => {
 
 type Options = [];
 
-type MessageIds = 'noIndex';
+const messages = {
+  noIndex: "'index.js' files are not allowed.",
+};
 
-export default createRule<Options, MessageIds>({
+export default createRule<Options, keyof typeof messages>({
   create,
   defaultOptions: [],
   meta: {
     docs: {
       description: '',
-      recommended: false,
     },
-    messages: {
-      noIndex: "'index.js' files are not allowed.",
-    },
+    messages,
     schema: [],
     type: 'suggestion',
   },

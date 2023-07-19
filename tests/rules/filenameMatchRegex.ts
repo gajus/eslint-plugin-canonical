@@ -1,11 +1,11 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
 import rule from '../../src/rules/filenameMatchRegex';
+import { RuleTester } from '../RuleTester';
 
 const exportingCode = 'module.exports = foo';
 const exportedFunctionCall = 'module.exports = foo()';
 const testCode = "var foo = 'bar';";
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 

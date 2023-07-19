@@ -5,7 +5,7 @@
  * @file Rule to require object keys to be sorted
  * @author Toru Nagashima
  */
-import { type RuleFix } from '@typescript-eslint/utils/dist/ts-eslint';
+import { type TSESLint } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 import { createRule } from '../utilities';
 
@@ -244,7 +244,7 @@ export default createRule<Options, MessageIds>({
               thisName,
             },
             fix(fixer) {
-              const fixes: RuleFix[] = [];
+              const fixes: TSESLint.RuleFix[] = [];
               const sourceCode = context.getSourceCode();
               const moveProperty = (fromNode, toNode) => {
                 const previousText = sourceCode.getText(fromNode);
@@ -281,7 +281,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'require object keys to be sorted',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {
@@ -290,6 +290,7 @@ export default createRule<Options, MessageIds>({
     schema: [
       {
         enum: ['asc', 'desc'],
+        type: 'string',
       },
       {
         additionalProperties: false,

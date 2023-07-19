@@ -1,7 +1,7 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
 import rule from '../../src/rules/preferInlineTypeImport';
+import { RuleTester } from '../RuleTester';
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
