@@ -5,11 +5,11 @@
     "url": "http://gajus.com"
   },
   "dependencies": {
+    "@typescript-eslint/utils": "^6.1.0",
     "debug": "^4.3.4",
     "eslint-import-resolver-typescript": "^3.5.3",
     "eslint-module-utils": "^2.7.4",
     "is-get-set-prop": "^1.0.0",
-    "@typescript-eslint/utils": "^6.1.0",
     "is-js-type": "^2.0.0",
     "is-obj-prop": "^1.0.0",
     "is-proto-prop": "^2.0.0",
