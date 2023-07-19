@@ -7,6 +7,7 @@ import filenameNoIndex from './rules/filenameNoIndex';
 import idMatch from './rules/idMatch';
 import importSpecifierNewline from './rules/importSpecifierNewline';
 import noBarrelImport from './rules/noBarrelImport';
+import noReassignImports from './rules/noReassignImports';
 import noRestrictedStrings from './rules/noRestrictedStrings';
 import noUnusedExports from './rules/noUnusedExports';
 import noUseExtendNative from './rules/noUseExtendNative';
@@ -31,6 +32,7 @@ export = {
     'id-match': idMatch,
     'import-specifier-newline': importSpecifierNewline,
     'no-barrel-import': noBarrelImport,
+    'no-reassign-imports': noReassignImports,
     'no-restricted-strings': noRestrictedStrings,
     'no-unused-exports': noUnusedExports,
     'no-use-extend-native': noUseExtendNative,
@@ -51,6 +53,7 @@ export = {
     'id-match': 0,
     'import-specifier-newline': 0,
     'no-barrel-import': 0,
+    'no-reassign-imports': 0,
     'no-restricted-strings': 0,
     'no-use-extend-native': 0,
     'prefer-inline-type-import': 0,

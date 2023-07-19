@@ -92,6 +92,7 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 {"gitdown": "include", "file": "./rules/id-match.md"}
 {"gitdown": "include", "file": "./rules/import-specifier-newline.md"}
 {"gitdown": "include", "file": "./rules/no-barrel-import.md"}
+{"gitdown": "include", "file": "./rules/no-reassign-imports.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-strings.md"}
 {"gitdown": "include", "file": "./rules/no-unused-exports.md"}
 {"gitdown": "include", "file": "./rules/no-use-extend-native.md"}

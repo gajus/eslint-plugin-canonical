@@ -345,6 +345,13 @@ settings: {
 ```
 
 
+<a name="user-content-eslint-plugin-canonical-rules-no-reassign-imports"></a>
+<a name="eslint-plugin-canonical-rules-no-reassign-imports"></a>
+### <code>no-reassign-imports</code>
+
+Restricts re-assigning imports to variables that are exported.
+
+
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings"></a>
 ### <code>no-restricted-strings</code>
