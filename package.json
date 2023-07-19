@@ -37,7 +37,7 @@
     "husky": "^7.0.4",
     "mocha": "^10.2.0",
     "semantic-release": "^20.0.0",
-    "ts-node": "^10.9.1",
+    "tsx": "^3.12.7",
     "typescript": "^5.1.6"
   },
   "engines": {
@@ -61,10 +61,10 @@
   },
   "scripts": {
     "build": "rm -fr ./dist && tsc",
-    "check-documentation": "ts-node ./src/bin/checkDocumentation",
+    "check-documentation": "tsx ./src/bin/checkDocumentation",
     "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
     "lint": "npm run check-documentation && eslint .",
-    "test": "mocha --require ts-node/register/transpile-only './tests/rules/*'"
+    "test": "mocha --require tsx './tests/rules/*'"
   },
   "version": "0.0.0-development"
 }
