@@ -50,6 +50,10 @@ const validTest = (name: string, only: boolean = false) => {
 };
 
 ruleTester.run('prefer-react-lazy', rule, {
-  invalid: [invalidTest('staticImport')],
+  invalid: [
+    invalidTest('jsxConditionalExpression'),
+    invalidTest('nestedJsxConditionalExpression'),
+    invalidTest('returnConditionalExpression'),
+  ],
   valid: [validTest('dynamicImport')],
 });
