@@ -436,6 +436,34 @@ TypeScript 4.5 introduced [type modifiers](https://www.typescriptlang.org/docs/h
 
 
 
+<a name="user-content-eslint-plugin-canonical-rules-prefer-react-lazy"></a>
+<a name="eslint-plugin-canonical-rules-prefer-react-lazy"></a>
+### <code>prefer-react-lazy</code>
+
+Requires that components that can be loaded lazily be imported using the `React.lazy()` function.
+
+```tsx
+import { lazy } from 'react';
+import { Foo } from './Foo';
+
+export default () => {
+  return Math.random() > 0.5 ? <Foo /> : null;
+};
+```
+
+This rule converts the above code to:
+
+```tsx
+import { lazy } from 'react';
+
+const Foo = lazy(() => import('./Foo.js').then(({ Foo }) => ({ default: Foo })));
+
+export default () => {
+  return Math.random() > 0.5 ? <Foo /> : null;
+};
+```
+
+
 <a name="user-content-eslint-plugin-canonical-rules-prefer-use-mount"></a>
 <a name="eslint-plugin-canonical-rules-prefer-use-mount"></a>
 ### <code>prefer-use-mount</code>
