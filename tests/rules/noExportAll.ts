@@ -79,5 +79,5 @@ const validTest = (name: string, only: boolean = false) => {
 
 ruleTester.run('no-export-all', rule, {
   invalid: [invalidTest('namespaceExport'), invalidTest('reExport')],
-  valid: [validTest('namedExport')],
+  valid: [validTest('namedExport'), validTest('aliasedReExport')],
 });

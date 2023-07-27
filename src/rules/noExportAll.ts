@@ -13,6 +13,10 @@ export default createRule<Options, MessageIds>({
   create: (context) => {
     return {
       ExportAllDeclaration(node: TSESTree.ExportAllDeclaration) {
+        if (node.exported) {
+          return;
+        }
+
         const exportMap = ExportMap.get(node.source.value, context);
 
         if (exportMap === null) {
