@@ -19,9 +19,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const exportNames = Array.from(exportMap.namespace.keys()).filter(
-          (key) => key !== 'default',
-        );
+        const exportNames = [
+          ...Array.from(exportMap.namespace.keys()).filter(
+            (key) => key !== 'default',
+          ),
+          ...Array.from(exportMap.reexports.keys()),
+        ];
 
         context.report({
           fix(fixer) {
