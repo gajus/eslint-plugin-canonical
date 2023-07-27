@@ -51,5 +51,5 @@ export default createRule<Options, MessageIds>({
     schema: [],
     type: 'layout',
   },
-  name: 'require-extension',
+  name: 'no-export-all',
 });
