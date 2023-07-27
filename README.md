@@ -345,6 +345,16 @@ settings: {
 ```
 
 
+<a name="user-content-eslint-plugin-canonical-rules-no-export-all"></a>
+<a name="eslint-plugin-canonical-rules-no-export-all"></a>
+### <code>no-export-all</code>
+
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
+
+Requite that re-exports are named.
+
+
+
 <a name="user-content-eslint-plugin-canonical-rules-no-reassign-imports"></a>
 <a name="eslint-plugin-canonical-rules-no-reassign-imports"></a>
 ### <code>no-reassign-imports</code>
