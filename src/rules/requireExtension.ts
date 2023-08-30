@@ -4,7 +4,6 @@ import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
 import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
-import { readPackageJson } from '../utilities/readPackageJson';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
