@@ -186,19 +186,13 @@ const handleAliasPath = (
     return true;
   }
 
-  const moduleRoot = findDirectory(resolvedImportPath, 'package.json', '/')
-    // This is a workaround for resolveImport resolving to @types/ of the package.
-    // This is going to fail if the actual package is not in the parent directory.
-    ?.replace('/@types/', '/');
+  const moduleRoot = findDirectory(resolvedImportPath, 'package.json', '/');
 
-  // This would be an import from node_modules or a linked package.
   if (moduleRoot) {
-    const moduleName = readPackageJson(
-      resolve(moduleRoot, 'package.json'),
-    ).name;
+    const tail = moduleRoot.split('/node_modules/').pop();
 
-    if (importPath === moduleName) {
-      return true;
+    if (tail === importPath || tail === '@types/' + importPath) {
+      return false;
     }
   }
 

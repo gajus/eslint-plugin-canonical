@@ -78,6 +78,7 @@ ruleTester.run('require-extension', rule, {
     validTest('pathsImportWithExtension'),
     validTest('relativeImportIgnoreUnknownExtensions'),
     validTest('relativeImportWithExtension'),
+    validTest('typedPackageImport'),
     validTest('packageTypesImport'),
   ],
 });
