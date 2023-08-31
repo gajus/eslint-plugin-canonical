@@ -72,6 +72,7 @@ ruleTester.run('require-extension', rule, {
     invalidTest('relativeImport'),
     invalidTest('relativeImportWithIndex'),
     invalidTest('relativeNamedExport'),
+    invalidTest('exportAllDeclaration'),
   ],
   valid: [
     validTest('pathsImportIgnoreUnknownExtensions'),

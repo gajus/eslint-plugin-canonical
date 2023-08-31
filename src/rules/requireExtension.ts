@@ -11,7 +11,10 @@ type Options = [];
 
 type MessageIds = 'extensionMissing';
 
-type Node = TSESTree.ExportNamedDeclaration | TSESTree.ImportDeclaration;
+type Node =
+  | TSESTree.ExportAllDeclaration
+  | TSESTree.ExportNamedDeclaration
+  | TSESTree.ImportDeclaration;
 
 const isExistingFile = (fileName: string) => {
   return existsSync(fileName) && lstatSync(fileName).isFile();
@@ -235,6 +238,7 @@ export default createRule<Options, MessageIds>({
     };
 
     return {
+      ExportAllDeclaration: rule,
       ExportNamedDeclaration: rule,
       ImportDeclaration: rule,
     };
