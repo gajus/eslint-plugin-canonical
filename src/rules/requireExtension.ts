@@ -177,7 +177,19 @@ const handleAliasPath = (
     return false;
   }
 
-  const resolvedImportPath: string | null = resolveImport(importPath, context);
+  let resolvedImportPath: string | null = null;
+
+  try {
+    resolvedImportPath = require.resolve(importPath, {
+      paths: [context.getFilename()],
+    });
+  } catch {
+    // no-op
+  }
+
+  if (!resolvedImportPath) {
+    resolvedImportPath = resolveImport(importPath, context);
+  }
 
   if (!resolvedImportPath) {
     return false;
