@@ -4,6 +4,7 @@ import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
 import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
+import { readPackageJson } from '../utilities/readPackageJson';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
@@ -177,7 +178,7 @@ const handleAliasPath = (
     return false;
   }
 
-  let resolvedImportPath: string | null = null;
+  let resolvedImportPath!: string;
 
   try {
     // There are odd cases where using `resolveImport` resolves to a unexpected file, e.g.
@@ -206,9 +207,18 @@ const handleAliasPath = (
   const moduleRoot = findDirectory(resolvedImportPath, 'package.json', '/');
 
   if (moduleRoot) {
-    const tail = moduleRoot.split('/node_modules/').pop();
+    const packageJson = readPackageJson(resolve(moduleRoot, 'package.json'));
 
-    if (tail === importPath || tail === '@types/' + importPath) {
+    if (packageJson.name === importPath) {
+      return false;
+    }
+
+    // @types/testing-library__jest-dom -> @testing-library/jest-dom
+    if (
+      packageJson.name?.startsWith('@types/') &&
+      '@' + packageJson.name.replace('@types/', '').replace('__', '/') ===
+        importPath
+    ) {
       return false;
     }
   }
