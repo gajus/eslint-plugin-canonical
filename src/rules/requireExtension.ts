@@ -218,20 +218,11 @@ const handleAliasPath = (
   if (moduleRoot) {
     const packageJson = readPackageJson(resolve(moduleRoot, 'package.json'));
 
-    if (packageJson.name) {
-      if (normalizePackageName(packageJson.name) === importPath) {
-        return false;
-      }
-
-      // https://stackoverflow.com/questions/77023341/how-to-check-if-a-path-resolves-to-an-entry-in-package-jsonexports
-      if ('exports' in packageJson) {
-        const deepImportRoot = normalizePackageName(packageJson.name) + '/';
-
-        if (importPath.startsWith(deepImportRoot)) {
-          // eslint-disable-next-line no-console
-          console.log('WIP', deepImportRoot);
-        }
-      }
+    if (
+      packageJson.name &&
+      normalizePackageName(packageJson.name) === importPath
+    ) {
+      return false;
     }
   }
 
