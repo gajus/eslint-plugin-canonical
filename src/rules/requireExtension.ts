@@ -180,6 +180,9 @@ const handleAliasPath = (
   let resolvedImportPath: string | null = null;
 
   try {
+    // There are odd cases where using `resolveImport` resolves to a unexpected file, e.g.
+    // `import turbowatch from 'turbowatch';` inside of `turbowatch.ts` resolves to `turbowatch.js`.
+    // Using `require.resolve` with the `paths` option resolves to the correct file in those instances.
     resolvedImportPath = require.resolve(importPath, {
       paths: [context.getFilename()],
     });
