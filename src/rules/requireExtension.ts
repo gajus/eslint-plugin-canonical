@@ -159,6 +159,22 @@ const handleRelativePath = (
   return true;
 };
 
+const isPackageImport = (packageName: string, importPath: string) => {
+  if (packageName === importPath) {
+    return true;
+  }
+
+  // @types/testing-library__jest-dom -> @testing-library/jest-dom
+  if (
+    packageName.startsWith('@types/') &&
+    '@' + packageName.replace('@types/', '').replace('__', '/') === importPath
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
 const handleAliasPath = (
   context: TSESLint.RuleContext<'extensionMissing', []>,
   node: Node,
@@ -209,17 +225,10 @@ const handleAliasPath = (
   if (moduleRoot) {
     const packageJson = readPackageJson(resolve(moduleRoot, 'package.json'));
 
-    if (packageJson.name === importPath) {
-      return false;
-    }
-
-    // @types/testing-library__jest-dom -> @testing-library/jest-dom
-    if (
-      packageJson.name?.startsWith('@types/') &&
-      '@' + packageJson.name.replace('@types/', '').replace('__', '/') ===
-        importPath
-    ) {
-      return false;
+    if (packageJson.name) {
+      if (isPackageImport(packageJson.name, importPath)) {
+        return false;
+      }
     }
   }
 
