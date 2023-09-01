@@ -159,20 +159,13 @@ const handleRelativePath = (
   return true;
 };
 
-const isPackageImport = (packageName: string, importPath: string) => {
-  if (packageName === importPath) {
-    return true;
+const normalizePackageName = (packageName: string) => {
+  if (packageName.startsWith('@types/')) {
+    // @types/testing-library__jest-dom -> @testing-library/jest-dom
+    return '@' + packageName.replace('@types/', '').replace('__', '/');
   }
 
-  // @types/testing-library__jest-dom -> @testing-library/jest-dom
-  if (
-    packageName.startsWith('@types/') &&
-    '@' + packageName.replace('@types/', '').replace('__', '/') === importPath
-  ) {
-    return true;
-  }
-
-  return false;
+  return packageName;
 };
 
 const handleAliasPath = (
@@ -226,8 +219,18 @@ const handleAliasPath = (
     const packageJson = readPackageJson(resolve(moduleRoot, 'package.json'));
 
     if (packageJson.name) {
-      if (isPackageImport(packageJson.name, importPath)) {
+      if (normalizePackageName(packageJson.name) === importPath) {
         return false;
+      }
+
+      // https://stackoverflow.com/questions/77023341/how-to-check-if-a-path-resolves-to-an-entry-in-package-jsonexports
+      if ('exports' in packageJson) {
+        const deepImportRoot = normalizePackageName(packageJson.name) + '/';
+
+        if (importPath.startsWith(deepImportRoot)) {
+          // eslint-disable-next-line no-console
+          console.log('WIP', deepImportRoot);
+        }
       }
     }
   }
