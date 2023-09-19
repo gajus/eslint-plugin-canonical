@@ -314,7 +314,17 @@ export default createRule<Options, MessageIds>({
     messages: {
       extensionMissing: 'Must include file extension',
     },
-    schema: [],
+    schema: [
+      {
+        additionalProperties: false,
+        properties: {
+          ignorePackages: {
+            type: 'boolean',
+          },
+        },
+        type: 'object',
+      },
+    ],
     type: 'layout',
   },
   name: 'require-extension',
