@@ -9,6 +9,11 @@ import { readPackageJson } from '../utilities/readPackageJson';
 const extensions = ['.js', '.ts', '.tsx'];
 
 const defaultOptions = {
+  // You may want to disable ignorePackages because there can be too many false-positives
+  // when attempting to identify if a package import requires .js extension or not.
+  //
+  // * We need to consider that the resolved path can be @types/.
+  // * We need to consider that the package.json might have package.json#exports rules.
   ignorePackages: false,
 };
 
