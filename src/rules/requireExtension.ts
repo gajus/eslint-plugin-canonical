@@ -8,7 +8,15 @@ import { readPackageJson } from '../utilities/readPackageJson';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
-type Options = [];
+const defaultOptions = {
+  ignorePackages: false,
+};
+
+type Options = [
+  {
+    ignorePackages?: boolean;
+  },
+];
 
 type MessageIds = 'extensionMissing';
 
@@ -135,7 +143,7 @@ const createTSConfigFinder = () => {
 const findTSConfig = createTSConfigFinder();
 
 const handleRelativePath = (
-  context: TSESLint.RuleContext<'extensionMissing', []>,
+  context: TSESLint.RuleContext<'extensionMissing', Options>,
   node: Node,
   importPath: string,
 ) => {
@@ -169,9 +177,10 @@ const normalizePackageName = (packageName: string) => {
 };
 
 const handleAliasPath = (
-  context: TSESLint.RuleContext<'extensionMissing', []>,
+  context: TSESLint.RuleContext<'extensionMissing', Options>,
   node: Node,
   importPath: string,
+  ignorePackages: boolean,
 ) => {
   // @ts-expect-error we know this setting exists
   const project = (context.settings['import/resolver']?.typescript?.project ??
@@ -213,10 +222,31 @@ const handleAliasPath = (
     return true;
   }
 
-  const moduleRoot = findDirectory(resolvedImportPath, 'package.json', '/');
+  const targetPackageJsonPath = findDirectory(
+    resolvedImportPath,
+    'package.json',
+    '/',
+  );
 
-  if (moduleRoot) {
-    const packageJson = readPackageJson(resolve(moduleRoot, 'package.json'));
+  if (targetPackageJsonPath) {
+    if (ignorePackages) {
+      const currentPackageJsonPath = findDirectory(
+        context.getFilename(),
+        'package.json',
+        '/',
+      );
+
+      if (
+        currentPackageJsonPath &&
+        currentPackageJsonPath !== targetPackageJsonPath
+      ) {
+        return false;
+      }
+    }
+
+    const packageJson = readPackageJson(
+      resolve(targetPackageJsonPath, 'package.json'),
+    );
 
     if (
       packageJson.name &&
@@ -243,7 +273,10 @@ const handleAliasPath = (
 };
 
 export default createRule<Options, MessageIds>({
-  create: (context) => {
+  create: (context, [options]) => {
+    const ignorePackages =
+      options.ignorePackages ?? defaultOptions.ignorePackages;
+
     const rule = (node: Node) => {
       if (!node.source) {
         // export { foo };
@@ -261,7 +294,7 @@ export default createRule<Options, MessageIds>({
 
       void (
         handleRelativePath(context, node, importPath) ||
-        handleAliasPath(context, node, importPath)
+        handleAliasPath(context, node, importPath, ignorePackages)
       );
     };
 
@@ -271,7 +304,7 @@ export default createRule<Options, MessageIds>({
       ImportDeclaration: rule,
     };
   },
-  defaultOptions: [],
+  defaultOptions: [defaultOptions],
   meta: {
     docs: {
       description: 'Require file extension in import and export statements',
