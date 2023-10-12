@@ -8,7 +8,7 @@ import { createRule } from '../utilities';
 
 type Options = [
   {
-    paths: Array<{ importNames?: string[]; message: string; name: string }>;
+    paths: Array<{ importName?: string; message: string; name: string }>;
   },
 ];
 
@@ -42,9 +42,9 @@ export default createRule<Options, keyof typeof messages>({
       }
 
       for (const importRule of importRules) {
-        const importNames = importRule.importNames ?? [];
+        const importName = importRule.importName;
 
-        if (importNames.length === 0) {
+        if (!importName) {
           context.report({
             data: {
               customMessage: importRule.message,
@@ -57,62 +57,58 @@ export default createRule<Options, keyof typeof messages>({
           continue;
         }
 
-        for (const importName of importNames) {
-          if (importName === 'default') {
-            for (const nodeSpecifier of node.specifiers) {
-              if (
-                nodeSpecifier.type === AST_NODE_TYPES.ImportDefaultSpecifier
-              ) {
-                context.report({
-                  data: {
-                    customMessage: importRule.message,
-                    importName: 'default',
-                    importSource,
-                  },
-                  messageId: 'importName',
-                  node: nodeSpecifier,
-                });
-              }
+        if (importName === 'default') {
+          for (const nodeSpecifier of node.specifiers) {
+            if (nodeSpecifier.type === AST_NODE_TYPES.ImportDefaultSpecifier) {
+              context.report({
+                data: {
+                  customMessage: importRule.message,
+                  importName: 'default',
+                  importSource,
+                },
+                messageId: 'importName',
+                node: nodeSpecifier,
+              });
             }
           }
+        }
 
-          if (
-            importName === '*' &&
-            node.specifiers[0].type === AST_NODE_TYPES.ImportNamespaceSpecifier
-          ) {
-            context.report({
-              data: {
-                customMessage: importRule.message,
-                importNames: '*',
-                importSource,
-              },
-              messageId: 'everything',
-              node: node.source,
-            });
-
-            return;
-          }
-
-          const importSpecifiers = node.specifiers.filter(
-            (specifier) =>
-              specifier.type === 'ImportSpecifier' &&
-              specifier.imported.name === importName,
-          );
-
-          if (importSpecifiers.length === 0) {
-            continue;
-          }
-
+        if (
+          importName === '*' &&
+          node.specifiers[0].type === AST_NODE_TYPES.ImportNamespaceSpecifier
+        ) {
           context.report({
             data: {
               customMessage: importRule.message,
-              importName,
+              importNames: '*',
               importSource,
             },
-            messageId: 'importName',
-            node: importSpecifiers[0],
+            messageId: 'everything',
+            node: node.source,
           });
+
+          return;
         }
+
+        const importSpecifiers = node.specifiers.filter(
+          (specifier) =>
+            specifier.type === 'ImportSpecifier' &&
+            specifier.imported.name === importName,
+        );
+
+        if (importSpecifiers.length === 0) {
+          continue;
+        }
+
+        context.report({
+          data: {
+            customMessage: importRule.message,
+            importName,
+            importSource,
+          },
+          messageId: 'importName',
+          node: importSpecifiers[0],
+        });
       }
     };
 
@@ -138,11 +134,8 @@ export default createRule<Options, keyof typeof messages>({
             items: {
               additionalProperties: false,
               properties: {
-                importNames: {
-                  items: {
-                    type: 'string',
-                  },
-                  type: 'array',
+                importName: {
+                  type: 'string',
                 },
                 message: {
                   minLength: 1,

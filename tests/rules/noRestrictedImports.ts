@@ -23,7 +23,7 @@ ruleTester.run('no-restricted-imports', rule, {
         {
           paths: [
             {
-              importNames: ['*'],
+              importName: '*',
               message: 'foo is restricted',
               name: 'bar',
             },
@@ -47,7 +47,7 @@ ruleTester.run('no-restricted-imports', rule, {
         {
           paths: [
             {
-              importNames: ['foo'],
+              importName: 'foo',
               message: 'foo is restricted',
               name: 'bar',
             },
@@ -71,7 +71,7 @@ ruleTester.run('no-restricted-imports', rule, {
         {
           paths: [
             {
-              importNames: ['default'],
+              importName: 'default',
               message: 'foo is restricted',
               name: 'bar',
             },
@@ -109,7 +109,7 @@ ruleTester.run('no-restricted-imports', rule, {
         {
           paths: [
             {
-              importNames: ['foo'],
+              importName: 'foo',
               message: 'foo is restricted',
               name: 'bar',
             },
