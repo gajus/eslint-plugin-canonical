@@ -291,6 +291,11 @@ export default createRule<Options, MessageIds>({
 
       const importPath = node.source.value;
 
+      if (importPath.includes('?')) {
+        // import { foo } from './foo.svg?url';
+        return;
+      }
+
       const importPathHasExtension = endsWith(importPath, extensions);
 
       if (importPathHasExtension) {

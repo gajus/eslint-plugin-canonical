@@ -75,6 +75,7 @@ ruleTester.run('require-extension', rule, {
     invalidTest('exportAllDeclaration'),
   ],
   valid: [
+    validTest('pathsImportIgnoreSearchParams'),
     validTest('pathsImportIgnoreUnknownExtensions'),
     validTest('pathsImportWithExtension'),
     validTest('relativeImportIgnoreUnknownExtensions'),
