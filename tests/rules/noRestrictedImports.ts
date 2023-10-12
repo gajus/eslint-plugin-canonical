@@ -55,6 +55,52 @@ ruleTester.run('no-restricted-imports', rule, {
         },
       ],
     },
+    {
+      code: `import { default as bar } from 'bar'`,
+      errors: [
+        {
+          data: {
+            customMessage: 'foo is restricted',
+            importName: 'default',
+            importSource: 'bar',
+          },
+          messageId: 'importName',
+        },
+      ],
+      options: [
+        {
+          paths: [
+            {
+              importNames: ['default'],
+              message: 'foo is restricted',
+              name: 'bar',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `import bar from 'bar'`,
+      errors: [
+        {
+          data: {
+            customMessage: 'foo is restricted',
+            importSource: 'bar',
+          },
+          messageId: 'path',
+        },
+      ],
+      options: [
+        {
+          paths: [
+            {
+              message: 'foo is restricted',
+              name: 'bar',
+            },
+          ],
+        },
+      ],
+    },
   ],
   valid: [
     {

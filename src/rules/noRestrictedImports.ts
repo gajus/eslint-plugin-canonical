@@ -58,6 +58,24 @@ export default createRule<Options, keyof typeof messages>({
         }
 
         for (const importName of importNames) {
+          if (importName === 'default') {
+            for (const nodeSpecifier of node.specifiers) {
+              if (
+                nodeSpecifier.type === AST_NODE_TYPES.ImportDefaultSpecifier
+              ) {
+                context.report({
+                  data: {
+                    customMessage: importRule.message,
+                    importName: 'default',
+                    importSource,
+                  },
+                  messageId: 'importName',
+                  node: nodeSpecifier,
+                });
+              }
+            }
+          }
+
           if (
             importName === '*' &&
             node.specifiers[0].type === AST_NODE_TYPES.ImportNamespaceSpecifier
