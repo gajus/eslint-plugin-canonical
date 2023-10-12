@@ -9,6 +9,7 @@ import importSpecifierNewline from './rules/importSpecifierNewline';
 import noBarrelImport from './rules/noBarrelImport';
 import noExportAll from './rules/noExportAll';
 import noReassignImports from './rules/noReassignImports';
+import noRestrictedImports from './rules/noRestrictedImports';
 import noRestrictedStrings from './rules/noRestrictedStrings';
 import noUnusedExports from './rules/noUnusedExports';
 import noUseExtendNative from './rules/noUseExtendNative';
@@ -35,6 +36,7 @@ export = {
     'no-barrel-import': noBarrelImport,
     'no-export-all': noExportAll,
     'no-reassign-imports': noReassignImports,
+    'no-restricted-imports': noRestrictedImports,
     'no-restricted-strings': noRestrictedStrings,
     'no-unused-exports': noUnusedExports,
     'no-use-extend-native': noUseExtendNative,
@@ -56,6 +58,7 @@ export = {
     'import-specifier-newline': 0,
     'no-barrel-import': 0,
     'no-reassign-imports': 0,
+    'no-restricted-imports': 0,
     'no-restricted-strings': 0,
     'no-use-extend-native': 0,
     'prefer-inline-type-import': 0,
