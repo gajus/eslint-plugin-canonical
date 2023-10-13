@@ -1,7 +1,7 @@
 /* eslint-disable canonical/id-match */
 
 import rule from '../../src/rules/filenameMatchExported';
-import { RuleTester } from '../RuleTester';
+import { createRuleTester } from '../RuleTester';
 
 const testCode = "var foo = 'bar';";
 const testCallCode = 'export default foo();';
@@ -27,540 +27,543 @@ const snakeCaseCommonJS = 'module.exports = variable_name;';
 const camelCaseEs6 = 'export default variableName;';
 const snakeCaseEs6 = 'export default variable_name;';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
+export default createRuleTester(
+  'filename-match-exported',
+  rule,
+  {
+    parser: '@typescript-eslint/parser',
+  },
+  {
+    invalid: [
+      {
+        code: exportedVariableCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/fooBar.js',
+      },
+      {
+        code: exportedClassCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/foo.js',
+        parserOptions: {
+          ecmaVersion: 6,
+        },
+      },
+      {
+        code: exportedJsxClassCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/foo.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+        },
+      },
+      {
+        code: exportedFunctionCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/bar.js',
+      },
+      {
+        code: exportedJsxFunctionCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/bar.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+        },
+      },
+      {
+        code: exportedEs6VariableCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/fooBar.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6ClassCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/bar.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6JsxClassCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/bar.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6FunctionCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'indexFile',
+          },
+        ],
+        filename: '/some/dir/fooBar/index.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
 
-ruleTester.run('filename-match-exported', rule, {
-  invalid: [
-    {
-      code: exportedVariableCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: '/some/dir/fooBar.js',
-    },
-    {
-      code: exportedClassCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: '/some/dir/foo.js',
-      parserOptions: {
-        ecmaVersion: 6,
-      },
-    },
-    {
-      code: exportedJsxClassCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: '/some/dir/foo.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 6,
-      },
-    },
-    {
-      code: exportedFunctionCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: '/some/dir/bar.js',
-    },
-    {
-      code: exportedJsxFunctionCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: '/some/dir/bar.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      {
+        code: exportedEs6JsxFunctionCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'indexFile',
+          },
+        ],
+        filename: '/some/dir/fooBar/index.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
       },
-    },
-    {
-      code: exportedEs6VariableCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
+      {
+        code: exportedVariableCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'indexFile',
+          },
+        ],
+        filename: 'index.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-      ],
-      filename: '/some/dir/fooBar.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: exportedEs6ClassCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
+      {
+        code: exportedJsxClassCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/Foo.react.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
         },
-      ],
-      filename: '/some/dir/bar.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: exportedEs6JsxClassCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: '/some/dir/bar.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: camelCaseCommonJS,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: 'variableName.js',
+        options: [{ transforms: 'snake' }],
       },
-    },
-    {
-      code: exportedEs6FunctionCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'indexFile',
+      {
+        code: camelCaseEs6,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: 'variableName.js',
+        options: [{ transforms: 'kebab' }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-      ],
-      filename: '/some/dir/fooBar/index.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
+      {
+        code: camelCaseEs6,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: 'variableName.js',
+        options: [{ transforms: 'pascal' }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: camelCaseEs6,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: 'variableName.js',
+        options: [{ transforms: ['pascal', 'snake'] }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6JsxClassCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/Foo.bar.js',
+        options: [{ suffix: '\\.react$' }],
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6JsxClassCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'indexFile',
+          },
+        ],
+        filename: '/some/dir/Foo.react/index.js',
+        options: [{ suffix: '\\.react$' }],
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedCalledFunctionCode,
+        errors: [
+          {
+            column: 1,
+            line: 1,
+            messageId: 'regularFile',
+          },
+        ],
+        filename: '/some/dir/bar.js',
+        options: [{ matchCallExpression: true }],
+      },
+    ],
 
-    {
-      code: exportedEs6JsxFunctionCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'indexFile',
-        },
-      ],
-      filename: '/some/dir/fooBar/index.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 6,
-        sourceType: 'module',
+    valid: [
+      {
+        code: exportUnnamedFunctionCode,
+        filename: 'testFile.js',
       },
-    },
-    {
-      code: exportedVariableCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'indexFile',
-        },
-      ],
-      filename: 'index.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: testCode,
+        filename: '/some/dir/exported.js',
       },
-    },
-    {
-      code: exportedJsxClassCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
+      {
+        code: testCallCode,
+        filename: '/some/dir/foo.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-      ],
-      filename: '/some/dir/Foo.react.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 6,
       },
-    },
-    {
-      code: camelCaseCommonJS,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: 'variableName.js',
-      options: [{ transforms: 'snake' }],
-    },
-    {
-      code: camelCaseEs6,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: 'variableName.js',
-      options: [{ transforms: 'kebab' }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: exportedVariableCode,
+        filename: '/some/dir/exported.js',
       },
-    },
-    {
-      code: camelCaseEs6,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
+      {
+        code: exportedClassCode,
+        filename: '/some/dir/Foo.js',
+        parserOptions: {
+          ecmaVersion: 6,
         },
-      ],
-      filename: 'variableName.js',
-      options: [{ transforms: 'pascal' }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: camelCaseEs6,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
+      {
+        code: exportedJsxClassCode,
+        filename: '/some/dir/Foo.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
         },
-      ],
-      filename: 'variableName.js',
-      options: [{ transforms: ['pascal', 'snake'] }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: exportedEs6JsxClassCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
-        },
-      ],
-      filename: '/some/dir/Foo.bar.js',
-      options: [{ suffix: '\\.react$' }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: exportedFunctionCode,
+        filename: '/some/dir/foo.js',
       },
-    },
-    {
-      code: exportedEs6JsxClassCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'indexFile',
-        },
-      ],
-      filename: '/some/dir/Foo.react/index.js',
-      options: [{ suffix: '\\.react$' }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: exportedCalledFunctionCode,
+        filename: '/some/dir/bar.js',
       },
-    },
-    {
-      code: exportedCalledFunctionCode,
-      errors: [
-        {
-          column: 1,
-          line: 1,
-          messageId: 'regularFile',
+      {
+        code: exportedJsxFunctionCode,
+        filename: '/some/dir/foo.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
-      ],
-      filename: '/some/dir/bar.js',
-      options: [{ matchCallExpression: true }],
-    },
-  ],
+      },
+      {
+        code: exportedEs6VariableCode,
+        filename: '/some/dir/exported.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6ClassCode,
+        filename: '/some/dir/Foo.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6JsxClassCode,
+        filename: '/some/dir/Foo.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedEs6FunctionCode,
+        filename: '/some/dir/foo.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
 
-  valid: [
-    {
-      code: exportUnnamedFunctionCode,
-      filename: 'testFile.js',
-    },
-    {
-      code: testCode,
-      filename: '/some/dir/exported.js',
-    },
-    {
-      code: testCallCode,
-      filename: '/some/dir/foo.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
-    {
-      code: exportedVariableCode,
-      filename: '/some/dir/exported.js',
-    },
-    {
-      code: exportedClassCode,
-      filename: '/some/dir/Foo.js',
-      parserOptions: {
-        ecmaVersion: 6,
-      },
-    },
-    {
-      code: exportedJsxClassCode,
-      filename: '/some/dir/Foo.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
-        },
-        ecmaVersion: 6,
-      },
-    },
-    {
-      code: exportedFunctionCode,
-      filename: '/some/dir/foo.js',
-    },
-    {
-      code: exportedCalledFunctionCode,
-      filename: '/some/dir/bar.js',
-    },
-    {
-      code: exportedJsxFunctionCode,
-      filename: '/some/dir/foo.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      {
+        code: exportedEs6JsxFunctionCode,
+        filename: '/some/dir/foo.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
       },
-    },
-    {
-      code: exportedEs6VariableCode,
-      filename: '/some/dir/exported.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
-    {
-      code: exportedEs6ClassCode,
-      filename: '/some/dir/Foo.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
-    {
-      code: exportedEs6JsxClassCode,
-      filename: '/some/dir/Foo.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      {
+        code: exportedEs6FunctionCode,
+        filename: '/some/dir/foo/index.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: exportedEs6FunctionCode,
-      filename: '/some/dir/foo.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
 
-    {
-      code: exportedEs6JsxFunctionCode,
-      filename: '/some/dir/foo.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      {
+        code: exportedEs6JsxFunctionCode,
+        filename: '/some/dir/foo/index.js',
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: exportedEs6FunctionCode,
-      filename: '/some/dir/foo/index.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
+      {
+        code: exportedEs6Index,
 
-    {
-      code: exportedEs6JsxFunctionCode,
-      filename: '/some/dir/foo/index.js',
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+        // /foo is used as cwd for test setup so full path will be /foo/index.js
+        filename: 'index.js',
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: exportedEs6Index,
-
-      // /foo is used as cwd for test setup so full path will be /foo/index.js
-      filename: 'index.js',
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: camelCaseCommonJS,
+        filename: 'variable_name.js',
+        options: [{ transforms: 'snake' }],
       },
-    },
-    {
-      code: camelCaseCommonJS,
-      filename: 'variable_name.js',
-      options: [{ transforms: 'snake' }],
-    },
-    {
-      code: camelCaseCommonJS,
-      filename: 'variable_name/index.js',
-      options: [{ transforms: 'snake' }],
-    },
-    {
-      code: camelCaseCommonJS,
-      filename: 'variable-name.js',
-      options: [{ transforms: 'kebab' }],
-    },
-    {
-      code: snakeCaseCommonJS,
-      filename: 'variableName.js',
-      options: [{ transforms: 'camel' }],
-    },
-    {
-      code: camelCaseEs6,
-      filename: 'variable_name.js',
-      options: [{ transforms: 'snake' }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: camelCaseCommonJS,
+        filename: 'variable_name/index.js',
+        options: [{ transforms: 'snake' }],
       },
-    },
-    {
-      code: camelCaseEs6,
-      filename: 'variable-name.js',
-      options: [{ transforms: 'kebab' }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: camelCaseCommonJS,
+        filename: 'variable-name.js',
+        options: [{ transforms: 'kebab' }],
       },
-    },
-    {
-      code: snakeCaseEs6,
-      filename: 'variableName.js',
-      options: [{ transforms: 'camel' }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
+      {
+        code: snakeCaseCommonJS,
+        filename: 'variableName.js',
+        options: [{ transforms: 'camel' }],
       },
-    },
-    {
-      code: snakeCaseEs6,
-      filename: 'VariableName.js',
-      options: [{ transforms: 'pascal' }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
-    {
-      code: snakeCaseEs6,
-      filename: 'variableName.js',
-      options: [{ transforms: ['pascal', 'camel'] }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
-    {
-      code: snakeCaseEs6,
-      filename: 'VariableName.js',
-      options: [{ transforms: ['pascal', 'camel'] }],
-      parserOptions: {
-        ecmaVersion: 6,
-        sourceType: 'module',
-      },
-    },
-    {
-      code: exportedJsxClassCode,
-      filename: '/some/dir/Foo.react.js',
-      options: [{ suffix: '\\.react$' }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      {
+        code: camelCaseEs6,
+        filename: 'variable_name.js',
+        options: [{ transforms: 'snake' }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-        ecmaVersion: 6,
       },
-    },
-    {
-      code: exportedEs6JsxClassCode,
-      filename: '/some/dir/Foo.react.js',
-      options: [{ suffix: '\\.react$' }],
-      parserOptions: {
-        ecmaFeatures: {
-          jsx: true,
+      {
+        code: camelCaseEs6,
+        filename: 'variable-name.js',
+        options: [{ transforms: 'kebab' }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
         },
-        ecmaVersion: 6,
-        sourceType: 'module',
       },
-    },
-    {
-      code: exportedCalledFunctionCode,
-      filename: '/some/dir/foo.js',
-      options: [{ matchCallExpression: true }],
-    },
-  ],
-});
+      {
+        code: snakeCaseEs6,
+        filename: 'variableName.js',
+        options: [{ transforms: 'camel' }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: snakeCaseEs6,
+        filename: 'VariableName.js',
+        options: [{ transforms: 'pascal' }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: snakeCaseEs6,
+        filename: 'variableName.js',
+        options: [{ transforms: ['pascal', 'camel'] }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: snakeCaseEs6,
+        filename: 'VariableName.js',
+        options: [{ transforms: ['pascal', 'camel'] }],
+        parserOptions: {
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedJsxClassCode,
+        filename: '/some/dir/Foo.react.js',
+        options: [{ suffix: '\\.react$' }],
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+        },
+      },
+      {
+        code: exportedEs6JsxClassCode,
+        filename: '/some/dir/Foo.react.js',
+        options: [{ suffix: '\\.react$' }],
+        parserOptions: {
+          ecmaFeatures: {
+            jsx: true,
+          },
+          ecmaVersion: 6,
+          sourceType: 'module',
+        },
+      },
+      {
+        code: exportedCalledFunctionCode,
+        filename: '/some/dir/foo.js',
+        options: [{ matchCallExpression: true }],
+      },
+    ],
+  },
+);

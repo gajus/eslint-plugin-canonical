@@ -47,8 +47,8 @@ const getAssertions = () => {
     const codes = require(filePath);
 
     return {
-      invalid: _.map(codes.invalid, formatCodeSnippet),
-      valid: _.map(codes.valid, formatCodeSnippet),
+      invalid: _.map(codes.default.testCases.invalid, formatCodeSnippet),
+      valid: _.map(codes.default.testCases.valid, formatCodeSnippet),
     };
   });
 

@@ -1,5 +1,5 @@
 import rule from '../../src/rules/noUseExtendNative';
-import { RuleTester } from '../RuleTester';
+import { createRuleTester } from '../RuleTester';
 
 const valid = [
   'error.plugin',
@@ -139,11 +139,12 @@ const invalid = [
   };
 });
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
-
-ruleTester.run('no-use-extend-native', rule, {
-  invalid,
-  valid,
-});
+export default createRuleTester(
+  'no-use-extend-native',
+  rule,
+  { parser: '@typescript-eslint/parser' },
+  {
+    invalid,
+    valid,
+  },
+);

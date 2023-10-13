@@ -1,18 +1,9 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import rule from '../../src/rules/preferReactLazy';
-import { RuleTester } from '../RuleTester';
+import { createRuleTester } from '../RuleTester';
 
 const fixturesPath = path.resolve(__dirname, '../fixtures');
-
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-});
 
 const invalidTest = (name: string, only: boolean = false) => {
   return {
@@ -49,11 +40,23 @@ const validTest = (name: string, only: boolean = false) => {
   } as const;
 };
 
-ruleTester.run('prefer-react-lazy', rule, {
-  invalid: [
-    invalidTest('jsxConditionalExpression'),
-    invalidTest('nestedJsxConditionalExpression'),
-    invalidTest('returnConditionalExpression'),
-  ],
-  valid: [validTest('dynamicImport')],
-});
+export default createRuleTester(
+  'prefer-react-lazy',
+  rule,
+  {
+    parser: '@typescript-eslint/parser',
+    parserOptions: {
+      ecmaFeatures: {
+        jsx: true,
+      },
+    },
+  },
+  {
+    invalid: [
+      invalidTest('jsxConditionalExpression'),
+      invalidTest('nestedJsxConditionalExpression'),
+      invalidTest('returnConditionalExpression'),
+    ],
+    valid: [validTest('dynamicImport')],
+  },
+);

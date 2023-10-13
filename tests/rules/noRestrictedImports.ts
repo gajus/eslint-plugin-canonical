@@ -1,121 +1,122 @@
 import rule from '../../src/rules/noRestrictedImports';
-import { RuleTester } from '../RuleTester';
+import { createRuleTester } from '../RuleTester';
 
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
-
-ruleTester.run('no-restricted-imports', rule, {
-  invalid: [
-    {
-      code: `import * as bar from 'bar'`,
-      errors: [
-        {
-          data: {
-            customMessage: 'foo is restricted',
-            importNames: '*',
-            importSource: 'bar',
-          },
-          messageId: 'everything',
-        },
-      ],
-      options: [
-        {
-          paths: [
-            {
-              importName: '*',
-              message: 'foo is restricted',
-              name: 'bar',
+export default createRuleTester(
+  'no-restricted-imports',
+  rule,
+  { parser: '@typescript-eslint/parser' },
+  {
+    invalid: [
+      {
+        code: `import * as bar from 'bar'`,
+        errors: [
+          {
+            data: {
+              customMessage: 'foo is restricted',
+              importNames: '*',
+              importSource: 'bar',
             },
-          ],
-        },
-      ],
-    },
-    {
-      code: `import { foo } from 'bar'`,
-      errors: [
-        {
-          data: {
-            customMessage: 'foo is restricted',
-            importName: 'foo',
-            importSource: 'bar',
+            messageId: 'everything',
           },
-          messageId: 'importName',
-        },
-      ],
-      options: [
-        {
-          paths: [
-            {
+        ],
+        options: [
+          {
+            paths: [
+              {
+                importName: '*',
+                message: 'foo is restricted',
+                name: 'bar',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `import { foo } from 'bar'`,
+        errors: [
+          {
+            data: {
+              customMessage: 'foo is restricted',
               importName: 'foo',
-              message: 'foo is restricted',
-              name: 'bar',
+              importSource: 'bar',
             },
-          ],
-        },
-      ],
-    },
-    {
-      code: `import { default as bar } from 'bar'`,
-      errors: [
-        {
-          data: {
-            customMessage: 'foo is restricted',
-            importName: 'default',
-            importSource: 'bar',
+            messageId: 'importName',
           },
-          messageId: 'importName',
-        },
-      ],
-      options: [
-        {
-          paths: [
-            {
+        ],
+        options: [
+          {
+            paths: [
+              {
+                importName: 'foo',
+                message: 'foo is restricted',
+                name: 'bar',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `import { default as bar } from 'bar'`,
+        errors: [
+          {
+            data: {
+              customMessage: 'foo is restricted',
               importName: 'default',
-              message: 'foo is restricted',
-              name: 'bar',
+              importSource: 'bar',
             },
-          ],
-        },
-      ],
-    },
-    {
-      code: `import bar from 'bar'`,
-      errors: [
-        {
-          data: {
-            customMessage: 'foo is restricted',
-            importSource: 'bar',
+            messageId: 'importName',
           },
-          messageId: 'path',
-        },
-      ],
-      options: [
-        {
-          paths: [
-            {
-              message: 'foo is restricted',
-              name: 'bar',
+        ],
+        options: [
+          {
+            paths: [
+              {
+                importName: 'default',
+                message: 'foo is restricted',
+                name: 'bar',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        code: `import bar from 'bar'`,
+        errors: [
+          {
+            data: {
+              customMessage: 'foo is restricted',
+              importSource: 'bar',
             },
-          ],
-        },
-      ],
-    },
-  ],
-  valid: [
-    {
-      code: `import { bar } from 'bar'`,
-      options: [
-        {
-          paths: [
-            {
-              importName: 'foo',
-              message: 'foo is restricted',
-              name: 'bar',
-            },
-          ],
-        },
-      ],
-    },
-  ],
-});
+            messageId: 'path',
+          },
+        ],
+        options: [
+          {
+            paths: [
+              {
+                message: 'foo is restricted',
+                name: 'bar',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+    valid: [
+      {
+        code: `import { bar } from 'bar'`,
+        options: [
+          {
+            paths: [
+              {
+                importName: 'foo',
+                message: 'foo is restricted',
+                name: 'bar',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+);

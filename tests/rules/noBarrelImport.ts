@@ -1,13 +1,9 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import rule from '../../src/rules/noBarrelImport';
-import { RuleTester } from '../RuleTester';
+import { createRuleTester } from '../RuleTester';
 
 const fixturesPath = path.resolve(__dirname, '../fixtures');
-
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-});
 
 const invalidTest = (name: string, only: boolean = false) => {
   return {
@@ -77,19 +73,26 @@ const validTest = (name: string, only: boolean = false) => {
   } as const;
 };
 
-ruleTester.run('no-barrel-import', rule, {
-  invalid: [
-    invalidTest('barrelImport'),
-    invalidTest('barrelImportAliased'),
-    invalidTest('barrelImportAliasedReexport'),
-    invalidTest('barrelImportDeep'),
-    invalidTest('barrelImportDefault'),
-    invalidTest('barrelTypeImport'),
-    invalidTest('mixedImport'),
-  ],
-  valid: [
-    validTest('directImport'),
-    validTest('directImportDefault'),
-    validTest('packageImport'),
-  ],
-});
+export default createRuleTester(
+  'no-barrel-import',
+  rule,
+  {
+    parser: '@typescript-eslint/parser',
+  },
+  {
+    invalid: [
+      invalidTest('barrelImport'),
+      invalidTest('barrelImportAliased'),
+      invalidTest('barrelImportAliasedReexport'),
+      invalidTest('barrelImportDeep'),
+      invalidTest('barrelImportDefault'),
+      invalidTest('barrelTypeImport'),
+      invalidTest('mixedImport'),
+    ],
+    valid: [
+      validTest('directImport'),
+      validTest('directImportDefault'),
+      validTest('packageImport'),
+    ],
+  },
+);
