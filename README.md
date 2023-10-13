@@ -149,6 +149,7 @@ const [a,,b] = obj;
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-export-specifier-newline"></a>
 <a name="eslint-plugin-canonical-rules-export-specifier-newline"></a>
 ### <code>export-specifier-newline</code>
@@ -211,6 +212,7 @@ export * from 'foo'
 ```
 
 </details>
+
 
 <a name="user-content-eslint-plugin-canonical-rules-filename-match-exported"></a>
 <a name="eslint-plugin-canonical-rules-filename-match-exported"></a>
@@ -432,6 +434,7 @@ module.exports = foo();
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-filename-match-regex"></a>
 <a name="eslint-plugin-canonical-rules-filename-match-regex"></a>
 ### <code>filename-match-regex</code>
@@ -497,6 +500,7 @@ module.exports = foo()
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-filename-no-index"></a>
 <a name="eslint-plugin-canonical-rules-filename-no-index"></a>
 ### <code>filename-no-index</code>
@@ -528,6 +532,7 @@ var foo = 'bar';
 ```
 
 </details>
+
 
 <a name="user-content-eslint-plugin-canonical-rules-id-match"></a>
 <a name="eslint-plugin-canonical-rules-id-match"></a>
@@ -843,6 +848,7 @@ import { no_camelcased } from "external-module";
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-import-specifier-newline"></a>
 <a name="eslint-plugin-canonical-rules-import-specifier-newline"></a>
 ### <code>import-specifier-newline</code>
@@ -892,6 +898,7 @@ c} from 'foo'
 ```
 
 </details>
+
 
 <a name="user-content-eslint-plugin-canonical-rules-no-barrel-import"></a>
 <a name="eslint-plugin-canonical-rules-no-barrel-import"></a>
@@ -1002,6 +1009,7 @@ import { logLevels } from 'roarr';
 ```
 
 </details>
+
 <a name="user-content-eslint-plugin-canonical-rules-no-export-all"></a>
 <a name="eslint-plugin-canonical-rules-no-export-all"></a>
 ### <code>no-export-all</code>
@@ -1039,6 +1047,7 @@ export * as foo from './foo';
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-no-reassign-imports"></a>
 <a name="eslint-plugin-canonical-rules-no-reassign-imports"></a>
 ### <code>no-reassign-imports</code>
@@ -1067,6 +1076,7 @@ export default {
 ```
 
 </details>
+
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-imports"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-imports"></a>
 ### <code>no-restricted-imports</code>
@@ -1106,6 +1116,7 @@ import { bar } from 'bar'
 ```
 
 </details>
+
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings"></a>
 ### <code>no-restricted-strings</code>
@@ -1132,6 +1143,7 @@ const foo = "bar";
 ```
 
 </details>
+
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings-options-1"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings-options-1"></a>
 #### Options
@@ -1175,6 +1187,7 @@ export const BAR = '';
 ```
 
 </details>
+
 <a name="user-content-eslint-plugin-canonical-rules-no-use-extend-native"></a>
 <a name="eslint-plugin-canonical-rules-no-use-extend-native"></a>
 ### <code>no-use-extend-native</code>
@@ -1474,6 +1487,7 @@ new Array()['toString']()
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-prefer-import-alias"></a>
 <a name="eslint-plugin-canonical-rules-prefer-import-alias"></a>
 ### <code>prefer-import-alias</code>
@@ -1568,6 +1582,7 @@ import { foo } from '../../foo';
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-prefer-inline-type-import"></a>
 <a name="eslint-plugin-canonical-rules-prefer-inline-type-import"></a>
 ### <code>prefer-inline-type-import</code>
@@ -1598,6 +1613,7 @@ import type * as Foo from 'bar'
 ```
 
 </details>
+
 
 <a name="user-content-eslint-plugin-canonical-rules-prefer-react-lazy"></a>
 <a name="eslint-plugin-canonical-rules-prefer-react-lazy"></a>
@@ -1674,6 +1690,7 @@ export default () => {
 ```
 
 </details>
+
 <a name="user-content-eslint-plugin-canonical-rules-prefer-use-mount"></a>
 <a name="eslint-plugin-canonical-rules-prefer-use-mount"></a>
 ### <code>prefer-use-mount</code>
@@ -1697,6 +1714,7 @@ useMount(() => {}, [])
 ```
 
 </details>
+
 
 <a name="user-content-eslint-plugin-canonical-rules-require-extension"></a>
 <a name="eslint-plugin-canonical-rules-require-extension"></a>
@@ -1837,6 +1855,7 @@ import { Chance } from 'chance';
 ```
 
 </details>
+
 <a name="user-content-eslint-plugin-canonical-rules-sort-keys"></a>
 <a name="eslint-plugin-canonical-rules-sort-keys"></a>
 ### <code>sort-keys</code>
@@ -2443,6 +2462,7 @@ var obj = {è:4, À:3, 'Z':2, '#':1}
 
 </details>
 
+
 <a name="user-content-eslint-plugin-canonical-rules-virtual-module"></a>
 <a name="eslint-plugin-canonical-rules-virtual-module"></a>
 ### <code>virtual-module</code>
@@ -2553,6 +2573,7 @@ import { Baz } from '@/Bar/Baz'
 ```
 
 </details>
+
 
 <a name="user-content-eslint-plugin-canonical-faq"></a>
 <a name="eslint-plugin-canonical-faq"></a>

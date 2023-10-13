@@ -91,7 +91,7 @@ const updateDocuments = (assertions) => {
           '\n```\n\n';
       }
 
-      return `<details><summary>📖 Examples</summary>\n${exampleBody}</details>`;
+      return `<details><summary>📖 Examples</summary>\n${exampleBody}</details>\n`;
     },
   );
 
