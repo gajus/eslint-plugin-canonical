@@ -101,6 +101,7 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 
 Like [`object-property-newline`](https://eslint.org/docs/rules/object-property-newline), but for destructuring.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -146,7 +147,7 @@ b}) => {};
 const [a,,b] = obj;
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-export-specifier-newline"></a>
 <a name="eslint-plugin-canonical-rules-export-specifier-newline"></a>
@@ -175,6 +176,7 @@ export {
 };
 ```
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -208,7 +210,7 @@ c
 export * from 'foo'
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-filename-match-exported"></a>
 <a name="eslint-plugin-canonical-rules-filename-match-exported"></a>
@@ -282,6 +284,7 @@ Now, in your code:
 export default functionName();
 ```
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -427,7 +430,7 @@ export default class Foo { render() { return <span>Test Class</span>; } };
 module.exports = foo();
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-filename-match-regex"></a>
 <a name="eslint-plugin-canonical-rules-filename-match-regex"></a>
@@ -447,6 +450,7 @@ Additionally the files that have a named default export (according to the logic 
 ignored.  They could be linted with the `match-exported` rule. Please note that exported function calls are not
 respected in this case.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -491,7 +495,7 @@ module.exports = foo
 module.exports = foo()
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-filename-no-index"></a>
 <a name="eslint-plugin-canonical-rules-filename-no-index"></a>
@@ -500,6 +504,7 @@ module.exports = foo()
 Having a bunch of `index.js` files can have negative influence on developer experience, e.g. when
 opening files by name. When enabling this rule. `index.js` files will always be considered a problem.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -522,7 +527,7 @@ var foo = 'bar';
 var foo = 'bar';
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-id-match"></a>
 <a name="eslint-plugin-canonical-rules-id-match"></a>
@@ -549,6 +554,7 @@ This rule requires identifiers in assignments and `function` definitions to matc
 * `"ignoreNamedImports": false` (default) enforces `id-match` for named imports
 * `"ignoreNamedImports": true` does not check named imports
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -835,7 +841,7 @@ import { no_camelcased } from "external-module";
       
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-import-specifier-newline"></a>
 <a name="eslint-plugin-canonical-rules-import-specifier-newline"></a>
@@ -864,6 +870,7 @@ import {
 } from 'foo';
 ```
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -884,7 +891,7 @@ import a, {b,
 c} from 'foo'
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-no-barrel-import"></a>
 <a name="eslint-plugin-canonical-rules-no-barrel-import"></a>
@@ -938,6 +945,7 @@ settings: {
 },
 ```
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -993,7 +1001,7 @@ import { logLevels } from 'roarr';
 
 ```
 
-
+</details>
 <a name="user-content-eslint-plugin-canonical-rules-no-export-all"></a>
 <a name="eslint-plugin-canonical-rules-no-export-all"></a>
 ### <code>no-export-all</code>
@@ -1002,6 +1010,7 @@ _The `--fix` option on the command line automatically fixes problems reported by
 
 Requite that re-exports are named.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1028,7 +1037,7 @@ export * as foo from './foo';
 
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-no-reassign-imports"></a>
 <a name="eslint-plugin-canonical-rules-no-reassign-imports"></a>
@@ -1036,6 +1045,7 @@ export * as foo from './foo';
 
 Restricts re-assigning imports to variables that are exported.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1056,7 +1066,7 @@ export default {
 // Message: undefined
 ```
 
-
+</details>
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-imports"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-imports"></a>
 ### <code>no-restricted-imports</code>
@@ -1067,9 +1077,7 @@ This rule is similar to [`no-restricted-imports`](https://eslint.org/docs/latest
 
 > **Note:** Unlike the ESLint rule, this rule does not support the `patterns` option and it does not handle exports.
 
-<details>
-<summary>📖 Examples</summary>
-
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1097,7 +1105,6 @@ The following patterns are not considered problems:
 import { bar } from 'bar'
 ```
 
-
 </details>
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings"></a>
@@ -1105,6 +1112,7 @@ import { bar } from 'bar'
 
 Disallow specified strings.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1123,7 +1131,7 @@ The following patterns are not considered problems:
 const foo = "bar";
 ```
 
-
+</details>
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings-options-1"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings-options-1"></a>
 #### Options
@@ -1148,6 +1156,7 @@ Identifies unused TypeScript exports.
 |`allowUnusedEnums`|boolean||`false`|Allow unused `enum`s.|
 |`allowUnusedTypes`|boolean||`false`|Allow unused `type` and `interface`.|
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1165,11 +1174,12 @@ export const BAR = '';
 
 ```
 
-
+</details>
 <a name="user-content-eslint-plugin-canonical-rules-no-use-extend-native"></a>
 <a name="eslint-plugin-canonical-rules-no-use-extend-native"></a>
 ### <code>no-use-extend-native</code>
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1462,7 +1472,7 @@ new Array()['length']
 new Array()['toString']()
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-prefer-import-alias"></a>
 <a name="eslint-plugin-canonical-rules-prefer-import-alias"></a>
@@ -1505,6 +1515,7 @@ In this example, we are saying:
 
 The grandfather directory is essentially whichever directory that is accessed by the doubledot (`../`) by the import path.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1555,7 +1566,7 @@ import { foo } from '@bar/baz';
 import { foo } from '../../foo';
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-prefer-inline-type-import"></a>
 <a name="eslint-plugin-canonical-rules-prefer-inline-type-import"></a>
@@ -1565,6 +1576,7 @@ _The `--fix` option on the command line automatically fixes problems reported by
 
 TypeScript 4.5 introduced [type modifiers](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names) that allow to inline type imports as opposed to having dedicated `import type`. This allows to remove duplicate type imports. This rule enforces use of import type modifiers.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1585,7 +1597,7 @@ import type Foo from 'bar'
 import type * as Foo from 'bar'
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-prefer-react-lazy"></a>
 <a name="eslint-plugin-canonical-rules-prefer-react-lazy"></a>
@@ -1614,6 +1626,7 @@ export default () => {
 };
 ```
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1660,13 +1673,14 @@ export default () => {
 };
 ```
 
-
+</details>
 <a name="user-content-eslint-plugin-canonical-rules-prefer-use-mount"></a>
 <a name="eslint-plugin-canonical-rules-prefer-use-mount"></a>
 ### <code>prefer-use-mount</code>
 
 In React, it is common to use [`useEffect`](https://reactjs.org/docs/hooks-reference.html#useeffect) without dependencies when the intent is to run the effect only once (on mount and unmount). However, just doing that may lead to undesired side-effects, such as the effect being called twice in [Strict Mode](https://reactjs.org/docs/strict-mode.html). For this reason, it is better to use an abstraction such as [`useMount`](https://stackoverflow.com/a/72319081/368691) that handles this use case.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1682,7 +1696,7 @@ useEffect(() => {}, [foo])
 useMount(() => {}, [])
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-require-extension"></a>
 <a name="eslint-plugin-canonical-rules-require-extension"></a>
@@ -1745,6 +1759,7 @@ Imports that resolve to an index file:
 import { foo } from '@/foo'; // => import { foo } from '@/foo/index.js';
 ```
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -1821,7 +1836,7 @@ import { Chance } from 'chance';
 
 ```
 
-
+</details>
 <a name="user-content-eslint-plugin-canonical-rules-sort-keys"></a>
 <a name="eslint-plugin-canonical-rules-sort-keys"></a>
 ### <code>sort-keys</code>
@@ -1847,6 +1862,7 @@ The 2nd option is an object which has 3 properties.
 * `minKeys` - Specifies the minimum number of keys that an object should have in order for the object's unsorted keys to produce an error. Default is 2, which means by default all objects with unsorted keys will result in lint errors.
 * `natural` - if true, enforce properties to be in natural order. Default is false. Natural Order compares strings containing combination of letters and numbers in the way a human being would sort. It basically sorts numerically, instead of sorting alphabetically. So the number 10 comes after the number 3 in Natural Sorting.
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -2425,7 +2441,7 @@ var obj = {A:3, '11':2, 2:4, 1:1}
 var obj = {è:4, À:3, 'Z':2, '#':1}
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-rules-virtual-module"></a>
 <a name="eslint-plugin-canonical-rules-virtual-module"></a>
@@ -2494,6 +2510,7 @@ Other notes:
 * A virtual module cannot import `index.ts` of itself (prevents circular references).
 * A virtual module cannot access parent module (prevents circular references).
 
+<details><summary>📖 Examples</summary>
 The following patterns are considered problems:
 
 ```js
@@ -2535,7 +2552,7 @@ import { ESLint } from 'eslint'
 import { Baz } from '@/Bar/Baz'
 ```
 
-
+</details>
 
 <a name="user-content-eslint-plugin-canonical-faq"></a>
 <a name="eslint-plugin-canonical-faq"></a>

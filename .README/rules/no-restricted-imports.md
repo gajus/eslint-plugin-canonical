@@ -6,8 +6,4 @@ This rule is similar to [`no-restricted-imports`](https://eslint.org/docs/latest
 
 > **Note:** Unlike the ESLint rule, this rule does not support the `patterns` option and it does not handle exports.
 
-<details>
-<summary>📖 Examples</summary>
-
 <!-- assertions noRestrictedImports -->
-</details>
