@@ -1067,6 +1067,9 @@ This rule is similar to [`no-restricted-imports`](https://eslint.org/docs/latest
 
 > **Note:** Unlike the ESLint rule, this rule does not support the `patterns` option and it does not handle exports.
 
+<details>
+<summary>📖 Examples</summary>
+
 The following patterns are considered problems:
 
 ```js
@@ -1095,6 +1098,7 @@ import { bar } from 'bar'
 ```
 
 
+</details>
 <a name="user-content-eslint-plugin-canonical-rules-no-restricted-strings"></a>
 <a name="eslint-plugin-canonical-rules-no-restricted-strings"></a>
 ### <code>no-restricted-strings</code>
