@@ -2491,6 +2491,34 @@ var obj = {è:4, À:3, 'Z':2, '#':1}
 </details>
 
 
+<a name="user-content-eslint-plugin-canonical-rules-sort-react-dependencies"></a>
+<a name="eslint-plugin-canonical-rules-sort-react-dependencies"></a>
+### <code>sort-react-dependencies</code>
+
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
+
+Requires that dependencies of React methods (`useEffect`, `useCallback` and `useMemo`) are sorted alphabetically.
+
+<details><summary>📖 Examples</summary>
+The following patterns are considered problems:
+
+```js
+useEffect(() => {}, [b, a])
+// Message: undefined
+
+// Options: [{"caseSensitive":true}]
+useEffect(() => {}, [a, B])
+// Message: undefined
+```
+
+The following patterns are not considered problems:
+
+```js
+useEffect(() => {}, [a, b])
+```
+
+</details>
+
 <a name="user-content-eslint-plugin-canonical-rules-virtual-module"></a>
 <a name="eslint-plugin-canonical-rules-virtual-module"></a>
 ### <code>virtual-module</code>

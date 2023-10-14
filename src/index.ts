@@ -20,6 +20,7 @@ import preferUseMount from './rules/preferUseMount';
 import requireExtension from './rules/requireExtension';
 import sortDestructureKeys from './rules/sortDestructureKeys';
 import sortKeys from './rules/sortKeys';
+import sortReactDependencies from './rules/sortReactDependencies';
 import virtualModule from './rules/virtualModule';
 
 export = {
@@ -46,8 +47,9 @@ export = {
     'prefer-react-lazy': preferReactLazy,
     'prefer-use-mount': preferUseMount,
     'require-extension': requireExtension,
-    'sort-destructure-keys': sortDestructureKeys,
+    'sort-destructure-keys': sortReactDependencies,
     'sort-keys': sortKeys,
+    'sort-react-dependencies': sortDestructureKeys,
     'virtual-module': virtualModule,
   },
   rulesConfig: {

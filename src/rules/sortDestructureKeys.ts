@@ -279,7 +279,7 @@ export default createRule<Options, keyof typeof messages>({
         type: 'object',
       },
     ],
-    type: 'layout',
+    type: 'suggestion',
   },
   name: 'sort-destructure-keys',
 });
