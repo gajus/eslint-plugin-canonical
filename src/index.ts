@@ -18,6 +18,7 @@ import preferInlineTypeImport from './rules/preferInlineTypeImport';
 import preferReactLazy from './rules/preferReactLazy';
 import preferUseMount from './rules/preferUseMount';
 import requireExtension from './rules/requireExtension';
+import sortDestructureKeys from './rules/sortDestructureKeys';
 import sortKeys from './rules/sortKeys';
 import virtualModule from './rules/virtualModule';
 
@@ -45,6 +46,7 @@ export = {
     'prefer-react-lazy': preferReactLazy,
     'prefer-use-mount': preferUseMount,
     'require-extension': requireExtension,
+    'sort-destructure-keys': sortDestructureKeys,
     'sort-keys': sortKeys,
     'virtual-module': virtualModule,
   },

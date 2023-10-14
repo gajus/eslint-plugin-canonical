@@ -102,6 +102,7 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 {"gitdown": "include", "file": "./rules/prefer-react-lazy.md"}
 {"gitdown": "include", "file": "./rules/prefer-use-mount.md"}
 {"gitdown": "include", "file": "./rules/require-extension.md"}
+{"gitdown": "include", "file": "./rules/sort-destructure-keys.md"}
 {"gitdown": "include", "file": "./rules/sort-keys.md"}
 {"gitdown": "include", "file": "./rules/virtual-module.md"}
 
