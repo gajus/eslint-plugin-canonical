@@ -91,6 +91,8 @@ const isReferencedByOtherProperties = (scope, objectPatternNode, id) => {
 
     return false;
   }
+
+  throw new Error('Could not find variable');
 };
 
 /**
