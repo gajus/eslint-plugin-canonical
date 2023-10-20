@@ -1,5 +1,5 @@
 import analyzeTsConfig from 'ts-unused-exports';
-import { ESLintUtils } from ('@typescript-eslint/utils';
+import { ESLintUtils } from '@typescript-eslint/utils';
 import { createRule } from '../utilities';
 
 const defaultOptions = {
