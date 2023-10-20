@@ -1,4 +1,5 @@
 import analyzeTsConfig from 'ts-unused-exports';
+import { ESLintUtils } from ('@typescript-eslint/utils';
 import { createRule } from '../utilities';
 
 const defaultOptions = {
@@ -11,7 +12,7 @@ type Options = [
   {
     allowUnusedEnums?: boolean;
     allowUnusedTypes?: boolean;
-    tsConfigPath: string;
+    tsConfigPath?: string;
   },
 ];
 
@@ -29,7 +30,14 @@ export default createRule<Options, MessageIds>({
       tsUnusedOptions.push('--allowUnusedTypes');
     }
 
-    const result = analyzeTsConfig(options.tsConfigPath, tsUnusedOptions);
+    let tsConfigPath = options.tsConfigPath;
+    
+    if (!tsConfigPath) {
+      const services = ESLintUtils.getParserServices(context);
+      tsconfigPath = services.program.getCompilerOptions().configFilePath;
+    }
+    
+    const result = analyzeTsConfig(tsConfigPath, tsUnusedOptions);
 
     return {
       Program() {
