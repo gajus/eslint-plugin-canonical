@@ -1,7 +1,7 @@
-import fs from 'node:fs';
-import path from 'node:path';
 import glob from 'glob';
 import _ from 'lodash';
+import fs from 'node:fs';
+import path from 'node:path';
 
 export const getRules = (): readonly string[] => {
   const rulesFiles = glob.sync(path.resolve(__dirname, '../rules/*.js'));
@@ -19,7 +19,6 @@ export const getRules = (): readonly string[] => {
 
 export const isFile = (filepath) => {
   try {
-    // eslint-disable-next-line node/no-sync
     return fs.statSync(filepath).isFile();
   } catch {
     return false;

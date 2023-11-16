@@ -2,6 +2,8 @@
   "rules": {
     "@typescript-eslint/no-unused-vars": 0,
     "import/extensions": 0,
-    "no-console": 0
+    "no-console": 0,
+    "import/no-useless-path-segments": 0,
+    "import/no-named-as-default": 0
   }
 }

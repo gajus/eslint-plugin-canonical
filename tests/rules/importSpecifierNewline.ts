@@ -1,6 +1,6 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/importSpecifierNewline';
 import { createRuleTester } from '../RuleTester';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 export default createRuleTester(
   'import-specifier-newline',

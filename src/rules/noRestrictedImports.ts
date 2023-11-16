@@ -2,9 +2,9 @@
  * https://github.com/eslint/eslint/blob/b7ef2f34fe12b68a366e1b4bf5f64d7332c6e72e/lib/rules/no-restricted-imports.js
  */
 
+import { createRule } from '../utilities';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import { type TSESTree } from '@typescript-eslint/utils';
-import { createRule } from '../utilities';
 
 type Options = [
   {

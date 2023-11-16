@@ -1,9 +1,9 @@
-import { dirname, relative, isAbsolute } from 'node:path';
-import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
-import * as recast from 'recast';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
 import ExportMapAny from './ExportMap';
+import { type TSESLint, type TSESTree } from '@typescript-eslint/utils';
+import { dirname, isAbsolute, relative } from 'node:path';
+import * as recast from 'recast';
 
 /**
  * https://stackoverflow.com/a/45242825/368691

@@ -1,9 +1,8 @@
-/* eslint-disable jsdoc/no-undefined-types */
 /* eslint-disable complexity */
 /* eslint-disable func-style */
 
-import { type TSESTree, AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { createRule } from '../utilities';
+import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 
 /**
  * @file Rule to flag non-matching identifiers

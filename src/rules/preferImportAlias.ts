@@ -4,8 +4,8 @@
  * @author Steven Sojka
  * @see https://github.com/steelsojka/eslint-import-alias
  */
-import path from 'node:path';
 import { createRule } from '../utilities';
+import path from 'node:path';
 
 const RELATIVE_MATCHER = /^(?:(\.\/)|(\.\.\/))+/u;
 

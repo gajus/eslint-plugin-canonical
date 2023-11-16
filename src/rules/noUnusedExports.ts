@@ -1,5 +1,5 @@
-import analyzeTsConfig from 'ts-unused-exports';
 import { createRule } from '../utilities';
+import analyzeTsConfig from 'ts-unused-exports';
 
 const defaultOptions = {
   allowUnusedEnums: false,

@@ -6,15 +6,15 @@
  * @see https://github.com/selaux/eslint-plugin-filenames/blob/32fc70dd7572211d1e5b97e06ec7a005c77fe8d4/lib/rules/match-exported.js
  */
 
-import path from 'node:path';
-import { camelCase, kebabCase, upperFirst, snakeCase } from 'lodash';
 import {
   createRule,
-  isIgnoredFilename,
   getExportedName,
+  isIgnoredFilename,
   isIndexFile,
   parseFilename,
 } from '../utilities';
+import { camelCase, kebabCase, snakeCase, upperFirst } from 'lodash';
+import path from 'node:path';
 
 const transformMap = {
   camel: camelCase,

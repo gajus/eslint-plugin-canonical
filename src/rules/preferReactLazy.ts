@@ -1,5 +1,5 @@
-import { type TSESTree } from '@typescript-eslint/utils';
 import { createRule } from '../utilities';
+import { type TSESTree } from '@typescript-eslint/utils';
 
 type Options = [];
 

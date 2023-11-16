@@ -1,7 +1,7 @@
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
 import rule from '../../src/rules/requireExtension';
 import { createRuleTester } from '../RuleTester';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 const fixturesPath = path.resolve(__dirname, '../fixtures');
 

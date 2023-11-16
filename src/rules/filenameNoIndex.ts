@@ -3,11 +3,11 @@
  * @author Stefan Lau
  */
 
-import path from 'node:path';
 import { createRule } from '../utilities';
 import { isIgnoredFilename } from '../utilities/isIgnoredFilename';
 import { isIndexFile } from '../utilities/isIndexFile';
 import { parseFilename } from '../utilities/parseFilename';
+import path from 'node:path';
 
 const create = (context) => {
   return {

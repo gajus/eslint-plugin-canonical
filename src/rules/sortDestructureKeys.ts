@@ -2,9 +2,9 @@
  * @author https://github.com/mthadley/eslint-plugin-sort-destructure-keys/blob/master/tests/lib/rules/sort-destructure-keys.js
  */
 
+import { createRule } from '../utilities';
 import { type TSESTree } from '@typescript-eslint/types';
 import naturalCompare from 'natural-compare';
-import { createRule } from '../utilities';
 
 /**
  * Get's the "name" of the node, which could be an Identifier,
