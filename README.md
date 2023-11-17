@@ -1143,6 +1143,8 @@ The following patterns are considered problems:
 </details>
 
 
+> [!NOTE]
+> This rule was originally developed by @christianvuerings as part of https://github.com/christianvuerings/eslint-plugin-no-re-export
 <a name="user-content-eslint-plugin-canonical-rules-no-reassign-imports"></a>
 <a name="eslint-plugin-canonical-rules-no-reassign-imports"></a>
 ### <code>no-reassign-imports</code>
