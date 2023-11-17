@@ -1052,8 +1052,6 @@ export * as foo from './foo';
 <a name="eslint-plugin-canonical-rules-no-import-namespace-destructure"></a>
 ### <code>no-import-namespace-destructure</code>
 
-_The `--fix` option on the command line automatically fixes problems reported by this rule._
-
 Disallows the practice of importing an entire module's namespace using import * as Namespace and then destructuring specific exports from it. Instead, it encourages direct importing of only the necessary named exports from a module.
 
 <details><summary>📖 Examples</summary>
@@ -1068,6 +1066,78 @@ The following patterns are not considered problems:
 
 ```js
 import * as bar from 'bar'
+```
+
+</details>
+
+
+<a name="user-content-eslint-plugin-canonical-rules-no-re-export"></a>
+<a name="eslint-plugin-canonical-rules-no-re-export"></a>
+### <code>no-re-export</code>
+
+Disallows re-exports of imports.
+
+<details><summary>📖 Examples</summary>
+The following patterns are considered problems:
+
+```js
+
+          import Button1 from 'app/CustomButton';
+          export const CustomButton = Button1;
+        
+// Message: undefined
+
+
+          import { Button as CustomButton2 } from 'app/CustomButton';
+          export const CustomButton = CustomButton2;
+        
+// Message: undefined
+
+
+          import * as Button3 from "app/Button";
+          export const CustomButton = Button3;
+        
+// Message: undefined
+
+
+          import Button4 from 'app/CustomButton';
+          export default Button4;
+        
+// Message: undefined
+
+
+          export { default as Button5 } from 'app/CustomButton';
+        
+// Message: undefined
+
+
+          import Button6 from 'app/CustomButton';
+          export {
+            Button6
+          };
+        
+// Message: undefined
+
+
+          import Button7 from 'app/CustomButton';
+          export const Buttons = {
+            Button: Button7
+          };
+        
+// Message: undefined
+
+
+          import Button8 from 'app/CustomButton';
+          export default Button8;
+          export { Button8 }
+        
+// Message: undefined
+// Message: undefined
+
+
+          export * from 'app/CustomButton';
+        
+// Message: undefined
 ```
 
 </details>
