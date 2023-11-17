@@ -93,6 +93,7 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 {"gitdown": "include", "file": "./rules/no-barrel-import.md"}
 {"gitdown": "include", "file": "./rules/no-export-all.md"}
 {"gitdown": "include", "file": "./rules/no-import-namespace-destructure.md"}
+{"gitdown": "include", "file": "./rules/no-re-export.md"}
 {"gitdown": "include", "file": "./rules/no-reassign-imports.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-imports.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-strings.md"}
