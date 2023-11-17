@@ -1048,6 +1048,31 @@ export * as foo from './foo';
 </details>
 
 
+<a name="user-content-eslint-plugin-canonical-rules-no-import-namespace-destructure"></a>
+<a name="eslint-plugin-canonical-rules-no-import-namespace-destructure"></a>
+### <code>no-import-namespace-destructure</code>
+
+_The `--fix` option on the command line automatically fixes problems reported by this rule._
+
+Disallows the practice of importing an entire module's namespace using import * as Namespace and then destructuring specific exports from it. Instead, it encourages direct importing of only the necessary named exports from a module.
+
+<details><summary>📖 Examples</summary>
+The following patterns are considered problems:
+
+```js
+import * as bar from 'bar'; const { foo } = bar;
+// Message: undefined
+```
+
+The following patterns are not considered problems:
+
+```js
+import * as bar from 'bar'
+```
+
+</details>
+
+
 <a name="user-content-eslint-plugin-canonical-rules-no-reassign-imports"></a>
 <a name="eslint-plugin-canonical-rules-no-reassign-imports"></a>
 ### <code>no-reassign-imports</code>
