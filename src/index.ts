@@ -8,6 +8,7 @@ import idMatch from './rules/idMatch';
 import importSpecifierNewline from './rules/importSpecifierNewline';
 import noBarrelImport from './rules/noBarrelImport';
 import noExportAll from './rules/noExportAll';
+import noImportNamespaceDestructure from './rules/noImportNamespaceDestructure';
 import noReassignImports from './rules/noReassignImports';
 import noRestrictedImports from './rules/noRestrictedImports';
 import noRestrictedStrings from './rules/noRestrictedStrings';
@@ -37,6 +38,7 @@ export = {
     'import-specifier-newline': importSpecifierNewline,
     'no-barrel-import': noBarrelImport,
     'no-export-all': noExportAll,
+    'no-import-namespace-destructure': noImportNamespaceDestructure,
     'no-reassign-imports': noReassignImports,
     'no-restricted-imports': noRestrictedImports,
     'no-restricted-strings': noRestrictedStrings,
