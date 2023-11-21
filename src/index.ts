@@ -9,6 +9,7 @@ import importSpecifierNewline from './rules/importSpecifierNewline';
 import noBarrelImport from './rules/noBarrelImport';
 import noExportAll from './rules/noExportAll';
 import noImportNamespaceDestructure from './rules/noImportNamespaceDestructure';
+import noReExport from './rules/noReExport';
 import noReassignImports from './rules/noReassignImports';
 import noRestrictedImports from './rules/noRestrictedImports';
 import noRestrictedStrings from './rules/noRestrictedStrings';
@@ -39,6 +40,7 @@ export = {
     'no-barrel-import': noBarrelImport,
     'no-export-all': noExportAll,
     'no-import-namespace-destructure': noImportNamespaceDestructure,
+    'no-re-export': noReExport,
     'no-reassign-imports': noReassignImports,
     'no-restricted-imports': noRestrictedImports,
     'no-restricted-strings': noRestrictedStrings,
