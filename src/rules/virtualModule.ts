@@ -1,12 +1,12 @@
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
+import { Logger } from '../Logger';
+import { createRule } from '../utilities';
+import { findDirectory } from '../utilities/findDirectory';
 import { type TSESTree } from '@typescript-eslint/utils';
 import parse from 'eslint-module-utils/parse';
 import resolve from 'eslint-module-utils/resolve';
 import visit from 'eslint-module-utils/visit';
-import { Logger } from '../Logger';
-import { createRule } from '../utilities';
-import { findDirectory } from '../utilities/findDirectory';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 const log = Logger.child({
   rule: 'virtual-module',

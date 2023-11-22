@@ -1,6 +1,6 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/noRestrictedStrings';
 import { createRuleTester } from '../RuleTester';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 export default createRuleTester(
   'no-restricted-strings',

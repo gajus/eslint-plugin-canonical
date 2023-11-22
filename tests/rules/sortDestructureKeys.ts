@@ -1,6 +1,6 @@
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/sortDestructureKeys';
 import { createRuleTester } from '../RuleTester';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 /**
  * @todo Add tests from https://github.com/mthadley/eslint-plugin-sort-destructure-keys/blob/master/tests/lib/rules/sort-destructure-keys.js

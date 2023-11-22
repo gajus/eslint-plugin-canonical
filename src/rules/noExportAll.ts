@@ -1,6 +1,6 @@
-import { type TSESTree } from '@typescript-eslint/utils';
 import { createRule } from '../utilities';
 import ExportMapAny from './ExportMap';
+import { type TSESTree } from '@typescript-eslint/utils';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const ExportMap = ExportMapAny as any;

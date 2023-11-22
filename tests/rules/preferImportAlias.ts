@@ -1,6 +1,6 @@
-import path from 'node:path';
 import rule from '../../src/rules/preferImportAlias';
 import { createRuleTester } from '../RuleTester';
+import path from 'node:path';
 
 const baseDirectory = path.resolve(
   __dirname,

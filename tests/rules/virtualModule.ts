@@ -1,6 +1,6 @@
-import path from 'node:path';
 import rule from '../../src/rules/virtualModule';
 import { createRuleTester } from '../RuleTester';
+import path from 'node:path';
 
 const fixturesPath = path.resolve(__dirname, '../fixtures/virtualModule');
 

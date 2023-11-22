@@ -2,11 +2,11 @@
 /**
  * @author https://github.com/dustinspecker/eslint-plugin-no-use-extend-native/blob/master/src/no-use-extend-native.js
  */
+import { createRule } from '../utilities';
 import isGetSetProp from 'is-get-set-prop';
 import isJsType from 'is-js-type';
 import isObjProp from 'is-obj-prop';
 import isProtoProp from 'is-proto-prop';
-import { createRule } from '../utilities';
 
 /**
  * Return type of value of left or right

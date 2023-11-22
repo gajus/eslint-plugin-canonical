@@ -1,6 +1,6 @@
+import { getRules, isFile } from './utilities';
 import fs from 'node:fs';
 import path from 'node:path';
-import { getRules, isFile } from './utilities';
 
 const windows = <T>(array: T[], size): T[][] => {
   const output: T[][] = [];
@@ -15,7 +15,6 @@ const windows = <T>(array: T[], size): T[][] => {
 };
 
 const getDocumentIndexRules = () => {
-  // eslint-disable-next-line node/no-sync
   const content = fs.readFileSync(
     path.resolve(__dirname, '../../.README/README.md'),
     'utf8',
@@ -46,7 +45,6 @@ const getDocumentIndexRules = () => {
 };
 
 const hasCorrectAssertions = (documentPath, name) => {
-  // eslint-disable-next-line node/no-sync
   const content = fs.readFileSync(documentPath, 'utf8');
 
   const match = /<!-- assertions ([A-Za-z]+) -->/u.exec(content);

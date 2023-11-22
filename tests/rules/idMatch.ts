@@ -6,9 +6,9 @@
  * Related discussion about not adding this option to ESLint https://github.com/eslint/eslint/issues/14005
  */
 
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/idMatch';
 import { createRuleTester } from '../RuleTester';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 const error = {
   messageId: 'notMatch' as const,

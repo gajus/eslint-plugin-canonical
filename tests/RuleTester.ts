@@ -1,8 +1,8 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import {
   type InvalidTestCase,
-  type ValidTestCase,
   type RuleModule,
+  type ValidTestCase,
 } from '@typescript-eslint/utils/ts-eslint';
 import * as test from 'mocha';
 

@@ -1,1 +1,1 @@
-import { foo, bar } from './bar';
+import { bar, foo } from './bar';

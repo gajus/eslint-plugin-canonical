@@ -1,13 +1,12 @@
-/* eslint-disable jsdoc/no-undefined-types */
 /* eslint-disable func-style */
 
 /**
  * @file Rule to require object keys to be sorted
  * @author Toru Nagashima
  */
+import { createRule } from '../utilities';
 import { type TSESLint } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
-import { createRule } from '../utilities';
 
 /**
  * Gets the property name of a given node.

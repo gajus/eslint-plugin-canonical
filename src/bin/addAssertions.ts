@@ -2,10 +2,10 @@
  * @file This script is used to inline assertions into the README.md documents.
  */
 
-import fs from 'node:fs';
-import path from 'node:path';
 import glob from 'glob';
 import _ from 'lodash';
+import fs from 'node:fs';
+import path from 'node:path';
 
 const formatCodeSnippet = (setup) => {
   const paragraphs: string[] = [];
@@ -59,7 +59,6 @@ const updateDocuments = (assertions) => {
   const readmeDocumentPath = path.join(__dirname, '../../README.md');
   let documentBody;
 
-  // eslint-disable-next-line node/no-sync
   documentBody = fs.readFileSync(readmeDocumentPath, 'utf8');
 
   documentBody = documentBody.replaceAll(
@@ -95,7 +94,6 @@ const updateDocuments = (assertions) => {
     },
   );
 
-  // eslint-disable-next-line node/no-sync
   fs.writeFileSync(readmeDocumentPath, documentBody);
 };
 

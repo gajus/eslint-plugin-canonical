@@ -1,10 +1,10 @@
-import { existsSync, lstatSync, readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
-import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
-import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
 import { readPackageJson } from '../utilities/readPackageJson';
+import { type TSESLint, type TSESTree } from '@typescript-eslint/utils';
+import resolveImport from 'eslint-module-utils/resolve';
+import { existsSync, lstatSync, readFileSync } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
