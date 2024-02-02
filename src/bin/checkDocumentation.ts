@@ -21,20 +21,10 @@ const getDocumentIndexRules = () => {
     'utf8',
   );
 
-  const rules = content
-    .split('\n')
-    .map((line) => {
-      const match = /^\{"gitdown": "include", "file": "([^"]+)"\}$/u.exec(line);
+  const ruleMatcher =
+    /(?<=^\{"gitdown": "include", "file": "\.\/rules\/)[^"]+(?=\.md"\}$)/gmu;
 
-      if (match === null) {
-        return null;
-      }
-
-      return match[1].replace('./rules/', '').replace('.md', '');
-    })
-    .filter((rule) => {
-      return rule !== null;
-    });
+  const rules: string[] = content.match(ruleMatcher) ?? [];
 
   if (rules.length === 0) {
     throw new Error(

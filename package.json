@@ -39,6 +39,7 @@
     "husky": "^7.0.4",
     "mocha": "^10.2.0",
     "react": "^18.2.0",
+    "rimraf": "^5.0.5",
     "semantic-release": "^20.0.0",
     "tsx": "^3.12.7",
     "typescript": "^5.1.6"
@@ -63,7 +64,7 @@
     "url": "https://github.com/gajus/eslint-plugin-canonical"
   },
   "scripts": {
-    "build": "rm -fr ./dist && tsc",
+    "build": "rimraf -fr ./dist && tsc",
     "check-documentation": "tsx ./src/bin/checkDocumentation",
     "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
     "lint": "npm run check-documentation && eslint .",
