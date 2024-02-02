@@ -1,7 +1,7 @@
 import { dirname, relative, isAbsolute } from 'node:path';
 import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
 import * as recast from 'recast';
-import { createRule } from '../utilities';
+import { createRule, findRootPath } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
 import ExportMapAny from './ExportMap';
 
@@ -78,7 +78,11 @@ export default createRule<Options, MessageIds>({
     // can't cycle-check a non-file
     if (myPath === '<text>') return {};
 
-    const myModuleRoot = findDirectory(dirname(myPath), 'package.json', '/');
+    const myModuleRoot = findDirectory(
+      dirname(myPath),
+      'package.json',
+      findRootPath(myPath),
+    );
 
     if (!myModuleRoot) {
       throw new Error('cannot find package.json');

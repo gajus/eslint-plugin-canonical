@@ -1,8 +1,8 @@
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { dirname, resolve, sep } from 'node:path';
 import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
 import resolveImport from 'eslint-module-utils/resolve';
-import { createRule } from '../utilities';
+import { createRule, findRootPath } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
 import { readPackageJson } from '../utilities/readPackageJson';
 
@@ -94,7 +94,7 @@ const fixPathImport = (
   }
 
   for (const extension of extensions) {
-    if (resolvedImportPath.endsWith(lastSegment + '/index' + extension)) {
+    if (resolvedImportPath.endsWith(lastSegment + `${sep}index` + extension)) {
       return fixer.replaceTextRange(
         node.source.range,
         `'${
@@ -230,7 +230,7 @@ const handleAliasPath = (
   const targetPackageJsonPath = findDirectory(
     resolvedImportPath,
     'package.json',
-    '/',
+    findRootPath(resolvedImportPath),
   );
 
   if (targetPackageJsonPath) {
@@ -238,7 +238,7 @@ const handleAliasPath = (
       const currentPackageJsonPath = findDirectory(
         context.getFilename(),
         'package.json',
-        '/',
+        findRootPath(context.getFilename()),
       );
 
       if (
