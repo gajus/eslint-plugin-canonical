@@ -34,7 +34,6 @@
     "ajv": "^8.11.0",
     "eslint": "^8.45.0",
     "eslint-config-canonical": "^38.3.0",
-    "gitdown": "^3.1.5",
     "glob": "^7.2.0",
     "husky": "^7.0.4",
     "mocha": "^10.2.0",
@@ -65,7 +64,6 @@
   "scripts": {
     "build": "rm -fr ./dist && tsc",
     "check-documentation": "tsx ./src/bin/checkDocumentation",
-    "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
     "lint": "npm run check-documentation && eslint .",
     "test": "mocha --require tsx './tests/rules/*'"
   },
