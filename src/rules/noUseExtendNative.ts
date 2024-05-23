@@ -5,8 +5,16 @@
 import isGetSetProp from 'is-get-set-prop';
 import isJsType from 'is-js-type';
 import isObjProp from 'is-obj-prop';
-import isProtoProp from 'is-proto-prop';
+import isProtoPropOriginal  from 'is-proto-prop';
 import { createRule } from '../utilities';
+
+const isProtoProp = (jsType: string, propertyName: string) => {
+  if (jsType === 'Object' && propertyName === 'groupBy') {
+    return true;
+  }
+
+  return isProtoPropOriginal(jsType, propertyName);
+};
 
 /**
  * Return type of value of left or right

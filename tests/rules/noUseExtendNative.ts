@@ -5,6 +5,7 @@ const valid = [
   'error.plugin',
   'error.plugn()',
   'array.custom',
+  'Object.groupBy()',
   'Object.assign()',
   'Object.keys',
   'Object.keys()',
