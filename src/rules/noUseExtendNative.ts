@@ -5,10 +5,10 @@
 import isGetSetProp from 'is-get-set-prop';
 import isJsType from 'is-js-type';
 import isObjProp from 'is-obj-prop';
-import isProtoPropOriginal  from 'is-proto-prop';
+import isProtoPropOriginal from 'is-proto-prop';
 import { createRule } from '../utilities';
 
-const isProtoProp = (jsType: string, propertyName: string) => {
+const isProtoProperty = (jsType: string, propertyName: string) => {
   if (jsType === 'Object' && propertyName === 'groupBy') {
     return true;
   }
@@ -112,7 +112,7 @@ const isUnkownGettSetterOrJsTypeExpressed = (
   return (
     isExpression &&
     !isGetSetProp(jsType, propertyName) &&
-    !isProtoProp(jsType, propertyName) &&
+    !isProtoProperty(jsType, propertyName) &&
     !isObjProp(jsType, propertyName)
   );
 };
@@ -143,7 +143,7 @@ const isInvalid = (jsType, propertyName, usageType) => {
 
   const unknownjsTypeCalledAsFunction =
     isFunctionCall &&
-    !isProtoProp(jsType, propertyName) &&
+    !isProtoProperty(jsType, propertyName) &&
     !isObjProp(jsType, propertyName);
 
   return (
