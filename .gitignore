@@ -10,5 +10,4 @@
 !.github
 !.gitignore
 !.husky
-!.README
 !.releaserc

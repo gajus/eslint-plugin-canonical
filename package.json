@@ -63,8 +63,7 @@
   },
   "scripts": {
     "build": "rm -fr ./dist && tsc",
-    "check-documentation": "tsx ./src/bin/checkDocumentation",
-    "lint": "npm run check-documentation && eslint .",
+    "lint": "eslint .",
     "test": "mocha --require tsx './tests/rules/*'"
   },
   "version": "0.0.0-development"
