@@ -5,6 +5,8 @@
  * @see https://github.com/steelsojka/eslint-import-alias
  */
 import path from 'node:path';
+import { sep as posixSeparator } from 'node:path/posix';
+import { sep as win32Separator } from 'node:path/win32';
 import { createRule } from '../utilities';
 
 const RELATIVE_MATCHER = /^(?:(\.\/)|(\.\.\/))+/u;
@@ -58,10 +60,9 @@ export default createRule<Options, MessageIds>({
           path.resolve(parsedPath.dir, '../'.repeat(depth)),
         );
 
-        const importPath = path.relative(
-          baseDirectory,
-          path.resolve(parsedPath.dir, importValue),
-        );
+        const importPath = path
+          .relative(baseDirectory, path.resolve(parsedPath.dir, importValue))
+          .replaceAll(win32Separator, posixSeparator);
 
         for (const item of aliases) {
           const { alias, matchPath, matchParent, maxRelativeDepth = -1 } = item;

@@ -1,11 +1,13 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import { sep as posixSeparator } from 'node:path/posix';
+import { sep as win32Separator } from 'node:path/win32';
 import { type TSESTree } from '@typescript-eslint/utils';
 import parse from 'eslint-module-utils/parse';
 import resolve from 'eslint-module-utils/resolve';
 import visit from 'eslint-module-utils/visit';
 import { Logger } from '../Logger';
-import { createRule } from '../utilities';
+import { createRule, findRootPath } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
 
 const log = Logger.child({
@@ -23,7 +25,11 @@ type Options =
 type MessageIds = 'indexImport' | 'parentModuleImport' | 'privateModuleImport';
 
 const findProjectRoot = (startPath: string): string => {
-  const projectRoot = findDirectory(startPath, 'package.json', '/');
+  const projectRoot = findDirectory(
+    startPath,
+    'package.json',
+    findRootPath(startPath),
+  );
 
   if (!projectRoot) {
     throw new Error('Project root could not be found.');
@@ -205,10 +211,15 @@ export default createRule<Options, MessageIds>({
         context.report({
           data: {
             currentModule:
-              path.sep + path.relative(projectRootDirectory, currentDirectory),
+              posixSeparator +
+              path
+                .relative(projectRootDirectory, currentDirectory)
+                .replaceAll(win32Separator, posixSeparator),
             parentModule:
-              path.sep +
-              path.relative(projectRootDirectory, targetModuleDirectory),
+              posixSeparator +
+              path
+                .relative(projectRootDirectory, targetModuleDirectory)
+                .replaceAll(win32Separator, posixSeparator),
           },
           messageId: 'parentModuleImport',
           node,
@@ -235,9 +246,15 @@ export default createRule<Options, MessageIds>({
       context.report({
         data: {
           privatePath:
-            path.sep + path.relative(targetModuleDirectory, resolvedImportPath),
+            posixSeparator +
+            path
+              .relative(targetModuleDirectory, resolvedImportPath)
+              .replaceAll(win32Separator, posixSeparator),
           targetModule:
-            path.sep + path.relative(projectRootDirectory, reportModule),
+            posixSeparator +
+            path
+              .relative(projectRootDirectory, reportModule)
+              .replaceAll(win32Separator, posixSeparator),
         },
         fix: (fixer) => {
           if (node.type === 'ImportDeclaration') {
