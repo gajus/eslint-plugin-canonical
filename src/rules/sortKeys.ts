@@ -245,7 +245,7 @@ export default createRule<Options, MessageIds>({
             },
             fix(fixer) {
               const fixes: TSESLint.RuleFix[] = [];
-              const sourceCode = context.getSourceCode();
+              const sourceCode = context.sourceCode ?? context.getSourceCode();
               const moveProperty = (fromNode, toNode) => {
                 const previousText = sourceCode.getText(fromNode);
                 const thisComments = sourceCode.getCommentsBefore(fromNode);

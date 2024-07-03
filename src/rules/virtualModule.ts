@@ -103,6 +103,8 @@ const stripPrivatePath = (
 
 export default createRule<Options, MessageIds>({
   create: (context, [options]) => {
+    const sourceCode = context.sourceCode ?? context.getSourceCode();
+    const filename = context.filename ?? context.getFilename();
     const visitDeclaration = (
       node:
         | TSESTree.ExportAllDeclaration
@@ -117,7 +119,7 @@ export default createRule<Options, MessageIds>({
         });
       }
 
-      const currentDirectory = path.dirname(context.getFilename());
+      const currentDirectory = path.dirname(filename);
       const projectRootDirectory = findProjectRoot(currentDirectory);
 
       const importPath = node.source?.value;
@@ -286,7 +288,7 @@ export default createRule<Options, MessageIds>({
 
             return fixer.replaceText(
               node,
-              context.getSourceCode().getText(node).split('}')[0] +
+              sourceCode.getText(node).split('}')[0] +
                 `} from '${newImportPath}'`,
             );
           }

@@ -1,4 +1,5 @@
 import path from 'node:path';
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/virtualModule';
 import { createRuleTester } from '../RuleTester';
 
@@ -10,7 +11,7 @@ export default createRuleTester(
   'virtual-module',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser },
     settings: {
       'import/extensions': typescriptExtensions,
       'import/external-module-folders': ['node_modules', 'node_modules/@types'],

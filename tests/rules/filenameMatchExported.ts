@@ -1,5 +1,6 @@
 /* eslint-disable canonical/id-match */
 
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/filenameMatchExported';
 import { createRuleTester } from '../RuleTester';
 
@@ -31,7 +32,7 @@ export default createRuleTester(
   'filename-match-exported',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser },
   },
   {
     invalid: [
@@ -56,7 +57,7 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/foo.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -70,11 +71,13 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/foo.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
-          ecmaVersion: 6,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            },
+            ecmaVersion: 6,
+          }
         },
       },
       {
@@ -98,10 +101,12 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/bar.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            },
+          }
         },
       },
       {
@@ -114,7 +119,7 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/fooBar.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -129,7 +134,7 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/bar.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -144,9 +149,11 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/bar.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',
@@ -162,7 +169,7 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/fooBar/index.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -178,9 +185,11 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/fooBar/index.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',
@@ -196,7 +205,7 @@ export default createRuleTester(
           },
         ],
         filename: 'index.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -211,9 +220,11 @@ export default createRuleTester(
           },
         ],
         filename: '/some/dir/Foo.react.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
         },
@@ -241,7 +252,7 @@ export default createRuleTester(
         ],
         filename: 'variableName.js',
         options: [{ transforms: 'kebab' }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -257,7 +268,7 @@ export default createRuleTester(
         ],
         filename: 'variableName.js',
         options: [{ transforms: 'pascal' }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -273,7 +284,7 @@ export default createRuleTester(
         ],
         filename: 'variableName.js',
         options: [{ transforms: ['pascal', 'snake'] }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -289,9 +300,11 @@ export default createRuleTester(
         ],
         filename: '/some/dir/Foo.bar.js',
         options: [{ suffix: '\\.react$' }],
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',
@@ -308,9 +321,11 @@ export default createRuleTester(
         ],
         filename: '/some/dir/Foo.react/index.js',
         options: [{ suffix: '\\.react$' }],
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',
@@ -342,7 +357,7 @@ export default createRuleTester(
       {
         code: testCallCode,
         filename: '/some/dir/foo.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -354,16 +369,18 @@ export default createRuleTester(
       {
         code: exportedClassCode,
         filename: '/some/dir/Foo.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
       {
         code: exportedJsxClassCode,
         filename: '/some/dir/Foo.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
         },
@@ -379,16 +396,18 @@ export default createRuleTester(
       {
         code: exportedJsxFunctionCode,
         filename: '/some/dir/foo.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
-          },
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            },
+          }
         },
       },
       {
         code: exportedEs6VariableCode,
         filename: '/some/dir/exported.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -396,7 +415,7 @@ export default createRuleTester(
       {
         code: exportedEs6ClassCode,
         filename: '/some/dir/Foo.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -404,9 +423,11 @@ export default createRuleTester(
       {
         code: exportedEs6JsxClassCode,
         filename: '/some/dir/Foo.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',
@@ -415,7 +436,7 @@ export default createRuleTester(
       {
         code: exportedEs6FunctionCode,
         filename: '/some/dir/foo.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -424,9 +445,11 @@ export default createRuleTester(
       {
         code: exportedEs6JsxFunctionCode,
         filename: '/some/dir/foo.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',
@@ -435,7 +458,7 @@ export default createRuleTester(
       {
         code: exportedEs6FunctionCode,
         filename: '/some/dir/foo/index.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -444,9 +467,11 @@ export default createRuleTester(
       {
         code: exportedEs6JsxFunctionCode,
         filename: '/some/dir/foo/index.js',
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',
@@ -457,7 +482,7 @@ export default createRuleTester(
 
         // /foo is used as cwd for test setup so full path will be /foo/index.js
         filename: 'index.js',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -486,7 +511,7 @@ export default createRuleTester(
         code: camelCaseEs6,
         filename: 'variable_name.js',
         options: [{ transforms: 'snake' }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -495,7 +520,7 @@ export default createRuleTester(
         code: camelCaseEs6,
         filename: 'variable-name.js',
         options: [{ transforms: 'kebab' }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -504,7 +529,7 @@ export default createRuleTester(
         code: snakeCaseEs6,
         filename: 'variableName.js',
         options: [{ transforms: 'camel' }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -513,7 +538,7 @@ export default createRuleTester(
         code: snakeCaseEs6,
         filename: 'VariableName.js',
         options: [{ transforms: 'pascal' }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -522,7 +547,7 @@ export default createRuleTester(
         code: snakeCaseEs6,
         filename: 'variableName.js',
         options: [{ transforms: ['pascal', 'camel'] }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -531,7 +556,7 @@ export default createRuleTester(
         code: snakeCaseEs6,
         filename: 'VariableName.js',
         options: [{ transforms: ['pascal', 'camel'] }],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -540,9 +565,11 @@ export default createRuleTester(
         code: exportedJsxClassCode,
         filename: '/some/dir/Foo.react.js',
         options: [{ suffix: '\\.react$' }],
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
         },
@@ -551,9 +578,11 @@ export default createRuleTester(
         code: exportedEs6JsxClassCode,
         filename: '/some/dir/Foo.react.js',
         options: [{ suffix: '\\.react$' }],
-        parserOptions: {
-          ecmaFeatures: {
-            jsx: true,
+        languageOptions: {
+          parserOptions: {
+            ecmaFeatures: {
+              jsx: true,
+            }
           },
           ecmaVersion: 6,
           sourceType: 'module',

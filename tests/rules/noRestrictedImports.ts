@@ -1,10 +1,11 @@
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/noRestrictedImports';
 import { createRuleTester } from '../RuleTester';
 
 export default createRuleTester(
   'no-restricted-imports',
   rule,
-  { parser: '@typescript-eslint/parser' },
+  { languageOptions: { parser: typescriptEslintParser } },
   {
     invalid: [
       {

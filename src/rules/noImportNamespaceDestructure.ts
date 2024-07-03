@@ -6,6 +6,8 @@ type MessageIds = 'noDestructureNamespace';
 
 export default createRule<Options, MessageIds>({
   create: (context) => {
+    const sourceCode = context.sourceCode ?? context.getSourceCode();
+
     return {
       VariableDeclarator(node) {
         if (
@@ -13,8 +15,10 @@ export default createRule<Options, MessageIds>({
           node.init &&
           node.init.type === 'Identifier'
         ) {
-          const importDeclaration = context
-            .getScope()
+          const scope = sourceCode.getScope
+            ? sourceCode.getScope(node)
+            : context.getScope();
+          const importDeclaration = scope
             // @ts-expect-error we expect .name to be set
             .variables.find((variable) => variable.name === node.init?.name)
             ?.defs[0]?.parent;

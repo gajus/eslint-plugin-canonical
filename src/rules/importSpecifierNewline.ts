@@ -8,7 +8,7 @@ export default createRule<Options, MessageIds>({
   create: (context) => {
     return {
       ImportDeclaration: (node) => {
-        const sourceCode = context.getSourceCode();
+        const sourceCode = context.sourceCode ?? context.getSourceCode();
 
         const importSpecifiers = node.specifiers.filter((specifier) => {
           return specifier.type === 'ImportSpecifier';

@@ -156,14 +156,16 @@ const handleRelativePath = (
     return false;
   }
 
+  const filename = context.filename ?? context.getFilename();
+
   // This would mean that the import path resolves to a non-JavaScript file, e.g. CSS import.
-  if (isExistingFile(resolve(dirname(context.getFilename()), importPath))) {
+  if (isExistingFile(resolve(dirname(filename), importPath))) {
     return true;
   }
 
   context.report({
     fix(fixer) {
-      return fixRelativeImport(fixer, node, context.getFilename());
+      return fixRelativeImport(fixer, node, filename);
     },
     messageId: 'extensionMissing',
     node,
@@ -203,12 +205,13 @@ const handleAliasPath = (
 
   let resolvedImportPath!: string;
 
+  const filename = context.filename ?? context.getFilename();
   try {
     // There are odd cases where using `resolveImport` resolves to a unexpected file, e.g.
     // `import turbowatch from 'turbowatch';` inside of `turbowatch.ts` resolves to `turbowatch.js`.
     // Using `require.resolve` with the `paths` option resolves to the correct file in those instances.
     resolvedImportPath = require.resolve(importPath, {
-      paths: [context.getFilename()],
+      paths: [filename],
     });
   } catch {
     // no-op
@@ -236,7 +239,7 @@ const handleAliasPath = (
   if (targetPackageJsonPath) {
     if (ignorePackages) {
       const currentPackageJsonPath = findDirectory(
-        context.getFilename(),
+        filename,
         'package.json',
         '/',
       );
@@ -266,7 +269,7 @@ const handleAliasPath = (
       return fixPathImport(
         fixer,
         node,
-        context.getFilename(),
+        filename,
         resolvedImportPath,
       );
     },

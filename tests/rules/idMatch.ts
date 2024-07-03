@@ -6,6 +6,7 @@
  * Related discussion about not adding this option to ESLint https://github.com/eslint/eslint/issues/14005
  */
 
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/idMatch';
 import { createRuleTester } from '../RuleTester';
@@ -19,7 +20,7 @@ export default createRuleTester(
   'id-match',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser },
   },
   {
     invalid: [
@@ -180,7 +181,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -199,7 +200,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -218,7 +219,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -236,7 +237,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -254,7 +255,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -272,7 +273,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -291,7 +292,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -305,7 +306,7 @@ export default createRuleTester(
           },
         ],
         options: ['^[^_]+$'],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_020,
           sourceType: 'module',
         },
@@ -324,7 +325,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -343,7 +344,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -362,7 +363,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -381,7 +382,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -400,7 +401,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -419,7 +420,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -438,7 +439,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -456,7 +457,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -478,7 +479,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -496,7 +497,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -514,7 +515,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -532,7 +533,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -550,7 +551,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -568,7 +569,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -583,7 +584,7 @@ export default createRuleTester(
           },
         ],
         options: ['^[^_]+$'],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_022,
         },
       },
@@ -597,7 +598,7 @@ export default createRuleTester(
       //     },
       //   ],
       //   options: ['^[^_]+$'],
-      //   parserOptions: {ecmaVersion: 2_022},
+      //   languageOptions: {ecmaVersion: 2_022},
       // },
 
       // Class Fields
@@ -615,7 +616,7 @@ export default createRuleTester(
             classFields: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_022,
         },
       },
@@ -631,7 +632,7 @@ export default createRuleTester(
       //   options: ['^[^_]+$', {
       //     classFields: true,
       //   }],
-      //   parserOptions: {ecmaVersion: 2_022},
+      //   languageOptions: {ecmaVersion: 2_022},
       // },
 
       // Named Imports
@@ -650,7 +651,7 @@ export default createRuleTester(
             ignoreNamedImports: false,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },
@@ -764,7 +765,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -777,7 +778,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -790,7 +791,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -803,7 +804,7 @@ export default createRuleTester(
             properties: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -866,14 +867,14 @@ export default createRuleTester(
       {
         code: 'class x { foo() {} }',
         options: ['^[^_]+$'],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_022,
         },
       },
       {
         code: 'class x { #foo() {} }',
         options: ['^[^_]+$'],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_022,
         },
       },
@@ -884,7 +885,7 @@ export default createRuleTester(
       //   options: ['^[^_]+$', {
       //     classFields: false,
       //   }],
-      //   parserOptions: {ecmaVersion: 2_022},
+      //   languageOptions: {ecmaVersion: 2_022},
       // },
 
       // {
@@ -892,7 +893,7 @@ export default createRuleTester(
       //   options: ['^[^_]+$', {
       //     classFields: false,
       //   }],
-      //   parserOptions: {ecmaVersion: 2_022},
+      //   languageOptions: {ecmaVersion: 2_022},
       // },
 
       // Named Imports
@@ -905,7 +906,7 @@ export default createRuleTester(
             ignoreNamedImports: true,
           },
         ],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
           sourceType: 'module',
         },

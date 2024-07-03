@@ -166,7 +166,7 @@ const createSorter = (caseSensitive) => {
  * Creates a "fixer" function to be used by `--fix`.
  */
 const createFix = ({ context, fixer, node, sorter }) => {
-  const sourceCode = context.getSourceCode();
+  const sourceCode = context.sourceCode ?? context.getSourceCode();
   const sourceText = sourceCode.getText();
 
   const sorted = node.properties.concat().sort(sorter);
@@ -215,9 +215,13 @@ export default createRule<Options, keyof typeof messages>({
     const { caseSensitive = true } = options;
     const sorter = createSorter(caseSensitive);
 
+    const sourceCode = context.sourceCode ?? context.getSourceCode();
+
     return {
       ObjectPattern(objectPatternNode) {
-        const scope = context.getScope();
+        const scope = sourceCode.getScope
+          ? sourceCode.getScope(objectPatternNode)
+          : context.getScope();
 
         /*
          * If the node is more complex than just basic destructuring

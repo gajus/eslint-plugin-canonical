@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/requireExtension';
 import { createRuleTester } from '../RuleTester';
 
@@ -64,12 +65,11 @@ export default createRuleTester(
   'require-extension',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser }
   },
   {
     invalid: [
       invalidTest('pathsImport'),
-      invalidTest('pathsImportWithIndex'),
       invalidTest('pathsImportWithIndex'),
       invalidTest('relativeImport'),
       invalidTest('relativeImportWithIndex'),

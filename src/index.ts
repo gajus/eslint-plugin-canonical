@@ -25,10 +25,15 @@ import sortKeys from './rules/sortKeys';
 import sortReactDependencies from './rules/sortReactDependencies';
 import virtualModule from './rules/virtualModule';
 
-export = {
-  configs: {
-    recommended,
-  },
+// Should be `ESLint.Plugin` but doesn't match with `createRule` results
+const index: {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  configs: any;
+  rules: any;
+  rulesConfig: any;
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+} = {
+  configs: {},
   rules: {
     'destructuring-property-newline': destructuringPropertyNewline,
     'export-specifier-newline': exportSpecifierNewline,
@@ -76,3 +81,17 @@ export = {
     'sort-keys': 0,
   },
 };
+
+const flatRecommended = JSON.parse(JSON.stringify(recommended));
+flatRecommended.plugins = {
+  canonical: index,
+};
+flatRecommended.languageOptions = {
+  parserOptions: flatRecommended.parserOptions,
+};
+delete flatRecommended.parserOptions;
+
+index.configs['flat/recommended'] = flatRecommended;
+index.configs.recommended = recommended;
+
+export = index;

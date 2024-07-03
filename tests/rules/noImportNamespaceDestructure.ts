@@ -1,10 +1,11 @@
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/noImportNamespaceDestructure';
 import { createRuleTester } from '../RuleTester';
 
 export default createRuleTester(
   'no-import-namespace-destructure',
   rule,
-  { parser: '@typescript-eslint/parser' },
+  { languageOptions: { parser: typescriptEslintParser } },
   {
     invalid: [
       {

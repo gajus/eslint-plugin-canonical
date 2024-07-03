@@ -1,3 +1,4 @@
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/sortKeys';
 import { createRuleTester } from '../RuleTester';
 
@@ -5,7 +6,7 @@ export default createRuleTester(
   'sort-keys',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser }
   },
   {
     invalid: [
@@ -163,7 +164,7 @@ export default createRuleTester(
           },
         ],
         output: 'var obj = {...z, b:1, c:1}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -188,7 +189,7 @@ export default createRuleTester(
           },
         ],
         output: 'var obj = {...z, ...c, b:1, d:4, ...y, ...f, a:1, e:2}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -205,7 +206,7 @@ export default createRuleTester(
           },
         ],
         output: 'var obj = {b:1, c:1, ...a}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -222,7 +223,7 @@ export default createRuleTester(
           },
         ],
         output: 'var obj = {...z, ...a, b:1, c:1}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -239,7 +240,7 @@ export default createRuleTester(
           },
         ],
         output: 'var obj = {...z, a:1, b:1, ...d, ...c}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -257,7 +258,7 @@ export default createRuleTester(
         ],
         options: ['desc'],
         output: 'var obj = {...z, b:0, a:2, ...x, ...c}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -275,7 +276,7 @@ export default createRuleTester(
         ],
         options: ['desc'],
         output: 'var obj = {...z, b:0, a:2, ...x}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -293,7 +294,7 @@ export default createRuleTester(
         ],
         options: ['desc'],
         output: "var obj = {...z, a:2, '':1}",
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -312,7 +313,7 @@ export default createRuleTester(
           },
         ],
         output: "var obj = {'':3, [b+c]:2, a:1}",
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -330,7 +331,7 @@ export default createRuleTester(
         ],
         options: ['desc'],
         output: "var obj = {a:3, [b+c]:2, '':1}",
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -348,7 +349,7 @@ export default createRuleTester(
         ],
         options: ['desc'],
         output: "var obj = {b:1, [f()]:2, a:4, '':3}",
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -367,7 +368,7 @@ export default createRuleTester(
           },
         ],
         output: 'var obj = {a:1, [a]: -1, b:3, c:2}',
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -1638,21 +1639,21 @@ export default createRuleTester(
       {
         code: 'var obj = {a:1, b:3, [a + b]: -1, c:2}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
       {
         code: "var obj = {'':1, [f()]:2, a:3}",
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
       {
         code: "var obj = {a:1, [b++]:2, '':3}",
         options: ['desc'],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },
@@ -1661,49 +1662,49 @@ export default createRuleTester(
       {
         code: 'var obj = {a:1, ...z, b:1}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'var obj = {b:1, ...z, a:1}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'var obj = {...a, b:1, ...c, d:1}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'var obj = {...a, b:1, ...d, ...c, e:2, z:5}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'var obj = {b:1, ...c, ...d, e:2}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: "var obj = {a:1, ...z, '':2}",
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: "var obj = {'':1, ...z, 'a':2}",
         options: ['desc'],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -1712,28 +1713,28 @@ export default createRuleTester(
       {
         code: 'var obj = {...z, a:1, b:1}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'var obj = {...z, ...c, a:1, b:1}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'var obj = {a:1, b:1, ...z}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'var obj = {...z, ...x, a:1, ...c, ...d, f:5, e:4}',
         options: ['desc'],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -1742,14 +1743,14 @@ export default createRuleTester(
       {
         code: 'function fn(...args) { return [...args].length; }',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
       {
         code: 'function g() {}; function f(...args) { return g(...args); }',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 2_018,
         },
       },
@@ -1758,7 +1759,7 @@ export default createRuleTester(
       {
         code: 'let {a, b} = {}',
         options: [],
-        parserOptions: {
+        languageOptions: {
           ecmaVersion: 6,
         },
       },

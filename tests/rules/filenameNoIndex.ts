@@ -1,3 +1,4 @@
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/filenameNoIndex';
 import { createRuleTester } from '../RuleTester';
 
@@ -7,7 +8,7 @@ export default createRuleTester(
   'filename-no-index',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser }
   },
   {
     invalid: [

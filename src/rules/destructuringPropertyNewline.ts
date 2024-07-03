@@ -14,7 +14,7 @@ export default createRule<Options, MessageIds>({
       ? 'propertiesOnNewlineAll'
       : 'propertiesOnNewline';
 
-    const sourceCode = context.getSourceCode();
+    const sourceCode = context.sourceCode ?? context.getSourceCode();
 
     return {
       ArrayPattern: (node) => {

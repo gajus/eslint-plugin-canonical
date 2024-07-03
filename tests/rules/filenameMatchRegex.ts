@@ -1,3 +1,4 @@
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/filenameMatchRegex';
 import { createRuleTester } from '../RuleTester';
 
@@ -9,7 +10,7 @@ export default createRuleTester(
   'filename-match-regex',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser }
   },
   {
     invalid: [

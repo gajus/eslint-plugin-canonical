@@ -1,3 +1,4 @@
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/noUseExtendNative';
 import { createRuleTester } from '../RuleTester';
 
@@ -143,7 +144,7 @@ const invalid = [
 export default createRuleTester(
   'no-use-extend-native',
   rule,
-  { parser: '@typescript-eslint/parser' },
+  { languageOptions: { parser: typescriptEslintParser } },
   {
     invalid,
     valid,

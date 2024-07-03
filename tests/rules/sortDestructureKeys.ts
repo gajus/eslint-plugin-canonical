@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/sortDestructureKeys';
 import { createRuleTester } from '../RuleTester';
 
@@ -8,7 +9,7 @@ import { createRuleTester } from '../RuleTester';
 export default createRuleTester(
   'sort-destructure-keys',
   rule,
-  { parser: '@typescript-eslint/parser' },
+  { languageOptions: { parser: typescriptEslintParser } },
   {
     invalid: [
       {
