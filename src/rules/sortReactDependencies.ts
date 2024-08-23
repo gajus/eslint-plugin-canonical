@@ -83,7 +83,6 @@ export default createRule<Options, keyof typeof messages>({
     docs: {
       description:
         'Requires that dependencies of React methods are sorted alphabetically.',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages,

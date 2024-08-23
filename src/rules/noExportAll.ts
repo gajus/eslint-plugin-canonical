@@ -49,7 +49,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Requite that re-exports are named',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

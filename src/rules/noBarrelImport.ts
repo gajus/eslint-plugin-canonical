@@ -240,7 +240,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Require that imports are made directly from the source',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

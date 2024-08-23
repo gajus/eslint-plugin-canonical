@@ -281,7 +281,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'require object keys to be sorted',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

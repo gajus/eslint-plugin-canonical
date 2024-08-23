@@ -270,7 +270,6 @@ export default createRule<Options, keyof typeof messages>({
     docs: {
       description:
         'Requires that object destructuring properties are sorted alphabetically.',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages,

@@ -321,7 +321,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Require file extension in import and export statements',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

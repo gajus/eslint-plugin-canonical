@@ -55,7 +55,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'require that useMount(() => {}) is used instead of useEffect(() => {}, [])',
-      recommended: 'recommended',
     },
     messages: {
       preferReactLazy:

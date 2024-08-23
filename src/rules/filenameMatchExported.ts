@@ -132,7 +132,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Match the file name against the default exported value in the module.',
-      recommended: 'recommended',
     },
     messages: {
       indexFile:

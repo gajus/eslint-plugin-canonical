@@ -310,7 +310,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: '',
-      recommended: 'recommended',
     },
     fixable: 'whitespace',
     messages: {
