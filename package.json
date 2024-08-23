@@ -8,8 +8,8 @@
     "@typescript-eslint/utils": "^8.2.0",
     "chance": "^1.1.11",
     "debug": "^4.3.4",
-    "eslint-import-resolver-typescript": "^3.5.3",
-    "eslint-module-utils": "^2.7.4",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-module-utils": "^2.8.1",
     "is-get-set-prop": "^1.0.0",
     "is-js-type": "^2.0.0",
     "is-obj-prop": "^1.0.0",
@@ -41,7 +41,7 @@
     "semantic-release": "^20.0.0",
     "tsx": "^3.12.7",
     "typescript": "^5.5.4",
-    "typescript-eslint": "^8.0.0"
+    "typescript-eslint": "^8.2.0"
   },
   "engines": {
     "node": ">=18.0.0"
