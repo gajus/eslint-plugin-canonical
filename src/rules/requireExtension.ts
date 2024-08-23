@@ -203,7 +203,7 @@ const handleAliasPath = (
     return false;
   }
 
-  let resolvedImportPath!: string;
+  let resolvedImportPath: string | undefined | null;
 
   const filename = context.filename ?? context.getFilename();
   try {
