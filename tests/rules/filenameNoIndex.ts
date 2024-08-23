@@ -8,7 +8,7 @@ export default createRuleTester(
   'filename-no-index',
   rule,
   {
-    languageOptions: { parser: typescriptEslintParser }
+    languageOptions: { parser: typescriptEslintParser },
   },
   {
     invalid: [
@@ -32,10 +32,9 @@ export default createRuleTester(
             messageId: 'noIndex',
           },
         ],
-        filename: '/some/dir/index.js',
+        filename: './some/dir/index.js',
       },
     ],
-
     valid: [
       {
         code: testCode,
@@ -51,7 +50,7 @@ export default createRuleTester(
       },
       {
         code: testCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
       },
     ],
   },

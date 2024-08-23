@@ -45,7 +45,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/fooBar.js',
+        filename: './some/dir/fooBar.js',
       },
       {
         code: exportedClassCode,
@@ -56,7 +56,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -72,7 +72,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -91,7 +91,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/bar.js',
+        filename: './some/dir/bar.js',
       },
       {
         code: exportedJsxFunctionCode,
@@ -102,7 +102,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/bar.js',
+        filename: './some/dir/bar.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -120,7 +120,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/fooBar.js',
+        filename: './some/dir/fooBar.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -137,7 +137,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/bar.js',
+        filename: './some/dir/bar.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -154,7 +154,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/bar.js',
+        filename: './some/dir/bar.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -174,7 +174,7 @@ export default createRuleTester(
             messageId: 'indexFile',
           },
         ],
-        filename: '/some/dir/fooBar/index.js',
+        filename: './some/dir/fooBar/index.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -192,7 +192,7 @@ export default createRuleTester(
             messageId: 'indexFile',
           },
         ],
-        filename: '/some/dir/fooBar/index.js',
+        filename: './some/dir/fooBar/index.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -229,7 +229,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/Foo.react.js',
+        filename: './some/dir/Foo.react.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -314,7 +314,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/Foo.bar.js',
+        filename: './some/dir/Foo.bar.js',
         options: [{ suffix: '\\.react$' }],
         languageOptions: {
           parserOptions: {
@@ -335,7 +335,7 @@ export default createRuleTester(
             messageId: 'indexFile',
           },
         ],
-        filename: '/some/dir/Foo.react/index.js',
+        filename: './some/dir/Foo.react/index.js',
         options: [{ suffix: '\\.react$' }],
         languageOptions: {
           parserOptions: {
@@ -356,7 +356,7 @@ export default createRuleTester(
             messageId: 'regularFile',
           },
         ],
-        filename: '/some/dir/bar.js',
+        filename: './some/dir/bar.js',
         options: [{ matchCallExpression: true }],
       },
     ],
@@ -368,11 +368,11 @@ export default createRuleTester(
       },
       {
         code: testCode,
-        filename: '/some/dir/exported.js',
+        filename: './some/dir/exported.js',
       },
       {
         code: testCallCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -382,11 +382,11 @@ export default createRuleTester(
       },
       {
         code: exportedVariableCode,
-        filename: '/some/dir/exported.js',
+        filename: './some/dir/exported.js',
       },
       {
         code: exportedClassCode,
-        filename: '/some/dir/Foo.js',
+        filename: './some/dir/Foo.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -395,7 +395,7 @@ export default createRuleTester(
       },
       {
         code: exportedJsxClassCode,
-        filename: '/some/dir/Foo.js',
+        filename: './some/dir/Foo.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -407,15 +407,15 @@ export default createRuleTester(
       },
       {
         code: exportedFunctionCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
       },
       {
         code: exportedCalledFunctionCode,
-        filename: '/some/dir/bar.js',
+        filename: './some/dir/bar.js',
       },
       {
         code: exportedJsxFunctionCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -426,7 +426,7 @@ export default createRuleTester(
       },
       {
         code: exportedEs6VariableCode,
-        filename: '/some/dir/exported.js',
+        filename: './some/dir/exported.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -436,7 +436,7 @@ export default createRuleTester(
       },
       {
         code: exportedEs6ClassCode,
-        filename: '/some/dir/Foo.js',
+        filename: './some/dir/Foo.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -446,7 +446,7 @@ export default createRuleTester(
       },
       {
         code: exportedEs6JsxClassCode,
-        filename: '/some/dir/Foo.js',
+        filename: './some/dir/Foo.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -459,7 +459,7 @@ export default createRuleTester(
       },
       {
         code: exportedEs6FunctionCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -470,7 +470,7 @@ export default createRuleTester(
 
       {
         code: exportedEs6JsxFunctionCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -483,7 +483,7 @@ export default createRuleTester(
       },
       {
         code: exportedEs6FunctionCode,
-        filename: '/some/dir/foo/index.js',
+        filename: './some/dir/foo/index.js',
         languageOptions: {
           parserOptions: {
             ecmaVersion: 6,
@@ -494,7 +494,7 @@ export default createRuleTester(
 
       {
         code: exportedEs6JsxFunctionCode,
-        filename: '/some/dir/foo/index.js',
+        filename: './some/dir/foo/index.js',
         languageOptions: {
           parserOptions: {
             ecmaFeatures: {
@@ -605,7 +605,7 @@ export default createRuleTester(
       },
       {
         code: exportedJsxClassCode,
-        filename: '/some/dir/Foo.react.js',
+        filename: './some/dir/Foo.react.js',
         options: [{ suffix: '\\.react$' }],
         languageOptions: {
           parserOptions: {
@@ -618,7 +618,7 @@ export default createRuleTester(
       },
       {
         code: exportedEs6JsxClassCode,
-        filename: '/some/dir/Foo.react.js',
+        filename: './some/dir/Foo.react.js',
         options: [{ suffix: '\\.react$' }],
         languageOptions: {
           parserOptions: {
@@ -632,7 +632,7 @@ export default createRuleTester(
       },
       {
         code: exportedCalledFunctionCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
         options: [{ matchCallExpression: true }],
       },
     ],

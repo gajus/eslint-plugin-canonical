@@ -10,7 +10,7 @@ export default createRuleTester(
   'filename-match-regex',
   rule,
   {
-    languageOptions: { parser: typescriptEslintParser }
+    languageOptions: { parser: typescriptEslintParser },
   },
   {
     invalid: [
@@ -23,7 +23,7 @@ export default createRuleTester(
             messageId: 'notMatch',
           },
         ],
-        filename: '/some/dir/foo_bar.js',
+        filename: './some/dir/foo_bar.js',
       },
       {
         code: testCode,
@@ -34,7 +34,7 @@ export default createRuleTester(
             messageId: 'notMatch',
           },
         ],
-        filename: '/some/dir/fooBAR.js',
+        filename: './some/dir/fooBAR.js',
       },
       {
         code: testCode,
@@ -81,12 +81,12 @@ export default createRuleTester(
       },
       {
         code: testCode,
-        filename: '/foo/dir/foo_bar.js',
+        filename: './foo/dir/foo_bar.js',
         options: [{ regex: '^[a-z_]+$' }],
       },
       {
         code: testCode,
-        filename: '/foo/dir/fooBar.js',
+        filename: './foo/dir/fooBar.js',
       },
       {
         code: exportingCode,
