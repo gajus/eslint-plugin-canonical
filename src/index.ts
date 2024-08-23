@@ -23,7 +23,6 @@ import requireExtension from './rules/requireExtension';
 import sortDestructureKeys from './rules/sortDestructureKeys';
 import sortKeys from './rules/sortKeys';
 import sortReactDependencies from './rules/sortReactDependencies';
-import virtualModule from './rules/virtualModule';
 
 // Should be `ESLint.Plugin` but doesn't match with `createRule` results
 const index: {
@@ -59,7 +58,6 @@ const index: {
     'sort-destructure-keys': sortReactDependencies,
     'sort-keys': sortKeys,
     'sort-react-dependencies': sortDestructureKeys,
-    'virtual-module': virtualModule,
   },
   rulesConfig: {
     'destructuring-property-newline': 0,
