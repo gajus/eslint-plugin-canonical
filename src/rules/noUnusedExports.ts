@@ -31,15 +31,14 @@ export default createRule<Options, MessageIds>({
 
     const result = analyzeTsConfig(options.tsConfigPath, tsUnusedOptions);
 
+    const sourceCode = context.sourceCode ?? context.getSourceCode();
+    const filename = context.filename ?? context.getFilename();
+
     return {
       Program() {
-        const filename = context.getFilename();
-
         if (!result[filename]) {
           return;
         }
-
-        const sourceCode = context.getSourceCode();
 
         for (const unusedExport of result[filename]) {
           const index = sourceCode.getIndexFromLoc({

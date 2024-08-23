@@ -91,7 +91,6 @@ export default createRule<Options, keyof typeof messages>({
     docs: {
       description:
         'Restricts re-assigning imports to variables that are exported.',
-      recommended: 'recommended',
     },
     messages,
     schema: [],

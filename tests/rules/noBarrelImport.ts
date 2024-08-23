@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/noBarrelImport';
 import { createRuleTester } from '../RuleTester';
 
@@ -77,7 +78,7 @@ export default createRuleTester(
   'no-barrel-import',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser }
   },
   {
     invalid: [

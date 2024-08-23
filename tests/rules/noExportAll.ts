@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/noExportAll';
 import { createRuleTester } from '../RuleTester';
 
@@ -77,7 +78,7 @@ export default createRuleTester(
   'no-export-all',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser }
   },
   {
     invalid: [invalidTest('namespaceExport'), invalidTest('reExport')],

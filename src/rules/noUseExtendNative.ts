@@ -195,7 +195,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: '',
-      recommended: 'recommended',
     },
     messages: {
       noExtendNative: 'Avoid using extended native objects',

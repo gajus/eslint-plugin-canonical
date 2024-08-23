@@ -20,15 +20,17 @@ import preferInlineTypeImport from './rules/preferInlineTypeImport';
 import preferReactLazy from './rules/preferReactLazy';
 import preferUseMount from './rules/preferUseMount';
 import requireExtension from './rules/requireExtension';
-import sortDestructureKeys from './rules/sortDestructureKeys';
-import sortKeys from './rules/sortKeys';
 import sortReactDependencies from './rules/sortReactDependencies';
-import virtualModule from './rules/virtualModule';
 
-export = {
-  configs: {
-    recommended,
-  },
+// Should be `ESLint.Plugin` but doesn't match with `createRule` results
+const index: {
+  /* eslint-disable @typescript-eslint/no-explicit-any */
+  configs: any;
+  rules: any;
+  rulesConfig: any;
+  /* eslint-enable @typescript-eslint/no-explicit-any */
+} = {
+  configs: {},
   rules: {
     'destructuring-property-newline': destructuringPropertyNewline,
     'export-specifier-newline': exportSpecifierNewline,
@@ -51,10 +53,7 @@ export = {
     'prefer-react-lazy': preferReactLazy,
     'prefer-use-mount': preferUseMount,
     'require-extension': requireExtension,
-    'sort-destructure-keys': sortReactDependencies,
-    'sort-keys': sortKeys,
-    'sort-react-dependencies': sortDestructureKeys,
-    'virtual-module': virtualModule,
+    'sort-react-dependencies': sortReactDependencies,
   },
   rulesConfig: {
     'destructuring-property-newline': 0,
@@ -72,7 +71,20 @@ export = {
     'prefer-inline-type-import': 0,
     'prefer-react-lazy': 0,
     'prefer-use-mount': 0,
-    'require-extension': 0,
-    'sort-keys': 0,
+    'require-extension': 0
   },
 };
+
+const flatRecommended = JSON.parse(JSON.stringify(recommended));
+flatRecommended.plugins = {
+  canonical: index,
+};
+flatRecommended.languageOptions = {
+  parserOptions: flatRecommended.parserOptions,
+};
+delete flatRecommended.parserOptions;
+
+index.configs['flat/recommended'] = flatRecommended;
+index.configs.recommended = recommended;
+
+export = index;

@@ -8,7 +8,7 @@ export default createRule<Options, MessageIds>({
   create: (context) => {
     return {
       ExportNamedDeclaration: (node) => {
-        const sourceCode = context.getSourceCode();
+        const sourceCode = context.sourceCode ?? context.getSourceCode();
         for (let index = 1; index < node.specifiers.length; index++) {
           const lastTokenOfPreviousProperty = sourceCode.getLastToken(
             node.specifiers[index - 1],
@@ -64,7 +64,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Forces every export specifier to be on a new line.',
-      recommended: 'recommended',
     },
     fixable: 'whitespace',
     messages: {

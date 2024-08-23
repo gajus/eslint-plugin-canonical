@@ -14,7 +14,7 @@ export default createRule<Options, MessageIds>({
       ? 'propertiesOnNewlineAll'
       : 'propertiesOnNewline';
 
-    const sourceCode = context.getSourceCode();
+    const sourceCode = context.sourceCode ?? context.getSourceCode();
 
     return {
       ArrayPattern: (node) => {
@@ -196,7 +196,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Like `object-property-newline`, but for destructuring.',
-      recommended: 'recommended',
     },
     fixable: 'whitespace',
     messages: {

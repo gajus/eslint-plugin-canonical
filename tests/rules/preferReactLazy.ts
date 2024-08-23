@@ -1,5 +1,6 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/preferReactLazy';
 import { createRuleTester } from '../RuleTester';
 
@@ -44,10 +45,12 @@ export default createRuleTester(
   'prefer-react-lazy',
   rule,
   {
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-      ecmaFeatures: {
-        jsx: true,
+    languageOptions: {
+      parser: typescriptEslintParser,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        }
       },
     },
   },

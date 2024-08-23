@@ -554,8 +554,9 @@ ExportMap.parse = function (path, content, context) {
   const source = makeSourceCode(content, ast);
 
   function readTsConfig(context) {
+    const parserOptions = context.languageOptions?.parserOptions ?? context.parserOptions;
     const tsconfigInfo = tsConfigLoader({
-      cwd: context.parserOptions && context.parserOptions.tsconfigRootDir || process.cwd(),
+      cwd: parserOptions && parserOptions.tsconfigRootDir || process.cwd(),
       getEnv: (key) => process.env[key],
     });
     try {
@@ -578,8 +579,9 @@ ExportMap.parse = function (path, content, context) {
   }
 
   function isEsModuleInterop() {
+    const parserOptions = context.languageOptions?.parserOptions ?? context.parserOptions;
     const cacheKey = hashObject({
-      tsconfigRootDir: context.parserOptions && context.parserOptions.tsconfigRootDir,
+      tsconfigRootDir: parserOptions && parserOptions.tsconfigRootDir,
     }).digest('hex');
     let tsConfig = tsconfigCache.get(cacheKey);
     if (typeof tsConfig === 'undefined') {
@@ -796,7 +798,11 @@ let prevSettings = '';
  * also calculate a cacheKey, where parts of the cacheKey hash are memoized
  */
 function childContext(path, context) {
-  const { settings, parserOptions, parserPath } = context;
+  const {
+    settings,
+    parserPath, // = context.languageOptions?.parserOptions?.parserPath, // What is the replacement?
+  } = context;
+  const parserOptions = context.languageOptions?.parserOptions ?? context.parserOptions;
 
   if (JSON.stringify(settings) !== prevSettings) {
     settingsHash = hashObject({ settings }).digest('hex');

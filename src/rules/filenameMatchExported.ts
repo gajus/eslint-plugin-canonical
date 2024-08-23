@@ -78,13 +78,13 @@ type MessageIds = 'indexFile' | 'regularFile';
 
 export default createRule<Options, MessageIds>({
   create: (context, [options]) => {
+    const filename = context.filename ?? context.getFilename();
     return {
       Program(node) {
         const transforms = getTransformsFromOptions(options.transforms);
         const replacePattern = options.suffix
           ? new RegExp(options.suffix, 'u')
           : undefined;
-        const filename = context.getFilename();
         const absoluteFilename = path.resolve(filename);
         const parsed = parseFilename(absoluteFilename);
         const shouldIgnore = isIgnoredFilename(filename);
@@ -132,7 +132,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Match the file name against the default exported value in the module.',
-      recommended: 'recommended',
     },
     messages: {
       indexFile:

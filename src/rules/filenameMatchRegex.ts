@@ -30,12 +30,12 @@ export default createRule<Options, MessageIds>({
       ? new RegExp(options.regex, 'u')
       : defaultRegexp;
     const ignoreExporting = options.ignoreExporting;
+    const filename = context.filename ?? context.getFilename();
 
     return {
       Program(node) {
         conventionRegexp.lastIndex = 0;
 
-        const filename = context.getFilename();
         const absoluteFilename = path.resolve(filename);
         const parsed = parseFilename(absoluteFilename);
         const shouldIgnore = isIgnoredFilename(filename);
@@ -73,7 +73,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce a certain file naming convention using a regular expression.',
-      recommended: 'recommended',
     },
     messages: {
       notMatch: "Filename '{{name}}' does not match the naming convention.",

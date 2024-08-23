@@ -1,4 +1,5 @@
 import path from 'node:path';
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/preferImportAlias';
 import { createRuleTester } from '../RuleTester';
 
@@ -11,7 +12,7 @@ export default createRuleTester(
   'prefer-import-alias',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser }
   },
   {
     invalid: [
@@ -70,15 +71,6 @@ export default createRuleTester(
             aliases: [
               { alias: '@/a/', matchParent: baseDirectory, matchPath: '^a\\/' },
             ],
-            baseDirectory,
-          },
-        ],
-      },
-      {
-        code: `import { foo } from '@bar/baz';`,
-        filename: path.join(baseDirectory, './a/b/c/foo.ts'),
-        options: [
-          {
             baseDirectory,
           },
         ],

@@ -21,7 +21,7 @@ type MessageIds = 'noTypeImport';
 
 export default createRule<Options, MessageIds>({
   create: (context) => {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = context.sourceCode ?? context.getSourceCode();
     return {
       ImportDeclaration: (node) => {
         if (node.importKind !== 'type') {
@@ -57,7 +57,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: '',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

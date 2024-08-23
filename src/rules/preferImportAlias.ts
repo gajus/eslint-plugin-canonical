@@ -37,6 +37,7 @@ export default createRule<Options, MessageIds>({
         matchPath: new RegExp(temporaryAlias.matchPath, 'u'),
       };
     });
+    const filename = context.filename ?? context.getFilename();
 
     return {
       ImportDeclaration(node) {
@@ -48,7 +49,7 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        const parsedPath = path.parse(context.getFilename());
+        const parsedPath = path.parse(filename);
 
         // e.g. grandparentAccessor => '../../' => 2
         const depth = accessor === './' ? 0 : accessor.length / 3;
@@ -121,7 +122,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Restrict imports to path aliases or relative imports limited by depth.',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

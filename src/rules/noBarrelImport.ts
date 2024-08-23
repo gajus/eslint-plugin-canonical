@@ -73,7 +73,7 @@ const findImportSource = (
 
 export default createRule<Options, MessageIds>({
   create: (context) => {
-    const myPath = context.getFilename();
+    const myPath = context.filename ?? context.getFilename();
 
     // can't cycle-check a non-file
     if (myPath === '<text>') return {};
@@ -240,7 +240,6 @@ export default createRule<Options, MessageIds>({
   meta: {
     docs: {
       description: 'Require that imports are made directly from the source',
-      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

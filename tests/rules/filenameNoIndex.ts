@@ -1,3 +1,4 @@
+import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/filenameNoIndex';
 import { createRuleTester } from '../RuleTester';
 
@@ -7,7 +8,7 @@ export default createRuleTester(
   'filename-no-index',
   rule,
   {
-    parser: '@typescript-eslint/parser',
+    languageOptions: { parser: typescriptEslintParser },
   },
   {
     invalid: [
@@ -31,10 +32,9 @@ export default createRuleTester(
             messageId: 'noIndex',
           },
         ],
-        filename: '/some/dir/index.js',
+        filename: './some/dir/index.js',
       },
     ],
-
     valid: [
       {
         code: testCode,
@@ -50,7 +50,7 @@ export default createRuleTester(
       },
       {
         code: testCode,
-        filename: '/some/dir/foo.js',
+        filename: './some/dir/foo.js',
       },
     ],
   },

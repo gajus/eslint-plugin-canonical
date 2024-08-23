@@ -10,9 +10,9 @@ import { isIndexFile } from '../utilities/isIndexFile';
 import { parseFilename } from '../utilities/parseFilename';
 
 const create = (context) => {
+  const filename = context.filename ?? context.getFilename();
   return {
     Program(node) {
-      const filename = context.getFilename();
       const absoluteFilename = path.resolve(filename);
       const parsed = parseFilename(absoluteFilename);
       const shouldIgnore = isIgnoredFilename(filename);
