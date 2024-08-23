@@ -20,7 +20,6 @@ import preferInlineTypeImport from './rules/preferInlineTypeImport';
 import preferReactLazy from './rules/preferReactLazy';
 import preferUseMount from './rules/preferUseMount';
 import requireExtension from './rules/requireExtension';
-import sortDestructureKeys from './rules/sortDestructureKeys';
 import sortReactDependencies from './rules/sortReactDependencies';
 
 // Should be `ESLint.Plugin` but doesn't match with `createRule` results
@@ -54,8 +53,7 @@ const index: {
     'prefer-react-lazy': preferReactLazy,
     'prefer-use-mount': preferUseMount,
     'require-extension': requireExtension,
-    'sort-destructure-keys': sortReactDependencies,
-    'sort-react-dependencies': sortDestructureKeys,
+    'sort-react-dependencies': sortReactDependencies,
   },
   rulesConfig: {
     'destructuring-property-newline': 0,

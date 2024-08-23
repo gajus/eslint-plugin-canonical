@@ -1945,35 +1945,6 @@ import { Chance } from 'chance';
 
 </details>
 
-<a name="user-content-eslint-plugin-canonical-rules-sort-destructure-keys"></a>
-<a name="eslint-plugin-canonical-rules-sort-destructure-keys"></a>
-### <code>sort-destructure-keys</code>
-
-_The `--fix` option on the command line automatically fixes problems reported by this rule._
-
-Requires that object destructuring properties are sorted alphabetically.
-
-<details><summary>📖 Examples</summary>
-The following patterns are considered problems:
-
-```js
-const {b, a} = foo
-// Message: undefined
-
-// Options: [{"caseSensitive":true}]
-const {a, B} = foo
-// Message: undefined
-```
-
-The following patterns are not considered problems:
-
-```js
-const {a, b} = foo
-```
-
-</details>
-
-
 <a name="user-content-eslint-plugin-canonical-rules-sort-react-dependencies"></a>
 <a name="eslint-plugin-canonical-rules-sort-react-dependencies"></a>
 ### <code>sort-react-dependencies</code>
@@ -1999,7 +1970,6 @@ The following patterns are not considered problems:
 ```js
 useEffect(() => {}, [a, b])
 ```
-
 </details>
 
 <a name="user-content-eslint-plugin-canonical-faq"></a>

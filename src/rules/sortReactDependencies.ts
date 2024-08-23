@@ -1,7 +1,3 @@
-/**
- * @author https://github.com/mthadley/eslint-plugin-sort-destructure-keys/blob/master/tests/lib/rules/sort-destructure-keys.js
- */
-
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/types';
 import naturalCompare from 'natural-compare';
 import { createRule } from '../utilities';
