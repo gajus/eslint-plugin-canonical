@@ -1,6 +1,6 @@
-import eslintPluginCanonical from './dist/src/index.js';
+const eslintPluginCanonical = require('./dist/src/index.js');
 
-export default [
+module.exports = [
   {
     ignores: [
       'package-lock.json',
