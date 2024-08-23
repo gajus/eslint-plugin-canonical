@@ -165,7 +165,9 @@ export default createRuleTester(
         ],
         output: 'var obj = {...z, b:1, c:1}',
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
@@ -190,7 +192,9 @@ export default createRuleTester(
         ],
         output: 'var obj = {...z, ...c, b:1, d:4, ...y, ...f, a:1, e:2}',
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
@@ -207,7 +211,9 @@ export default createRuleTester(
         ],
         output: 'var obj = {b:1, c:1, ...a}',
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
@@ -224,7 +230,9 @@ export default createRuleTester(
         ],
         output: 'var obj = {...z, ...a, b:1, c:1}',
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
@@ -241,7 +249,9 @@ export default createRuleTester(
         ],
         output: 'var obj = {...z, a:1, b:1, ...d, ...c}',
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
@@ -259,7 +269,9 @@ export default createRuleTester(
         options: ['desc'],
         output: 'var obj = {...z, b:0, a:2, ...x, ...c}',
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
@@ -277,7 +289,9 @@ export default createRuleTester(
         options: ['desc'],
         output: 'var obj = {...z, b:0, a:2, ...x}',
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
@@ -295,7 +309,9 @@ export default createRuleTester(
         options: ['desc'],
         output: "var obj = {...z, a:2, '':1}",
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
 
@@ -314,7 +330,9 @@ export default createRuleTester(
         ],
         output: "var obj = {'':3, [b+c]:2, a:1}",
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
       {
@@ -332,7 +350,9 @@ export default createRuleTester(
         options: ['desc'],
         output: "var obj = {a:3, [b+c]:2, '':1}",
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
       {
@@ -350,7 +370,9 @@ export default createRuleTester(
         options: ['desc'],
         output: "var obj = {b:1, [f()]:2, a:4, '':3}",
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
 
@@ -369,7 +391,9 @@ export default createRuleTester(
         ],
         output: 'var obj = {a:1, [a]: -1, b:3, c:2}',
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
 
@@ -1640,21 +1664,27 @@ export default createRuleTester(
         code: 'var obj = {a:1, b:3, [a + b]: -1, c:2}',
         options: [],
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
       {
         code: "var obj = {'':1, [f()]:2, a:3}",
         options: [],
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
       {
         code: "var obj = {a:1, [b++]:2, '':3}",
         options: ['desc'],
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
 
@@ -1663,49 +1693,63 @@ export default createRuleTester(
         code: 'var obj = {a:1, ...z, b:1}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'var obj = {b:1, ...z, a:1}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'var obj = {...a, b:1, ...c, d:1}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'var obj = {...a, b:1, ...d, ...c, e:2, z:5}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'var obj = {b:1, ...c, ...d, e:2}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: "var obj = {a:1, ...z, '':2}",
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: "var obj = {'':1, ...z, 'a':2}",
         options: ['desc'],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
 
@@ -1714,28 +1758,36 @@ export default createRuleTester(
         code: 'var obj = {...z, a:1, b:1}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'var obj = {...z, ...c, a:1, b:1}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'var obj = {a:1, b:1, ...z}',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'var obj = {...z, ...x, a:1, ...c, ...d, f:5, e:4}',
         options: ['desc'],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
 
@@ -1744,14 +1796,18 @@ export default createRuleTester(
         code: 'function fn(...args) { return [...args].length; }',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
       {
         code: 'function g() {}; function f(...args) { return g(...args); }',
         options: [],
         languageOptions: {
-          ecmaVersion: 2_018,
+          parserOptions: {
+            ecmaVersion: 2_018,
+          },
         },
       },
 
@@ -1760,7 +1816,9 @@ export default createRuleTester(
         code: 'let {a, b} = {}',
         options: [],
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
 

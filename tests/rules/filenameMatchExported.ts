@@ -58,7 +58,9 @@ export default createRuleTester(
         ],
         filename: '/some/dir/foo.js',
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
       {
@@ -120,8 +122,10 @@ export default createRuleTester(
         ],
         filename: '/some/dir/fooBar.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -135,8 +139,10 @@ export default createRuleTester(
         ],
         filename: '/some/dir/bar.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -153,10 +159,10 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
@@ -170,8 +176,10 @@ export default createRuleTester(
         ],
         filename: '/some/dir/fooBar/index.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
 
@@ -189,10 +197,10 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
@@ -206,8 +214,10 @@ export default createRuleTester(
         ],
         filename: 'index.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -224,9 +234,9 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
           },
-          ecmaVersion: 6,
         },
       },
       {
@@ -253,8 +263,10 @@ export default createRuleTester(
         filename: 'variableName.js',
         options: [{ transforms: 'kebab' }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -269,8 +281,10 @@ export default createRuleTester(
         filename: 'variableName.js',
         options: [{ transforms: 'pascal' }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -285,8 +299,10 @@ export default createRuleTester(
         filename: 'variableName.js',
         options: [{ transforms: ['pascal', 'snake'] }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -304,10 +320,10 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
@@ -325,10 +341,10 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
@@ -358,8 +374,10 @@ export default createRuleTester(
         code: testCallCode,
         filename: '/some/dir/foo.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -370,7 +388,9 @@ export default createRuleTester(
         code: exportedClassCode,
         filename: '/some/dir/Foo.js',
         languageOptions: {
-          ecmaVersion: 6,
+          parserOptions: {
+            ecmaVersion: 6,
+          },
         },
       },
       {
@@ -380,9 +400,9 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
           },
-          ecmaVersion: 6,
         },
       },
       {
@@ -408,16 +428,20 @@ export default createRuleTester(
         code: exportedEs6VariableCode,
         filename: '/some/dir/exported.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
         code: exportedEs6ClassCode,
         filename: '/some/dir/Foo.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -427,18 +451,20 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
         code: exportedEs6FunctionCode,
         filename: '/some/dir/foo.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
 
@@ -449,18 +475,20 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
         code: exportedEs6FunctionCode,
         filename: '/some/dir/foo/index.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
 
@@ -471,10 +499,10 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
@@ -483,8 +511,10 @@ export default createRuleTester(
         // /foo is used as cwd for test setup so full path will be /foo/index.js
         filename: 'index.js',
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -512,8 +542,10 @@ export default createRuleTester(
         filename: 'variable_name.js',
         options: [{ transforms: 'snake' }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -521,8 +553,10 @@ export default createRuleTester(
         filename: 'variable-name.js',
         options: [{ transforms: 'kebab' }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -530,8 +564,10 @@ export default createRuleTester(
         filename: 'variableName.js',
         options: [{ transforms: 'camel' }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -539,8 +575,10 @@ export default createRuleTester(
         filename: 'VariableName.js',
         options: [{ transforms: 'pascal' }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -548,8 +586,10 @@ export default createRuleTester(
         filename: 'variableName.js',
         options: [{ transforms: ['pascal', 'camel'] }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -557,8 +597,10 @@ export default createRuleTester(
         filename: 'VariableName.js',
         options: [{ transforms: ['pascal', 'camel'] }],
         languageOptions: {
-          ecmaVersion: 6,
-          sourceType: 'module',
+          parserOptions: {
+            ecmaVersion: 6,
+            sourceType: 'module',
+          },
         },
       },
       {
@@ -569,9 +611,9 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
           },
-          ecmaVersion: 6,
         },
       },
       {
@@ -582,10 +624,10 @@ export default createRuleTester(
           parserOptions: {
             ecmaFeatures: {
               jsx: true,
-            }
+            },
+            ecmaVersion: 6,
+            sourceType: 'module',
           },
-          ecmaVersion: 6,
-          sourceType: 'module',
         },
       },
       {
