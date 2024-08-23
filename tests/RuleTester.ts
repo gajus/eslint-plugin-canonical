@@ -1,9 +1,5 @@
-import { RuleTester } from 'eslint';
-import {
-  type InvalidTestCase,
-  type ValidTestCase,
-  type RuleModule,
-} from '@typescript-eslint/utils/ts-eslint';
+import { InvalidTestCase, RuleTester, ValidTestCase } from '@typescript-eslint/rule-tester';
+import { RuleModule } from '@typescript-eslint/utils/eslint-utils';
 import * as test from 'mocha';
 
 if (typeof global.it === 'function') {
