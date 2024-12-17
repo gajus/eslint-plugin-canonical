@@ -13,7 +13,6 @@ import noReExport from './rules/noReExport';
 import noReassignImports from './rules/noReassignImports';
 import noRestrictedImports from './rules/noRestrictedImports';
 import noRestrictedStrings from './rules/noRestrictedStrings';
-import noUnusedExports from './rules/noUnusedExports';
 import noUseExtendNative from './rules/noUseExtendNative';
 import preferImportAlias from './rules/preferImportAlias';
 import preferInlineTypeImport from './rules/preferInlineTypeImport';
@@ -46,7 +45,6 @@ const index: {
     'no-reassign-imports': noReassignImports,
     'no-restricted-imports': noRestrictedImports,
     'no-restricted-strings': noRestrictedStrings,
-    'no-unused-exports': noUnusedExports,
     'no-use-extend-native': noUseExtendNative,
     'prefer-import-alias': preferImportAlias,
     'prefer-inline-type-import': preferInlineTypeImport,

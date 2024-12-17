@@ -51,7 +51,15 @@ npm install eslint-plugin-canonical --save-dev
     ],
     "canonical/no-restricted-strings": 0,
     "canonical/no-use-extend-native": 2,
-    "canonical/prefer-inline-type-import": 2
+    "canonical/prefer-inline-type-import": 2,
+    "canonical/sort-keys": [
+      2,
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ]
   }
 }
 ```
@@ -948,37 +956,37 @@ settings: {
 The following patterns are considered problems:
 
 ```js
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/invalid/barrelImport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/invalid/barrelImport/tsconfig.json"}}}
 import { foo } from './bar';
 
 // Message: undefined
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/invalid/barrelImportAliased/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/invalid/barrelImportAliased/tsconfig.json"}}}
 import { foo as FOO } from './bar';
 
 // Message: undefined
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/invalid/barrelImportAliasedReexport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/invalid/barrelImportAliasedReexport/tsconfig.json"}}}
 import { bar } from './bar';
 
 // Message: undefined
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/invalid/barrelImportDeep/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/invalid/barrelImportDeep/tsconfig.json"}}}
 import { foo } from './baz';
 
 // Message: undefined
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/invalid/barrelImportDefault/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/invalid/barrelImportDefault/tsconfig.json"}}}
 import foo from './bar';
 
 // Message: undefined
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/invalid/barrelTypeImport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/invalid/barrelTypeImport/tsconfig.json"}}}
 import { type Foo } from './bar';
 
 // Message: undefined
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/invalid/mixedImport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/invalid/mixedImport/tsconfig.json"}}}
 import { foo, bar } from './bar';
 
 // Message: undefined
@@ -987,15 +995,15 @@ import { foo, bar } from './bar';
 The following patterns are not considered problems:
 
 ```js
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/valid/directImport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/valid/directImport/tsconfig.json"}}}
 import { foo } from './foo';
 
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/valid/directImportDefault/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/valid/directImportDefault/tsconfig.json"}}}
 import foo from './foo';
 
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noBarrelImport/valid/packageImport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noBarrelImport/valid/packageImport/tsconfig.json"}}}
 import { logLevels } from 'roarr';
 
 ```
@@ -1014,12 +1022,12 @@ Requite that re-exports are named.
 The following patterns are considered problems:
 
 ```js
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noExportAll/invalid/namespaceExport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noExportAll/invalid/namespaceExport/tsconfig.json"}}}
 export * from './foo';
 
 // Message: undefined
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noExportAll/invalid/reExport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noExportAll/invalid/reExport/tsconfig.json"}}}
 export * from './foo';
 
 // Message: undefined
@@ -1028,11 +1036,11 @@ export * from './foo';
 The following patterns are not considered problems:
 
 ```js
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noExportAll/valid/namedExport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noExportAll/valid/namedExport/tsconfig.json"}}}
 export { FOO } from './foo';
 
 
-// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noExportAll/valid/aliasedReExport/tsconfig.json"}}}
+// Settings: {"import/parsers":{"@typescript-eslint/parser":[".ts",".tsx"]},"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/noExportAll/valid/aliasedReExport/tsconfig.json"}}}
 export * as foo from './foo';
 
 ```
@@ -1395,6 +1403,8 @@ error.plugn()
 
 array.custom
 
+Object.groupBy()
+
 Object.assign()
 
 Object.keys
@@ -1584,15 +1594,15 @@ The grandfather directory is essentially whichever directory that is accessed by
 The following patterns are considered problems:
 
 ```js
-// Options: [{"aliases":[{"alias":"@/a/","matchPath":"^a\\/","maxRelativeDepth":-1}],"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"aliases":[{"alias":"@/a/","matchPath":"^a\\/","maxRelativeDepth":-1}],"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { bar } from './bar';
 // Message: undefined
 
-// Options: [{"aliases":[{"alias":"@/a/","matchPath":"^a\\/","maxRelativeDepth":1}],"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"aliases":[{"alias":"@/a/","matchPath":"^a\\/","maxRelativeDepth":1}],"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { baz } from '../baz';
 // Message: undefined
 
-// Options: [{"aliases":[{"alias":"@/a/","matchPath":"^a\\/"}],"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"aliases":[{"alias":"@/a/","matchPath":"^a\\/"}],"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { bar } from '../bar';
 // Message: undefined
 ```
@@ -1600,34 +1610,31 @@ import { bar } from '../bar';
 The following patterns are not considered problems:
 
 ```js
-// Options: [{"aliases":[{"alias":"@/a/","matchParent":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias","matchPath":"^a\\/"}],"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"aliases":[{"alias":"@/a/","matchParent":"<baseDir>/fixtures/preferImportAlias","matchPath":"^a\\/"}],"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { bar } from '../bar';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
-import { foo } from '@bar/baz';
-
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import Foo from '@bar/baz';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import Foo, { Foo } from 'bar';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { foo } from './foo';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { foo } from '../foo';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { foo } from '.././foo';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { foo } from '././../foo';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { foo } from '@bar/baz';
 
-// Options: [{"baseDirectory":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/fixtures/preferImportAlias"}]
+// Options: [{"baseDirectory":"<baseDir>/fixtures/preferImportAlias"}]
 import { foo } from '../../foo';
 ```
 
@@ -1832,37 +1839,32 @@ import { foo } from '@/foo'; // => import { foo } from '@/foo/index.js';
 The following patterns are considered problems:
 
 ```js
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/pathsImport/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/pathsImport/tsconfig.json"}}}
 import { foo } from '@/foo';
 
 // Message: undefined
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/pathsImportWithIndex/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/pathsImportWithIndex/tsconfig.json"}}}
 import { foo } from '@/foo';
 
 // Message: undefined
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/pathsImportWithIndex/tsconfig.json"}}}
-import { foo } from '@/foo';
-
-// Message: undefined
-
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/relativeImport/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/relativeImport/tsconfig.json"}}}
 import { foo } from './foo';
 
 // Message: undefined
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/relativeImportWithIndex/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/relativeImportWithIndex/tsconfig.json"}}}
 import { foo } from './foo';
 
 // Message: undefined
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/relativeNamedExport/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/relativeNamedExport/tsconfig.json"}}}
 export { foo } from './foo';
 
 // Message: undefined
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/exportAllDeclaration/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/exportAllDeclaration/tsconfig.json"}}}
 export * from './foo';
 
 // Message: undefined
@@ -1871,34 +1873,34 @@ export * from './foo';
 The following patterns are not considered problems:
 
 ```js
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/pathsImportIgnoreSearchParams/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/pathsImportIgnoreSearchParams/tsconfig.json"}}}
 // @ts-expect-error ignore search params
 import { foo } from './foo.svg?url';
 
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/pathsImportIgnoreUnknownExtensions/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/pathsImportIgnoreUnknownExtensions/tsconfig.json"}}}
 import { foo } from '@/foo.css';
 
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/pathsImportWithExtension/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/pathsImportWithExtension/tsconfig.json"}}}
 import { foo } from '@/foo.js';
 
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/relativeImportIgnoreUnknownExtensions/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/relativeImportIgnoreUnknownExtensions/tsconfig.json"}}}
 import { foo } from './foo.css';
 
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/relativeImportWithExtension/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/relativeImportWithExtension/tsconfig.json"}}}
 import { foo } from './foo.js';
 
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/typedPackageImport/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/typedPackageImport/tsconfig.json"}}}
 // Note that this resolves to roarr, which is a package with TypeScript types.
 // Compare this test to the "packageTypesImport" test which imports dependency's types.
 import { Roarr } from 'roarr';
 
 
-// Settings: {"import/resolver":{"typescript":{"project":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/requireExtension/packageTypesImport/tsconfig.json"}}}
+// Settings: {"import/resolver":{"typescript":{"project":"<baseDir>/tests/fixtures/requireExtension/packageTypesImport/tsconfig.json"}}}
 // Note that this resolves to @types/chance, which is a TypeScript declaration file.
 // Compare this test to the "typedPackageImport" test which imports a typed dependency.
 import { Chance } from 'chance';
@@ -1932,7 +1934,9 @@ The following patterns are not considered problems:
 ```js
 useEffect(() => {}, [a, b])
 ```
+
 </details>
+
 
 <a name="user-content-eslint-plugin-canonical-faq"></a>
 <a name="eslint-plugin-canonical-faq"></a>

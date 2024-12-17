@@ -10,6 +10,7 @@
     "debug": "^4.4.0",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-module-utils": "^2.12.0",
+    "gitdown": "^4.1.1",
     "is-get-set-prop": "^1.0.0",
     "is-js-type": "^2.0.0",
     "is-obj-prop": "^1.0.0",
@@ -63,6 +64,7 @@
   },
   "scripts": {
     "build": "rm -fr ./dist && tsc",
+    "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
     "lint": "eslint .",
     "test": "mocha --require tsx './tests/rules/*'"
   },

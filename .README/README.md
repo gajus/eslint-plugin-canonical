@@ -97,17 +97,13 @@ See [ESLint documentation](https://eslint.org/docs/user-guide/configuring/config
 {"gitdown": "include", "file": "./rules/no-reassign-imports.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-imports.md"}
 {"gitdown": "include", "file": "./rules/no-restricted-strings.md"}
-{"gitdown": "include", "file": "./rules/no-unused-exports.md"}
 {"gitdown": "include", "file": "./rules/no-use-extend-native.md"}
 {"gitdown": "include", "file": "./rules/prefer-import-alias.md"}
 {"gitdown": "include", "file": "./rules/prefer-inline-type-import.md"}
 {"gitdown": "include", "file": "./rules/prefer-react-lazy.md"}
 {"gitdown": "include", "file": "./rules/prefer-use-mount.md"}
 {"gitdown": "include", "file": "./rules/require-extension.md"}
-{"gitdown": "include", "file": "./rules/sort-destructure-keys.md"}
-{"gitdown": "include", "file": "./rules/sort-keys.md"}
 {"gitdown": "include", "file": "./rules/sort-react-dependencies.md"}
-{"gitdown": "include", "file": "./rules/virtual-module.md"}
 
 ## FAQ
 

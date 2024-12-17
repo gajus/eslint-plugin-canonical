@@ -7,15 +7,17 @@ import path from 'node:path';
 import glob from 'glob';
 import _ from 'lodash';
 
+const BASE_DIR = path.resolve(__dirname, '../..');
+
 const formatCodeSnippet = (setup) => {
   const paragraphs: string[] = [];
 
   if (setup.options) {
-    paragraphs.push('// Options: ' + JSON.stringify(setup.options));
+    paragraphs.push('// Options: ' + JSON.stringify(setup.options).replaceAll(BASE_DIR, '<baseDir>'));
   }
 
   if (setup.settings) {
-    paragraphs.push('// Settings: ' + JSON.stringify(setup.settings));
+    paragraphs.push('// Settings: ' + JSON.stringify(setup.settings).replaceAll(BASE_DIR, '<baseDir>'));
   }
 
   paragraphs.push(setup.code);
