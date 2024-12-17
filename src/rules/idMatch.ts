@@ -269,6 +269,7 @@ export default createRule<Options, MessageIds>({
             // Ignore named import
           } else if (
             'local' in parent &&
+            parent.local.type === AST_NODE_TYPES.Identifier &&
             parent.local.name === node.name &&
             isInvalid(name)
           ) {

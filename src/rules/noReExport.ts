@@ -87,13 +87,20 @@ export default createRule<Options, MessageIds>({
           }
         } else if (node.specifiers) {
           for (const specifier of node.specifiers) {
-            if (node.source && specifier.local.name === 'default') {
+            if (
+              node.source &&
+              specifier.exported.type === AST_NODE_TYPES.Identifier &&
+              specifier.local.type === AST_NODE_TYPES.Identifier &&
+              specifier.local.name === 'default'
+            ) {
               // export { default as Button } from 'app/CustomButtom';
               appendToExports(specifier.exported.name, {
                 location: specifier.exported.loc,
                 type: 'DefaultReExport',
               });
-            } else {
+            } else if (
+              specifier.local.type === AST_NODE_TYPES.Identifier
+            ) {
               // export { Button }
               appendToExports(specifier.local.name, {
                 location: specifier.local.loc,

@@ -218,6 +218,7 @@ const handleAliasPath = (
   }
 
   if (!resolvedImportPath) {
+    // @ts-expect-error TODO check what's going on here
     resolvedImportPath = resolveImport(importPath, context);
   }
 

@@ -30,6 +30,10 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
+          if (specifier.imported.type !== 'Identifier') {
+            continue;
+          }
+
           imported.push(specifier.imported.name);
         }
       },

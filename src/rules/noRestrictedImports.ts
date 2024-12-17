@@ -92,7 +92,8 @@ export default createRule<Options, keyof typeof messages>({
 
         const importSpecifiers = node.specifiers.filter(
           (specifier) =>
-            specifier.type === 'ImportSpecifier' &&
+            specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+            specifier.imported.type === AST_NODE_TYPES.Identifier &&
             specifier.imported.name === importName,
         );
 

@@ -1,3 +1,4 @@
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import { createRule } from '../utilities';
 
 type Options = [];
@@ -77,7 +78,11 @@ export default createRule<Options, keyof typeof messages>({
       },
       ImportDeclaration(node) {
         for (const specifier of node.specifiers) {
-          if (specifier.type !== 'ImportSpecifier') {
+          if (specifier.type !== AST_NODE_TYPES.ImportSpecifier) {
+            continue;
+          }
+
+          if (specifier.imported.type !== AST_NODE_TYPES.Identifier) {
             continue;
           }
 
