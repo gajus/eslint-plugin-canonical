@@ -1239,44 +1239,6 @@ const foo = "bar";
 
 The 1st option is an array of strings that cannot be contained in the codebase.
 
-<a name="user-content-eslint-plugin-canonical-rules-no-unused-exports"></a>
-<a name="eslint-plugin-canonical-rules-no-unused-exports"></a>
-### <code>no-unused-exports</code>
-
-Identifies unused TypeScript exports.
-
-> **Note** This rule is implemented using [`ts-unused-exports`](https://github.com/pzavolinsky/ts-unused-exports).
-
-<a name="user-content-eslint-plugin-canonical-rules-no-unused-exports-options-2"></a>
-<a name="eslint-plugin-canonical-rules-no-unused-exports-options-2"></a>
-#### Options
-
-|Config|Type|Required|Default|Description|
-|---|---|---|---|---|
-|`tsConfigPath`|string|Required||Path to [tsconfig.json](https://www.typescriptlang.org/docs/handbook/tsconfig-json.html)|
-|`allowUnusedEnums`|boolean||`false`|Allow unused `enum`s.|
-|`allowUnusedTypes`|boolean||`false`|Allow unused `type` and `interface`.|
-
-<details><summary>📖 Examples</summary>
-The following patterns are considered problems:
-
-```js
-// Options: [{"tsConfigPath":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noUnusedExports/tsconfig.json"}]
-export const FOO = '';
-
-// Message: undefined
-```
-
-The following patterns are not considered problems:
-
-```js
-// Options: [{"tsConfigPath":"/Users/gajus/Developer/gajus/eslint-plugin-canonical/tests/fixtures/noUnusedExports/tsconfig.json"}]
-export const BAR = '';
-
-```
-
-</details>
-
 <a name="user-content-eslint-plugin-canonical-rules-no-use-extend-native"></a>
 <a name="eslint-plugin-canonical-rules-no-use-extend-native"></a>
 ### <code>no-use-extend-native</code>

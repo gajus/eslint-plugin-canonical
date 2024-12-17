@@ -18,7 +18,6 @@
     "natural-compare": "^1.4.0",
     "recast": "^0.23.9",
     "roarr": "^7.21.1",
-    "ts-unused-exports": "^9.0.3",
     "xregexp": "^5.1.1"
   },
   "description": "Canonical linting rules for ESLint.",
