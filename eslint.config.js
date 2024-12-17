@@ -1,6 +1,7 @@
 const eslintPluginCanonical = require('./dist/src/index.js');
 
 module.exports = [
+  eslintPluginCanonical.configs['flat/recommended'],
   {
     ignores: [
       'package-lock.json',
@@ -18,5 +19,4 @@ module.exports = [
       '!.releaserc',
     ],
   },
-  eslintPluginCanonical.configs['flat/recommended'],
 ];
