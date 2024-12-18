@@ -1,4 +1,4 @@
-const eslintPluginCanonical = require('./dist/src/index.js');
+const eslintPluginCanonical = require('./dist/index.js');
 
 module.exports = [
   eslintPluginCanonical.configs['flat/recommended'],
