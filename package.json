@@ -56,14 +56,15 @@
     "canonical"
   ],
   "license": "BSD-3-Clause",
-  "main": "./dist/src/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "name": "eslint-plugin-canonical",
   "repository": {
     "type": "git",
     "url": "https://github.com/gajus/eslint-plugin-canonical"
   },
   "scripts": {
-    "build": "rm -fr ./dist && tsc",
+    "build": "rm -fr ./dist && tsc --project ./tsconfig.build.json",
     "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
     "lint": "eslint .",
     "test": "mocha --require tsx './tests/rules/*'"

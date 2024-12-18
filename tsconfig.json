@@ -10,7 +10,6 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": false,
-    "outDir": "dist",
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,8 +19,6 @@
     "target": "es2015"
   },
   "exclude": [
-    "dist",
-    "node_modules",
     "tests/fixtures"
   ],
   "include": [
