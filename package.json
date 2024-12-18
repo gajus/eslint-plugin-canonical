@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "@typescript-eslint/utils": "^8.18.1",
+    "array-includes": "^3.1.8",
     "chance": "^1.1.12",
     "debug": "^4.4.0",
     "eslint-import-resolver-typescript": "^3.7.0",
