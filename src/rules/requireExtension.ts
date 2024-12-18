@@ -1,10 +1,11 @@
 import { existsSync, lstatSync, readFileSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { dirname, resolve, sep } from 'node:path';
 import { type TSESTree, type TSESLint } from '@typescript-eslint/utils';
 import resolveImport from 'eslint-module-utils/resolve';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
 import { readPackageJson } from '../utilities/readPackageJson';
+import { findRootPath } from '../utilities/findRootPath';
 
 const extensions = ['.js', '.ts', '.tsx'];
 
@@ -60,7 +61,7 @@ const fixRelativeImport = (
       return fixer.replaceTextRange(
         node.source.range,
         `'${
-          node.source.value + '/index' + (overrideExtension ? '.js' : extension)
+          node.source.value + `${sep}index` + (overrideExtension ? '.js' : extension)
         }'`,
       );
     }
@@ -234,7 +235,7 @@ const handleAliasPath = (
   const targetPackageJsonPath = findDirectory(
     resolvedImportPath,
     'package.json',
-    '/',
+    findRootPath(resolvedImportPath),
   );
 
   if (targetPackageJsonPath) {
@@ -242,7 +243,7 @@ const handleAliasPath = (
       const currentPackageJsonPath = findDirectory(
         filename,
         'package.json',
-        '/',
+        findRootPath(resolvedImportPath),
       );
 
       if (

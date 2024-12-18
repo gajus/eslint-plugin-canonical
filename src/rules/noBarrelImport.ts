@@ -4,6 +4,7 @@ import * as recast from 'recast';
 import { createRule } from '../utilities';
 import { findDirectory } from '../utilities/findDirectory';
 import ExportMapAny from './ExportMap';
+import { findRootPath } from '../utilities/findRootPath';
 
 /**
  * https://stackoverflow.com/a/45242825/368691
@@ -78,7 +79,11 @@ export default createRule<Options, MessageIds>({
     // can't cycle-check a non-file
     if (myPath === '<text>') return {};
 
-    const myModuleRoot = findDirectory(dirname(myPath), 'package.json', '/');
+    const myModuleRoot = findDirectory(
+      dirname(myPath),
+      'package.json',
+      findRootPath(myPath),
+    );
 
     if (!myModuleRoot) {
       throw new Error('cannot find package.json');
