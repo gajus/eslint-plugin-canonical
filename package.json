@@ -17,7 +17,7 @@
     "is-obj-prop": "^1.0.0",
     "is-proto-prop": "^2.0.0",
     "lodash": "^4.17.21",
-    "natural-compare": "^1.4.0",
+    "natural-orderby": "^5.0.0",
     "recast": "^0.23.9",
     "roarr": "^7.21.1",
     "xregexp": "^5.1.1"

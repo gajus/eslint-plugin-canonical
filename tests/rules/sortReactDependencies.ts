@@ -17,16 +17,6 @@ export default createRuleTester(
         ],
         output: 'useEffect(() => {}, [a, b])',
       },
-      {
-        code: 'useEffect(() => {}, [a, B])',
-        errors: [
-          {
-            messageId: 'sort',
-          },
-        ],
-        options: [{ caseSensitive: true }],
-        output: 'useEffect(() => {}, [B, a])',
-      },
     ],
     valid: [
       {

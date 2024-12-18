@@ -1,14 +1,14 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/types';
-import naturalCompare from 'natural-compare';
+import { orderBy } from 'natural-orderby';
 import { createRule } from '../utilities';
 
 const defaultOptions = {
-  caseSensitive: true,
-};
+  order: 'asc',
+} as const;
 
 type Options = [
   {
-    caseSensitive?: boolean;
+    order?: 'asc' | 'desc';
   },
 ];
 
@@ -18,7 +18,7 @@ const messages = {
 
 export default createRule<Options, keyof typeof messages>({
   create: (context, [options]) => {
-    const { caseSensitive = true } = options;
+    const { caseSensitive = true, order = 'asc' } = options;
 
     return {
       CallExpression(node) {
@@ -46,15 +46,7 @@ export default createRule<Options, keyof typeof messages>({
           return;
         }
 
-        // eslint-disable-next-line unicorn/consistent-function-scoping
-        const sorter = (a: string, b: string) => {
-          const result = naturalCompare(a, b);
-          return caseSensitive ? result : result * -1;
-        };
-
-        const sortedElements = [...elements].sort((a, b) =>
-          sorter(a.name, b.name),
-        );
+        const sortedElements = orderBy(elements, [value => value.name], [order])
 
         for (const [index, element] of elements.entries()) {
           if (element?.name !== sortedElements[index]?.name) {
@@ -86,8 +78,10 @@ export default createRule<Options, keyof typeof messages>({
       {
         additionalProperties: false,
         properties: {
-          caseSensitive: {
-            type: 'boolean',
+          order: {
+            type: 'string',
+            enum: ['asc', 'desc'],
+            default: 'asc',
           },
         },
         type: 'object',
