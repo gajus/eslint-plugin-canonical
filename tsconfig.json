@@ -4,8 +4,12 @@
     "declaration": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "lib": [
+      "es2021"
+    ],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "noEmit": true,
     "noImplicitAny": false,
     "noImplicitReturns": true,
     "noUnusedLocals": true,
@@ -13,9 +17,6 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
-    "lib": [
-      "es2021"
-    ],
     "target": "es2015"
   },
   "exclude": [
