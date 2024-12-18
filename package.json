@@ -68,6 +68,7 @@
     "build": "rm -fr ./dist && tsc --project ./tsconfig.build.json",
     "generate": "gitdown ./.README/README.md --output-file ./README.md && tsx ./src/bin/addAssertions",
     "lint": "eslint .",
+    "prepare": "husky install",
     "test": "mocha --require tsx './tests/rules/*'"
   },
   "version": "0.0.0-development"

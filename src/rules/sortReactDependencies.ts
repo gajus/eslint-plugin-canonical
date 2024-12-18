@@ -18,7 +18,7 @@ const messages = {
 
 export default createRule<Options, keyof typeof messages>({
   create: (context, [options]) => {
-    const { caseSensitive = true, order = 'asc' } = options;
+    const { order = 'asc' } = options;
 
     return {
       CallExpression(node) {
