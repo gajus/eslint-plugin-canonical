@@ -1923,10 +1923,6 @@ The following patterns are considered problems:
 ```js
 useEffect(() => {}, [b, a])
 // Message: undefined
-
-// Options: [{"caseSensitive":true}]
-useEffect(() => {}, [a, B])
-// Message: undefined
 ```
 
 The following patterns are not considered problems:
