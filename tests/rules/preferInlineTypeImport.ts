@@ -1,6 +1,6 @@
 import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/preferInlineTypeImport';
-import { createRuleTester } from '../RuleTester';
+import { createRuleTester } from '../factories/createRuleTester';
 
 export default createRuleTester(
   'prefer-inline-type-import',

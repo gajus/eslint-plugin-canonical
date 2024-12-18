@@ -1,7 +1,7 @@
 import {parser as typescriptEslintParser} from 'typescript-eslint';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import rule from '../../src/rules/exportSpecifierNewline';
-import { createRuleTester } from '../RuleTester';
+import { createRuleTester } from '../factories/createRuleTester';
 
 export default createRuleTester(
   'export-specifier-newline',

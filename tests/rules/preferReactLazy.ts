@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/preferReactLazy';
-import { createRuleTester } from '../RuleTester';
+import { createRuleTester } from '../factories/createRuleTester';
 
 const fixturesPath = path.resolve(__dirname, '../fixtures');
 

@@ -1,6 +1,6 @@
 import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/filenameNoIndex';
-import { createRuleTester } from '../RuleTester';
+import { createRuleTester } from '../factories/createRuleTester';
 
 const testCode = "var foo = 'bar';";
 

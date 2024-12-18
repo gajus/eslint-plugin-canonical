@@ -1,7 +1,7 @@
 import path from 'node:path';
 import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/preferImportAlias';
-import { createRuleTester } from '../RuleTester';
+import { createRuleTester } from '../factories/createRuleTester';
 
 const baseDirectory = path.resolve(
   __dirname,

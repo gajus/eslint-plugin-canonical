@@ -1,6 +1,6 @@
 import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/filenameMatchRegex';
-import { createRuleTester } from '../RuleTester';
+import { createRuleTester } from '../factories/createRuleTester';
 
 const exportingCode = 'module.exports = foo';
 const exportedFunctionCall = 'module.exports = foo()';

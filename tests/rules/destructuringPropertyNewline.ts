@@ -1,6 +1,6 @@
 import {parser as typescriptEslintParser} from 'typescript-eslint';
 import rule from '../../src/rules/destructuringPropertyNewline';
-import { createRuleTester } from '../RuleTester';
+import { createRuleTester } from '../factories/createRuleTester';
 
 export default createRuleTester(
   'destructuring-property-newline',
