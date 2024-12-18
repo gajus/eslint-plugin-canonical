@@ -20,6 +20,7 @@
     "natural-orderby": "^5.0.0",
     "recast": "^0.23.9",
     "roarr": "^7.21.1",
+    "tsconfig-paths": "^4.2.0",
     "xregexp": "^5.1.1"
   },
   "description": "Canonical linting rules for ESLint.",
