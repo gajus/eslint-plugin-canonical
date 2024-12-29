@@ -7,8 +7,8 @@
   "dependencies": {
     "@typescript-eslint/utils": "^8.18.1",
     "array-includes": "^3.1.8",
-    "chance": "^1.1.12",
     "debug": "^4.4.0",
+    "doctrine": "^3.0.0",
     "eslint-import-resolver-typescript": "^3.7.0",
     "eslint-module-utils": "^2.12.0",
     "is-get-set-prop": "^1.0.0",
@@ -19,8 +19,7 @@
     "natural-orderby": "^5.0.0",
     "recast": "^0.23.9",
     "roarr": "^7.21.1",
-    "tsconfig-paths": "^4.2.0",
-    "xregexp": "^5.1.1"
+    "tsconfig-paths": "^4.2.0"
   },
   "description": "Canonical linting rules for ESLint.",
   "devDependencies": {
@@ -33,6 +32,7 @@
     "@typescript-eslint/rule-tester": "^8.18.1",
     "@typescript-eslint/types": "^8.18.1",
     "ajv": "^8.17.1",
+    "chance": "^1.1.12",
     "eslint": "^9.17.0",
     "eslint-config-canonical": "^44.3.35",
     "gitdown": "^4.1.1",
